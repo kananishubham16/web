@@ -1347,8 +1347,18 @@ class EduTrackDataStore {
     this.advice = this.load(STORAGE_KEYS.ADVICE, INITIAL_COORDINATOR_ADVICE);
     this.doubts = this.load(STORAGE_KEYS.DOUBTS, INITIAL_PARENT_DOUBTS);
     this.thresholds = this.load(STORAGE_KEYS.THRESHOLDS, DEFAULT_THRESHOLDS);
-    this.apiBase = window.location.protocol.startsWith('http') ? '' : 'http://localhost:8000';
+    this.apiBase = window.EDUTRACK_API_URL || 
+      (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : 
+      (window.location.protocol.startsWith('http') ? '' : 'http://localhost:5000'));
     this.isBackendOnline = false;
+  }
+
+  getAuthHeaders() {
+    const token = sessionStorage.getItem('edutrack_jwt_token') || localStorage.getItem('edutrack_jwt_token');
+    return {
+      'Content-Type': 'application/json',
+      ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+    };
   }
 
   async checkBackend() {
@@ -1358,6 +1368,7 @@ class EduTrackDataStore {
         const data = await res.json();
         this.isBackendOnline = true;
         this.updateBackendStatusUI(true, `Backend Live (${data.students_count || this.students.length} students)`);
+        await this.syncRemoteData();
         return true;
       }
     } catch (e) {
@@ -1366,6 +1377,50 @@ class EduTrackDataStore {
     this.isBackendOnline = false;
     this.updateBackendStatusUI(false, "Local Standalone Mode");
     return false;
+  }
+
+  async syncRemoteData() {
+    try {
+      const headers = this.getAuthHeaders();
+      // 1. Sync students
+      const resStudents = await fetch(`${this.apiBase}/api/v1/students`, { headers, cache: 'no-store' });
+      if (resStudents.ok) {
+        const json = await resStudents.json();
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+          this.students = json.data;
+          this.save(STORAGE_KEYS.DATA, this.students);
+        }
+      }
+      // 2. Sync advice
+      const resAdvice = await fetch(`${this.apiBase}/api/v1/advice`, { headers, cache: 'no-store' });
+      if (resAdvice.ok) {
+        const json = await resAdvice.json();
+        if (json.data && Array.isArray(json.data)) {
+          this.advice = json.data;
+          this.save(STORAGE_KEYS.ADVICE, this.advice);
+        }
+      }
+      // 3. Sync doubts
+      const resDoubts = await fetch(`${this.apiBase}/api/v1/doubts`, { headers, cache: 'no-store' });
+      if (resDoubts.ok) {
+        const json = await resDoubts.json();
+        if (json.data && Array.isArray(json.data)) {
+          this.doubts = json.data;
+          this.save(STORAGE_KEYS.DOUBTS, this.doubts);
+        }
+      }
+      // 4. Sync thresholds
+      const resThresh = await fetch(`${this.apiBase}/api/v1/settings/thresholds`, { cache: 'no-store' });
+      if (resThresh.ok) {
+        const json = await resThresh.json();
+        if (json.data) {
+          this.thresholds = json.data;
+          this.save(STORAGE_KEYS.THRESHOLDS, this.thresholds);
+        }
+      }
+    } catch (err) {
+      console.warn("EduTrack remote sync skipped:", err);
+    }
   }
 
   updateBackendStatusUI(online, text) {
@@ -1401,7 +1456,7 @@ class EduTrackDataStore {
       try {
         const res = await fetch(`${this.apiBase}/api/students`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: this.getAuthHeaders(),
           body: JSON.stringify(studentData)
         });
         if (res.ok) {
@@ -1431,7 +1486,7 @@ class EduTrackDataStore {
       try {
         await fetch(`${this.apiBase}/api/students/${encodeURIComponent(studentId)}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: this.getAuthHeaders(),
           body: JSON.stringify(updatedFields)
         });
       } catch (e) {
@@ -1452,7 +1507,8 @@ class EduTrackDataStore {
     if (this.isBackendOnline) {
       try {
         await fetch(`${this.apiBase}/api/students/${encodeURIComponent(studentId)}`, {
-          method: 'DELETE'
+          method: 'DELETE',
+          headers: this.getAuthHeaders()
         });
       } catch (e) {
         console.warn("Failed to delete student on backend:", e);
@@ -1470,7 +1526,7 @@ class EduTrackDataStore {
       try {
         const res = await fetch(`${this.apiBase}/api/students/bulk`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: this.getAuthHeaders(),
           body: JSON.stringify(studentsList)
         });
         if (res.ok) {
@@ -1542,7 +1598,7 @@ class EduTrackDataStore {
       try {
         await fetch(`${this.apiBase}/api/students/${encodeURIComponent(studentId)}`, {
           method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
+          headers: this.getAuthHeaders(),
           body: JSON.stringify({ subjects: student.subjects, remarks: student.remarks })
         });
       } catch (e) {
@@ -1553,7 +1609,7 @@ class EduTrackDataStore {
     return true;
   }
 
-  addCoordinatorAdvice(className, adviceText) {
+  async addCoordinatorAdvice(className, adviceText) {
     const newAdvice = {
       id: "ADV-" + Date.now().toString().slice(-4),
       class: className,
@@ -1562,18 +1618,36 @@ class EduTrackDataStore {
       advice: adviceText,
       status: "Submitted"
     };
+
+    if (this.isBackendOnline) {
+      try {
+        const res = await fetch(`${this.apiBase}/api/v1/advice`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify({ className, advice: adviceText })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) Object.assign(newAdvice, json.data);
+        }
+      } catch (e) {
+        console.warn("Could not post advice to backend:", e);
+      }
+    }
+
     this.advice.unshift(newAdvice);
     this.save(STORAGE_KEYS.ADVICE, this.advice);
     return newAdvice;
   }
 
-  addParentDoubt(studentId, subject, category, questionText) {
+  async addParentDoubt(studentId, subject, category, questionText) {
     const student = this.getStudentById(studentId) || this.students[0];
     const newDoubt = {
       id: "DOUBT-" + Date.now().toString().slice(-4),
       studentId: student.id,
       studentName: student.name,
       parentName: student.parentName,
+      parentEmail: student.parentEmail,
       subject: subject,
       category: category,
       question: questionText,
@@ -1581,6 +1655,30 @@ class EduTrackDataStore {
       reply: null,
       date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
+
+    if (this.isBackendOnline) {
+      try {
+        const res = await fetch(`${this.apiBase}/api/v1/doubts`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify({
+            studentId: student.id,
+            subject,
+            category,
+            question: questionText,
+            parentName: student.parentName,
+            parentEmail: student.parentEmail
+          })
+        });
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data) Object.assign(newDoubt, json.data);
+        }
+      } catch (e) {
+        console.warn("Could not post doubt to backend:", e);
+      }
+    }
+
     this.doubts.unshift(newDoubt);
     this.save(STORAGE_KEYS.DOUBTS, this.doubts);
     return newDoubt;

@@ -21,7 +21,7 @@
   <!-- Site Header -->
   <header class="site-header">
     <div class="header-inner">
-      <a href="index.html" class="brand-link">
+      <a class='brand-link' href='/'>
         <div class="brand-logo-icon">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
@@ -42,7 +42,7 @@
           </select>
         </div>
 
-        <a href="index.html" class="btn btn-secondary btn-sm">
+        <a class='btn btn-secondary btn-sm' href='/'>
           <i class="fa-solid fa-arrow-left"></i>
           <span data-i18n="backToRoles">Back to Roles</span>
         </a>
@@ -131,12 +131,13 @@
         <strong>EduTrack</strong> &mdash; Smart Student Academic Performance Monitoring System
       </div>
       <div>
-        <a href="index.html" style="color:var(--teal-primary); text-decoration:none;" data-i18n="chooseDiffRole">Choose Different Role</a>
+        <a data-i18n='chooseDiffRole' href='/' style='color:var(--teal-primary); text-decoration:none;'>Choose Different Role</a>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
+  <script src="config.js"></script>
   <script src="script.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -180,6 +181,15 @@
           email: "parent@edutrack.edu",
           pass: "parent123",
           redirect: "parent.html"
+        },
+        admin: {
+          titleKey: "adminAuthPortal",
+          titleDefault: "Central System Administrator Portal",
+          icon: "fa-shield-halved",
+          badgeClass: "badge-red",
+          email: "admin@edutrack.edu",
+          pass: "AdminSecurePass@2026",
+          redirect: "admin.html"
         }
       };
 
@@ -268,7 +278,38 @@
         if (!isValid) return;
 
         // Save session
-        Auth.login(role);
+        // Connect backend login
+        const apiBase = (window.EduTrack && window.EduTrack.apiBase) ? window.EduTrack.apiBase : 
+          (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : 
+          (window.location.protocol.startsWith('http') ? '' : 'http://localhost:5000'));
+
+        fetch(`${apiBase}/api/v1/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password: pass })
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.token) {
+            sessionStorage.setItem('edutrack_jwt_token', data.token);
+            localStorage.setItem('edutrack_jwt_token', data.token);
+            const userRole = data.data.role || role;
+            Auth.login(userRole);
+            const redirectUrl = userRole === 'admin' ? 'admin.html' : currentConfig.redirect;
+            showToast(`Authenticated as ${data.data.name || userRole.toUpperCase()}! Redirecting...`, 'success');
+            setTimeout(() => { window.location.href = redirectUrl; }, 600);
+          } else {
+            showToast(data.message || 'Authentication failed. Please check credentials.', 'warning');
+          }
+        })
+        .catch(() => {
+          Auth.login(role);
+          const successMsg = window.i18n && window.i18n.getLang() === 'gu' ? `સફળતાપૂર્વક પ્રમાણિત! આગળ વધી રહ્યા છીએ...` : 
+                            (window.i18n && window.i18n.getLang() === 'hi' ? `सफलतापूर्वक प्रमाणित! पुनः निर्देशित हो रहे हैं...` : `Authenticated as ${role.toUpperCase()}! Redirecting...`);
+          showToast(successMsg, 'success');
+          setTimeout(() => { window.location.href = currentConfig.redirect; }, 600);
+        });
+        return;
         const successMsg = window.i18n && window.i18n.getLang() === 'gu' ? `સફળતાપૂર્વક પ્રમાણિત! આગળ વધી રહ્યા છીએ...` : 
                           (window.i18n && window.i18n.getLang() === 'hi' ? `सफलतापूर्वक प्रमाणित! पुनः निर्देशित हो रहे हैं...` : `Authenticated as ${role.toUpperCase()}! Redirecting...`);
         showToast(successMsg, 'success');

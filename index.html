@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=loops&utm_source=ai-legible&utm_medium=owned&utm_content=comment&utm_id=7b9c6766-8409-49e2-a9c0-bedcb370089a
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduTrack – Smart Student Performance Monitoring System</title>
   
@@ -21,7 +24,7 @@
   <!-- Site Header -->
   <header class="site-header">
     <div class="header-inner">
-      <a href="index.html" class="brand-link">
+      <a class='brand-link' href='/'>
         <div class="brand-logo-icon">
           <i class="fa-solid fa-graduation-cap"></i>
         </div>
@@ -46,6 +49,9 @@
           <i class="fa-solid fa-school"></i>
           <span data-i18n="portalTag">Primary &amp; Middle Academic Portal</span>
         </div>
+        <a href="admin.html" class="btn btn-secondary btn-sm" title="Central Administration Portal">
+          <i class="fa-solid fa-screwdriver-wrench"></i> <span>Admin</span>
+        </a>
       </div>
     </div>
   </header>
@@ -229,13 +235,15 @@
       <div>
         <strong data-i18n="appTitle">EduTrack</strong> &mdash; <span data-i18n="appSubtitle">Smart Performance Monitoring</span>
       </div>
-      <div>
-        Primary &amp; Middle Education Analytics &bull; Designed for Gujarat Primary Schools
+      <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+        <span>Primary &amp; Middle Education Analytics &bull; Designed for Gujarat Primary Schools</span>
+        <a href="admin.html" style="color:var(--teal-primary); font-weight:600; text-decoration:none;"><i class="fa-solid fa-lock"></i> Admin Portal</a>
       </div>
     </div>
   </footer>
 
   <!-- Scripts -->
+  <script src="config.js"></script>
   <script src="script.js"></script>
   <script>
     let selectedRole = 'teacher';
@@ -320,4 +328,4 @@
   </script>
 
 </body>
-</html>
+</html><script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="7b9c6766-8409-49e2-a9c0-bedcb370089a" data-app-host="app.netlify.com" data-account-tier="free"></script>
