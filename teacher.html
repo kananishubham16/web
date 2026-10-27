@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -83,7 +83,12 @@
         <h2 data-i18n="teacherHeaderTitle">Class Academic Performance &amp; Diagnostic Ledger</h2>
         <p data-i18n="teacherHeaderSub">Continuous classroom evaluation, topic-level gap analysis, and tailored remedial recommendations</p>
       </div>
-      <div class="header-actions">
+      <div class="header-actions" style="display:flex; gap:10px; align-items:center;">
+        <a href="#teacherDoubtsSection" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+          <i class="fa-solid fa-comments" style="color:#d97706;"></i>
+          <span>Answer Parent Questions</span>
+          <span class="badge badge-yellow" id="headerDoubtsBadge" style="padding:2px 6px; font-size:0.75rem;">1</span>
+        </a>
         <span class="badge badge-blue">
           <i class="fa-solid fa-school"></i> <span data-i18n="classSectionPrimary">Class 4 - Section A (Primary)</span>
         </span>
@@ -264,7 +269,7 @@
     <!-- ======================================================================
          PARENT INQUIRIES & STUDENT DOUBTS RESOLUTION DESK
          ====================================================================== -->
-    <div class="card" style="border-top:4px solid #f59e0b; margin-top:24px;">
+    <div class="card" id="teacherDoubtsSection" style="border-top:4px solid #f59e0b; margin-top:24px;">
       <div class="card-header">
         <div>
           <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
@@ -1445,6 +1450,8 @@
       const doubts = window.EduTrack.getDoubtsForClassOrSubject("Class 4");
       const pendingCount = doubts.filter(d => d.status === 'Pending').length;
       if (badge) badge.textContent = `${pendingCount} Pending Inquiries`;
+      const headerBadge = document.getElementById('headerDoubtsBadge');
+      if (headerBadge) headerBadge.textContent = `${pendingCount}`;
 
       let filtered = doubts;
       if (filter !== 'All') {
