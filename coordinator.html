@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Block Resource Coordinator Dashboard – EduTrack</title>
+  <title>Block Resource Coordinator (BRC) Portal – EduTrack</title>
   
   <!-- Google Fonts: Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,11 +35,29 @@
       </a>
 
       <div class="header-nav">
+        <!-- Language Selector -->
+        <div class="lang-select-wrap" title="Select Website Language / ભાષા પસંદ કરો / भाषा चुनें">
+          <i class="fa-solid fa-language"></i>
+          <select class="site-lang-select" aria-label="Select Language">
+            <option value="en">English</option>
+            <option value="gu">ગુજરાતી (Gujarati)</option>
+            <option value="hi">हिन्दी (Hindi)</option>
+          </select>
+        </div>
+
+        <!-- Backend Online Indicator -->
+        <div class="backend-status-pill offline" style="display:inline-flex;">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span>Checking server...</span>
+        </div>
+
+        <!-- User Profile Badge -->
         <div class="header-user-badge">
           <i class="fa-solid fa-user-check"></i>
           <span>Shri R.K. Mehta</span>
-          <span class="role-tag" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">BRC Coordinator</span>
+          <span class="role-tag" style="background:#e0f2fe; color:#0369a1; border-color:#bae6fd;">BRC Coordinator &bull; Gandhinagar-02</span>
         </div>
+
         <button class="btn btn-secondary btn-sm" onclick="Auth.logout()">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
           <span>Logout</span>
@@ -55,224 +73,856 @@
     <div class="breadcrumb-bar">
       <a href='index.html'><i class="fa-solid fa-house"></i> Home</a>
       <span class="separator">/</span>
-      <span class="current">Coordinator Dashboard</span>
+      <span class="current">BRC Command Center</span>
       <span class="separator">/</span>
-      <span class="current" id="coordClassBreadcrumb">Assigned Class: Class 4</span>
+      <span class="current" id="blockBreadcrumbLabel">Gandhinagar Block-02 (All 24 Schools)</span>
     </div>
 
-    <!-- Assigned-Class Access Disclaimer Banner -->
-    <div style="background:#f0f9ff; border:1px solid #bae6fd; border-radius:var(--radius-md); padding:14px 18px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
-      <div style="display:flex; align-items:center; gap:12px;">
-        <i class="fa-solid fa-shield-halved" style="font-size:1.4rem; color:#0284c7;"></i>
+    <!-- BRC Jurisdiction & Quick Action Banner -->
+    <div class="brc-jurisdiction-banner">
+      <div class="brc-banner-top">
         <div>
-          <strong style="color:#0369a1; font-size:0.9rem;">Cluster Authorization: Block 02 Assigned Classrooms</strong>
-          <p style="font-size:0.78rem; color:#0284c7; margin-top:2px;">
-            Role-Based Access Control Active: You are strictly authorized to inspect assigned classrooms: <strong>Class 4, Class 5, and Class 6</strong>. Unassigned classes are restricted.
+          <div class="brc-badge-pill">
+            <i class="fa-solid fa-shield-halved"></i>
+            <span>Statutory Block Educational Jurisdiction &bull; Samagra Shiksha</span>
+          </div>
+          <h2 style="font-size:1.6rem; font-weight:800; margin-top:10px; letter-spacing:-0.02em;">
+            Block Resource Centre (BRC) – Gandhinagar Block-02
+          </h2>
+          <p style="font-size:0.92rem; color:#e2e8f0; max-width:820px; margin-top:6px; line-height:1.5;">
+            Academic supervision, school quality monitoring, foundational learning (FLN) audits, and continuous teacher capacity building for <strong>24 schools across 4 CRC clusters</strong> (Kudasan, Randheja, Pethapur, Sargasan).
           </p>
         </div>
-      </div>
-      
-      <!-- Assigned Class Selector -->
-      <div style="display:flex; align-items:center; gap:8px;">
-        <label for="coordinatorClassSelect" style="font-size:0.84rem; font-weight:700; color:#0369a1; margin-bottom:0;">Assigned Class:</label>
-        <select id="coordinatorClassSelect" class="form-control" style="width:auto; padding:6px 14px; font-weight:700; border-color:#7dd3fc;">
-          <option value="Class 4" selected>Class 4 (Primary Block)</option>
-          <option value="Class 5">Class 5 (Primary Block)</option>
-          <option value="Class 6">Class 6 (Upper Primary)</option>
-        </select>
-      </div>
-    </div>
 
-    <!-- Dashboard Title -->
-    <div class="dashboard-header">
-      <div class="header-title-box">
-        <h2>Assigned Classroom Learning Gap Review &amp; Pedagogical Interventions</h2>
-        <p id="coordSubtitle">Academic audit, foundational topic weaknesses, and cluster intervention logs for Class 4</p>
-      </div>
-    </div>
-
-    <!-- Metrics Cards Grid -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-meta">
-          <span>Assigned Class Roster</span>
-          <h3 id="statCoordStudents">5 Students</h3>
-          <div class="stat-sub"><i class="fa-solid fa-users text-success"></i> Monitored Cohort</div>
+        <!-- Quick Action Buttons -->
+        <div class="brc-action-buttons">
+          <button class="btn btn-light" onclick="openLogInspectionModal()">
+            <i class="fa-solid fa-clipboard-check text-success"></i>
+            <span>Log Supervisory Visit</span>
+          </button>
+          <button class="btn btn-secondary" onclick="openNewTrainingModal()">
+            <i class="fa-solid fa-chalkboard-user"></i>
+            <span>Schedule Teacher Training</span>
+          </button>
+          <button class="btn btn-primary" onclick="openIssueDirectiveModal()">
+            <i class="fa-solid fa-bullhorn"></i>
+            <span>Issue Academic Directive</span>
+          </button>
         </div>
-        <div class="stat-icon-box teal"><i class="fa-solid fa-user-group"></i></div>
+      </div>
+    </div>
+
+    <!-- Executive Metrics Grid (4 Core Block KPIs) -->
+    <div class="stats-grid">
+      <div class="stat-card" style="cursor:pointer;" onclick="switchBrcTab('schools')">
+        <div class="stat-meta">
+          <span>Schools Under Management</span>
+          <h3 id="statTotalSchools">24 Schools</h3>
+          <div class="stat-sub"><i class="fa-solid fa-school text-success"></i> 4 CRC Clusters &bull; 218 Teachers</div>
+        </div>
+        <div class="stat-icon-box teal"><i class="fa-solid fa-school"></i></div>
       </div>
 
-      <div class="stat-card">
+      <div class="stat-card" style="cursor:pointer;" onclick="switchBrcTab('schools')">
         <div class="stat-meta">
-          <span>Classroom Average</span>
-          <h3 id="statCoordClassAvg">64.8%</h3>
-          <div class="stat-sub" id="statCoordBadge">
-            <span class="badge badge-yellow">Developing Band</span>
+          <span>Block Academic Average</span>
+          <h3 id="statBlockAvg">71.4%</h3>
+          <div class="stat-sub">
+            <span class="badge badge-yellow" id="statAvgBandBadge">Developing Band</span>
+            <span style="font-size:0.76rem; color:var(--text-muted); margin-left:4px;">Target: 80%</span>
           </div>
         </div>
-        <div class="stat-icon-box blue"><i class="fa-solid fa-chart-line"></i></div>
+        <div class="stat-icon-box blue"><i class="fa-solid fa-chart-pie"></i></div>
       </div>
 
-      <div class="stat-card">
+      <div class="stat-card" style="cursor:pointer;" onclick="filterPrioritySchoolsOnly()">
         <div class="stat-meta">
-          <span>Students Needing Support</span>
-          <h3 id="statCoordHelpCount" style="color:var(--perf-red);">1</h3>
-          <div class="stat-sub"><i class="fa-solid fa-triangle-exclamation text-danger"></i> Below 40% threshold</div>
+          <span>Schools Needing Priority Support</span>
+          <h3 id="statPrioritySchools" style="color:var(--perf-red);">4 Schools</h3>
+          <div class="stat-sub"><i class="fa-solid fa-triangle-exclamation text-danger"></i> &lt;40% Average or Low FLN (Click to filter)</div>
         </div>
         <div class="stat-icon-box red"><i class="fa-solid fa-triangle-exclamation"></i></div>
       </div>
 
-      <div class="stat-card">
+      <div class="stat-card" style="cursor:pointer;" onclick="switchBrcTab('inspections')">
         <div class="stat-meta">
-          <span>Logged Interventions</span>
-          <h3 id="statCoordAdviceCount">3</h3>
-          <div class="stat-sub"><i class="fa-solid fa-clipboard-check text-success"></i> Cluster Directives</div>
+          <span>Supervisory Audits &amp; Training</span>
+          <h3 id="statInspectionsCount">19 / 24 Visited</h3>
+          <div class="stat-sub"><i class="fa-solid fa-certificate text-success"></i> 4 Workshops &bull; 94% Teacher Attendance</div>
         </div>
-        <div class="stat-icon-box green"><i class="fa-solid fa-clipboard-list"></i></div>
+        <div class="stat-icon-box green"><i class="fa-solid fa-graduation-cap"></i></div>
       </div>
     </div>
 
-    <!-- Charts Row -->
-    <div class="charts-grid-two">
+    <!-- Main BRC Tab Navigation Bar -->
+    <nav class="brc-tabs-nav">
+      <button class="brc-tab-btn active" data-tab="schools" onclick="switchBrcTab('schools')">
+        <i class="fa-solid fa-school"></i>
+        <span>Multi-School Scorecard</span>
+        <span class="brc-tab-count" id="tabCountSchools">24</span>
+      </button>
+
+      <button class="brc-tab-btn" data-tab="inspections" onclick="switchBrcTab('inspections')">
+        <i class="fa-solid fa-clipboard-check"></i>
+        <span>School Inspections &amp; Audits</span>
+        <span class="brc-tab-count" id="tabCountInspections">6</span>
+      </button>
+
+      <button class="brc-tab-btn" data-tab="trainings" onclick="switchBrcTab('trainings')">
+        <i class="fa-solid fa-chalkboard-user"></i>
+        <span>Teacher Training Workshops</span>
+        <span class="brc-tab-count" id="tabCountTrainings">4</span>
+      </button>
+
+      <button class="brc-tab-btn" data-tab="directives" onclick="switchBrcTab('directives')">
+        <i class="fa-solid fa-bullhorn"></i>
+        <span>Academic Directives &amp; Advisories</span>
+        <span class="brc-tab-count" id="tabCountDirectives">5</span>
+      </button>
+
+      <button class="brc-tab-btn" data-tab="resources" onclick="switchBrcTab('resources')">
+        <i class="fa-solid fa-box-open"></i>
+        <span>Resource &amp; TLM Allocation</span>
+        <span class="brc-tab-count">100%</span>
+      </button>
+    </nav>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 1: Multi-School Scorecard & Directory View -->
+    <!-- ===================================================================== -->
+    <section id="tabView-schools" class="brc-tab-content active">
+      
+      <!-- Filter Bar -->
+      <div class="brc-filter-bar">
+        <div class="brc-search-wrap">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="schoolSearchInput" class="brc-search-input" placeholder="Search school name, principal, or UDISE+ code..." oninput="filterSchools()">
+        </div>
+
+        <div class="brc-filter-group">
+          <!-- Cluster Filter -->
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label for="clusterSelectFilter" style="font-size:0.84rem; font-weight:700; color:var(--primary-navy); margin-bottom:0;">Cluster:</label>
+            <select id="clusterSelectFilter" class="form-control" style="width:auto; padding:7px 12px; font-weight:600;" onchange="filterSchools()">
+              <option value="All" selected>All Clusters (4 CRC)</option>
+              <option value="Kudasan Cluster">Kudasan Cluster (6 Schools)</option>
+              <option value="Randheja Cluster">Randheja Cluster (6 Schools)</option>
+              <option value="Pethapur Cluster">Pethapur Cluster (6 Schools)</option>
+              <option value="Sargasan Cluster">Sargasan Cluster (6 Schools)</option>
+            </select>
+          </div>
+
+          <!-- Status Filter -->
+          <div style="display:flex; align-items:center; gap:6px;">
+            <label for="statusSelectFilter" style="font-size:0.84rem; font-weight:700; color:var(--primary-navy); margin-bottom:0;">Performance:</label>
+            <select id="statusSelectFilter" class="form-control" style="width:auto; padding:7px 12px; font-weight:600;" onchange="filterSchools()">
+              <option value="All" selected>All Performance Bands</option>
+              <option value="Excellent">Excellence (&ge;75%)</option>
+              <option value="Average">Developing (40% - 74%)</option>
+              <option value="Priority Support">Priority Support (&lt;40%)</option>
+            </select>
+          </div>
+
+          <button type="button" class="btn btn-secondary btn-sm" onclick="resetSchoolFilters()">
+            <i class="fa-solid fa-rotate-left"></i> Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Comparative Analytics Charts Row -->
+      <div class="charts-grid-two" style="margin-bottom:24px;">
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3><i class="fa-solid fa-chart-column" style="color:#0284c7;"></i> School-Wise Academic Performance Comparison</h3>
+              <p id="chartSchoolsSubtitle">Average student marks across all schools in Gandhinagar Block</p>
+            </div>
+            <span class="badge badge-blue" id="chartClusterPill">All Clusters</span>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="chartBlockSchools"></canvas>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3><i class="fa-solid fa-radar" style="color:var(--perf-green);"></i> Block Subject-Wise Competency Analysis</h3>
+              <p>Average marks across 5 primary subjects in monitored schools</p>
+            </div>
+            <span class="badge badge-green">Block Diagnostic</span>
+          </div>
+          <div class="chart-wrapper">
+            <canvas id="chartBlockSubjects"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Multi-School Ledger Table -->
       <div class="card">
         <div class="card-header">
           <div>
-            <h3><i class="fa-solid fa-chart-column" style="color:#0284c7;"></i> Subject-Wise Mastery in Selected Class</h3>
-            <p>Average marks across 5 primary subjects</p>
+            <h3><i class="fa-solid fa-list-check" style="color:var(--primary-navy);"></i> Educational Block School Roster &amp; Academic Status</h3>
+            <p>Complete directory of 24 institutions under BRC supervision</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <span class="badge badge-green"><i class="fa-solid fa-circle"></i> &ge;75% High Mastery</span>
+            <span class="badge badge-yellow"><i class="fa-solid fa-circle"></i> 40-74% Developing</span>
+            <span class="badge badge-red"><i class="fa-solid fa-circle"></i> &lt;40% Priority Support</span>
           </div>
         </div>
-        <div class="chart-wrapper">
-          <canvas id="chartCoordSubjects"></canvas>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>School Name &amp; UDISE Code</th>
+                <th>CRC Cluster</th>
+                <th>Category</th>
+                <th>Headmaster / Principal</th>
+                <th>Teachers / Students</th>
+                <th>Academic Avg</th>
+                <th>FLN Readiness</th>
+                <th>Last Inspection</th>
+                <th style="text-align:right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="schoolsTableBody">
+              <!-- Dynamically populated -->
+            </tbody>
+          </table>
         </div>
       </div>
 
-      <div class="card">
-        <div class="card-header">
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 2: School Supervisory Audits & Inspections View -->
+    <!-- ===================================================================== -->
+    <section id="tabView-inspections" class="brc-tab-content" style="display:none;">
+      
+      <div style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:var(--radius-md); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <i class="fa-solid fa-clipboard-check" style="font-size:1.6rem; color:#0d9488;"></i>
           <div>
-            <h3><i class="fa-solid fa-arrow-trend-up" style="color:var(--perf-green);"></i> Progress vs Previous Assessments</h3>
-            <p>Score trajectory: Baseline &rarr; Unit 1 &rarr; Unit 2 &rarr; Midterm</p>
+            <strong style="color:#0f766e; font-size:0.95rem;">Periodic Supervisory Audits &amp; Monitoring Framework</strong>
+            <p style="font-size:0.82rem; color:#115e59; margin-top:2px;">
+              On-site inspections evaluate 5 vital dimensions: <strong>Classroom Pedagogy &amp; FLN, Teacher Attendance &amp; Lesson Diaries, Mid-Day Meal (MDM) Hygiene, TLM Utilization, and Campus Infrastructure</strong>.
+            </p>
           </div>
         </div>
-        <div class="chart-wrapper">
-          <canvas id="chartCoordTrend"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Topic-Wise Strengths, Learning Gaps & Common Difficulties -->
-    <div class="card">
-      <div class="card-header">
-        <div>
-          <h3><i class="fa-solid fa-magnifying-glass" style="color:var(--primary-navy);"></i> Common Learning Gaps &amp; Academic Difficulties</h3>
-          <p>Identified conceptual bottlenecks requiring cluster-level instructional adjustments:</p>
-        </div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="openLogInspectionModal()">
+          <i class="fa-solid fa-plus"></i> Log New Supervisory Visit
+        </button>
       </div>
 
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:18px;">
-        <div style="background:#fef2f2; border:1px solid #fecaca; border-radius:var(--radius-md); padding:18px;">
-          <h4 style="font-size:0.95rem; font-weight:700; color:#991b1b; margin-bottom:6px;">
-            <i class="fa-solid fa-bug"></i> Critical Deficit: Math Multiplication Tables &amp; Division
-          </h4>
-          <p style="font-size:0.84rem; color:#7f1d1d; line-height:1.5;">
-            Students in the bottom quartile rely on finger-counting for tables 6 through 9 and fail to grasp division as repeated subtraction.
-          </p>
-          <div style="margin-top:10px; font-size:0.78rem; font-weight:700; color:#b91c1c;">
-            Recommended: Daily 10-minute dot array matrix drills + abacus kit practice.
-          </div>
-        </div>
-
-        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius-md); padding:18px;">
-          <h4 style="font-size:0.95rem; font-weight:700; color:#92400e; margin-bottom:6px;">
-            <i class="fa-solid fa-triangle-exclamation"></i> Language Gap: Matra Confusion (હ્રસ્વ 'િ' vs દીર્ઘ 'ી')
-          </h4>
-          <p style="font-size:0.84rem; color:#78350f; line-height:1.5;">
-            Gujarati and Hindi writing shows persistent vowel matra swaps altering word meanings (e.g. દિન vs દીન).
-          </p>
-          <div style="margin-top:10px; font-size:0.78rem; font-weight:700; color:#b45309;">
-            Recommended: Barakhadi audio rhymes and tactile sandpaper letter tracing.
-          </div>
-        </div>
-
-        <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:var(--radius-md); padding:18px;">
-          <h4 style="font-size:0.95rem; font-weight:700; color:#166534; margin-bottom:6px;">
-            <i class="fa-solid fa-check-circle"></i> Commendable Mastery: EVS Plant &amp; Living World
-          </h4>
-          <p style="font-size:0.84rem; color:#14532d; line-height:1.5;">
-            High student engagement in plant photosynthesis and community helper roles (Class mastery exceeds 82%).
-          </p>
-          <div style="margin-top:10px; font-size:0.78rem; font-weight:700; color:#15803d;">
-            Recommended: Leverage nature projects to cross-teach vocabulary and measurements.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Dedicated Advice and Intervention Section -->
-    <div class="advice-box-container">
+      <!-- Inspections Filter & Summary -->
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; flex-wrap:wrap; gap:10px;">
+        <div style="font-size:0.92rem; font-weight:700; color:var(--primary-navy);">
+          Recent Supervisory Audits Log (<span id="inspectionsCountLabel">6</span> recorded visits)
+        </div>
+        <div style="display:flex; gap:10px;">
+          <select id="inspectionClusterFilter" class="form-control" style="width:auto; padding:6px 12px; font-size:0.84rem;" onchange="renderInspections()">
+            <option value="All">All Clusters</option>
+            <option value="Kudasan Cluster">Kudasan Cluster</option>
+            <option value="Randheja Cluster">Randheja Cluster</option>
+            <option value="Pethapur Cluster">Pethapur Cluster</option>
+            <option value="Sargasan Cluster">Sargasan Cluster</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Inspections List Container -->
+      <div id="inspectionsListContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 3: Teacher Training & Capacity Building View -->
+    <!-- ===================================================================== -->
+    <section id="tabView-trainings" class="brc-tab-content" style="display:none;">
+      
+      <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:var(--radius-md); padding:16px 20px; margin-bottom:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <i class="fa-solid fa-chalkboard-user" style="font-size:1.6rem; color:#2563eb;"></i>
+          <div>
+            <strong style="color:#1e40af; font-size:0.95rem;">Continuous Professional Development &amp; Teacher Training Hub</strong>
+            <p style="font-size:0.82rem; color:#1d4ed8; margin-top:2px;">
+              BRC organizes block and cluster-level workshops to upgrade pedagogical skills in FLN, experiential STEM kits, remedial instruction, and NEP 2020 holistic progress cards.
+            </p>
+          </div>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="openNewTrainingModal()">
+          <i class="fa-solid fa-plus"></i> Schedule New Workshop
+        </button>
+      </div>
+
+      <!-- Training Workshops Grid -->
+      <div class="trainings-grid" id="trainingsGridContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Pedagogical Modules & Resources Section -->
+      <div class="card" style="margin-top:24px;">
+        <div class="card-header">
+          <div>
+            <h3><i class="fa-solid fa-book-open" style="color:var(--teal-primary);"></i> BRC Pedagogical Resource Guides &amp; Remedial Modules</h3>
+            <p>Standardized teaching aids distributed across the 24 schools</p>
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:16px;">
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+            <div style="font-size:1.5rem; color:#0284c7; margin-bottom:6px;"><i class="fa-solid fa-cubes"></i></div>
+            <strong style="font-size:0.9rem; color:var(--primary-navy);">FLN Numeracy CPA Guide</strong>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+              Step-by-step Concrete-Pictorial-Abstract worksheets for teaching tables 6-9, place value, and fractions.
+            </p>
+            <button class="btn btn-sm btn-outline" style="margin-top:10px; width:100%;" onclick="showToast('Module PDF downloaded: FLN CPA Numeracy Guide', 'info')">
+              <i class="fa-solid fa-download"></i> Download Module PDF
+            </button>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+            <div style="font-size:1.5rem; color:#16a34a; margin-bottom:6px;"><i class="fa-solid fa-book-bookmark"></i></div>
+            <strong style="font-size:0.9rem; color:var(--primary-navy);">Vachan Abhiyan Phonics Cards</strong>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+              Barakhadi rhymes, audio mnemonics, and sandpaper tracing cards to resolve Gujarati vowel matra confusion.
+            </p>
+            <button class="btn btn-sm btn-outline" style="margin-top:10px; width:100%;" onclick="showToast('Module PDF downloaded: Vachan Abhiyan Cards', 'info')">
+              <i class="fa-solid fa-download"></i> Download Module PDF
+            </button>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+            <div style="font-size:1.5rem; color:#9333ea; margin-bottom:6px;"><i class="fa-solid fa-flask-vial"></i></div>
+            <strong style="font-size:0.9rem; color:var(--primary-navy);">Experiential STEM Kit Manual</strong>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+              50 low-cost hands-on science demonstrations for Upper Primary classes (electricity, magnets, plant parts).
+            </p>
+            <button class="btn btn-sm btn-outline" style="margin-top:10px; width:100%;" onclick="showToast('Module PDF downloaded: STEM Kit Manual', 'info')">
+              <i class="fa-solid fa-download"></i> Download Module PDF
+            </button>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:16px;">
+            <div style="font-size:1.5rem; color:#d97706; margin-bottom:6px;"><i class="fa-solid fa-award"></i></div>
+            <strong style="font-size:0.9rem; color:var(--primary-navy);">NEP Holistic Progress Card Rubric</strong>
+            <p style="font-size:0.8rem; color:var(--text-muted); margin-top:4px;">
+              360-degree self, peer, and teacher evaluation matrix complying with GCERT &amp; NIPUN Bharat standards.
+            </p>
+            <button class="btn btn-sm btn-outline" style="margin-top:10px; width:100%;" onclick="showToast('Module PDF downloaded: HPC Evaluation Rubric', 'info')">
+              <i class="fa-solid fa-download"></i> Download Module PDF
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 4: Academic Directives & Advisories View -->
+    <!-- ===================================================================== -->
+    <section id="tabView-directives" class="brc-tab-content" style="display:none;">
+      
+      <!-- Directive Creation Card -->
+      <div class="card" style="border-top:4px solid #0d9488; margin-bottom:24px;">
+        <div class="card-header">
+          <div>
+            <h3><i class="fa-solid fa-bullhorn" style="color:#0f766e;"></i> Issue Formal BRC Directive / Pedagogical Advisory</h3>
+            <p>Direct academic mandates delivered to school principals, cluster coordinators, and teachers</p>
+          </div>
+          <span class="badge badge-blue">Official BRC Directive System</span>
+        </div>
+
+        <!-- Quick 1-Click Directive Templates -->
+        <div style="display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;">
+          <span style="font-size:0.82rem; font-weight:700; color:var(--text-muted); align-self:center;">Quick Templates:</span>
+          <button type="button" class="btn btn-sm btn-secondary" onclick="insertDirectiveTemplate('Mandatory Daily 30-min Foundational Numeracy Drill in morning assembly using abacus and dot-matrix arrays.')">
+            + 30-min Numeracy Drill
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" onclick="insertDirectiveTemplate('Initiate 40-day intensive afternoon remedial camp (45 min post-lunch) for students scoring below 40%.')">
+            + 40-Day Remedial Camp
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" onclick="insertDirectiveTemplate('Pair developing teachers with master teachers from Pethapur Model School for bi-weekly lesson co-planning.')">
+            + Peer Mentoring Pairs
+          </button>
+          <button type="button" class="btn btn-sm btn-secondary" onclick="insertDirectiveTemplate('Ensure 100% unlocked classroom utilization of Math-Science TLM kits during daily activity periods.')">
+            + TLM Kit Utilization
+          </button>
+        </div>
+
+        <!-- Directive Form -->
+        <form id="directiveForm" onsubmit="handleDirectiveSubmit(event)">
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="directiveScope">Target Scope:</label>
+              <select id="directiveScope" class="form-control" onchange="updateDirectiveTargetDropdown()">
+                <option value="Block-Wide">Entire Block (All 24 Schools)</option>
+                <option value="Cluster Focus">Specific CRC Cluster</option>
+                <option value="Specific School">Individual School</option>
+                <option value="Priority Cluster">Priority Support Schools Only</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;" id="directiveTargetContainer">
+              <label for="directiveTargetName">Target Recipient:</label>
+              <input type="text" id="directiveTargetName" class="form-control" value="All 24 Schools (Gandhinagar Block-02)" required>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="directiveCategory">Category:</label>
+              <select id="directiveCategory" class="form-control">
+                <option value="Foundational Literacy & Numeracy (FLN)">FLN Numeracy &amp; Reading</option>
+                <option value="Remedial Coaching Camp">Remedial Catch-Up Camp</option>
+                <option value="Pedagogical Strategy">Pedagogical Strategy &amp; TLM</option>
+                <option value="Teacher Peer Mentoring">Teacher Peer Mentoring</option>
+                <option value="Infrastructure & MDM Hygiene">MDM Hygiene &amp; Infrastructure</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="directiveDeadline">Target Compliance Deadline:</label>
+              <input type="date" id="directiveDeadline" class="form-control" value="2026-11-20" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="directiveTitle">Directive Title / Subject:</label>
+            <input type="text" id="directiveTitle" class="form-control" placeholder="e.g. Mandatory 30-min Daily Numeracy Drill using Abacus Kits" required>
+          </div>
+
+          <div class="form-group">
+            <label for="directiveText">Detailed Pedagogical Instructions &amp; Action Plan:</label>
+            <textarea id="directiveText" class="form-control" rows="3" placeholder="Specify instructions, target grade cohorts, required teaching aids, and weekly milestones..." required></textarea>
+          </div>
+
+          <div style="display:flex; justify-content:flex-end;">
+            <button type="submit" class="btn btn-primary">
+              <i class="fa-solid fa-paper-plane"></i> Issue &amp; Dispatch Directive
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Previously Issued Directives List -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3><i class="fa-solid fa-clock-rotate-left" style="color:var(--primary-navy);"></i> Active &amp; Historical Directives Log</h3>
+            <p>Track school compliance status and implementation milestones</p>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <select id="directiveStatusFilter" class="form-control" style="width:auto; padding:6px 12px; font-size:0.84rem;" onchange="renderDirectives()">
+              <option value="All">All Statuses</option>
+              <option value="Active">Active Directives</option>
+              <option value="In Progress">Under Implementation</option>
+              <option value="Complied">Complied / Resolved</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="directivesListContainer">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- TAB 5: Resource & TLM Allocation View -->
+    <!-- ===================================================================== -->
+    <section id="tabView-resources" class="brc-tab-content" style="display:none;">
+      
+      <div class="card" style="margin-bottom:24px;">
+        <div class="card-header">
+          <div>
+            <h3><i class="fa-solid fa-box-open" style="color:var(--teal-primary);"></i> Block Teaching-Learning Material (TLM) &amp; Kit Deployment</h3>
+            <p>Resource fulfillment tracking across 24 schools under Samagra Shiksha grants</p>
+          </div>
+          <span class="badge badge-green"><i class="fa-solid fa-check-circle"></i> 96.2% Overall Fulfillment</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:18px;">
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--primary-navy); font-size:0.95rem;">FLN Student Workbooks</strong>
+              <span class="badge badge-green">98.7%</span>
+            </div>
+            <div style="font-size:1.4rem; font-weight:800; color:#0f766e; margin:6px 0;">6,340 / 6,420</div>
+            <p style="font-size:0.78rem; color:var(--text-muted);">Books distributed to all primary students (Classes 1-5)</p>
+            <div class="resource-progress-bar">
+              <div class="resource-progress-fill" style="width: 98.7%;"></div>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--primary-navy); font-size:0.95rem;">Math-Science Lab Kits</strong>
+              <span class="badge badge-green">100%</span>
+            </div>
+            <div style="font-size:1.4rem; font-weight:800; color:#0f766e; margin:6px 0;">24 / 24 Schools</div>
+            <p style="font-size:0.78rem; color:var(--text-muted);">Standardized experiential apparatus delivered to all schools</p>
+            <div class="resource-progress-bar">
+              <div class="resource-progress-fill" style="width: 100%;"></div>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--primary-navy); font-size:0.95rem;">Reading Corners (Pustak Parab)</strong>
+              <span class="badge badge-yellow">91.6%</span>
+            </div>
+            <div style="font-size:1.4rem; font-weight:800; color:#d97706; margin:6px 0;">22 / 24 Schools</div>
+            <p style="font-size:0.78rem; color:var(--text-muted);">Classroom open library book packs active</p>
+            <div class="resource-progress-bar">
+              <div class="resource-progress-fill" style="width: 91.6%; background:linear-gradient(90deg, #F6B26B, #6AA84F);"></div>
+            </div>
+          </div>
+
+          <div style="background:#f8fafc; border:1px solid var(--border-color); border-radius:var(--radius-md); padding:18px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <strong style="color:var(--primary-navy); font-size:0.95rem;">Smart Digital Classboards</strong>
+              <span class="badge badge-blue">75.0%</span>
+            </div>
+            <div style="font-size:1.4rem; font-weight:800; color:#2563eb; margin:6px 0;">18 / 24 Schools</div>
+            <p style="font-size:0.78rem; color:var(--text-muted);">Interactive digital interactive panels deployed</p>
+            <div class="resource-progress-bar">
+              <div class="resource-progress-fill" style="width: 75%; background:linear-gradient(90deg, #38bdf8, #2563eb);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cluster Resource Breakdown Table -->
+      <div class="card">
+        <div class="card-header">
+          <div>
+            <h3><i class="fa-solid fa-table-list" style="color:var(--primary-navy);"></i> Cluster Resource Deployment Ledger</h3>
+            <p>Verification status across the 4 administrative clusters</p>
+          </div>
+        </div>
+
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>CRC Cluster</th>
+                <th>Covered Schools</th>
+                <th>FLN Workbooks</th>
+                <th>Math-Science Kits</th>
+                <th>Reading Corners</th>
+                <th>Smart Classboards</th>
+                <th>Kit Audit Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Kudasan Cluster (CRC-01)</strong></td>
+                <td>6 Schools</td>
+                <td><span class="badge badge-green">1,410 / 1,410</span></td>
+                <td><span class="badge badge-green">6 / 6 (100%)</span></td>
+                <td><span class="badge badge-green">6 / 6 Active</span></td>
+                <td><span class="badge badge-green">5 / 6 Deployed</span></td>
+                <td><span class="badge badge-green"><i class="fa-solid fa-check"></i> Verified</span></td>
+              </tr>
+              <tr>
+                <td><strong>Randheja Cluster (CRC-02)</strong></td>
+                <td>6 Schools</td>
+                <td><span class="badge badge-green">1,080 / 1,113</span></td>
+                <td><span class="badge badge-green">6 / 6 (100%)</span></td>
+                <td><span class="badge badge-yellow">5 / 6 Active</span></td>
+                <td><span class="badge badge-blue">4 / 6 Deployed</span></td>
+                <td><span class="badge badge-yellow"><i class="fa-solid fa-clock"></i> Inspection Due</span></td>
+              </tr>
+              <tr>
+                <td><strong>Pethapur Cluster (CRC-03)</strong></td>
+                <td>6 Schools</td>
+                <td><span class="badge badge-green">1,620 / 1,628</span></td>
+                <td><span class="badge badge-green">6 / 6 (100%)</span></td>
+                <td><span class="badge badge-green">6 / 6 Active</span></td>
+                <td><span class="badge badge-green">5 / 6 Deployed</span></td>
+                <td><span class="badge badge-green"><i class="fa-solid fa-check"></i> Verified</span></td>
+              </tr>
+              <tr>
+                <td><strong>Sargasan Cluster (CRC-04)</strong></td>
+                <td>6 Schools</td>
+                <td><span class="badge badge-green">2,230 / 2,269</span></td>
+                <td><span class="badge badge-green">6 / 6 (100%)</span></td>
+                <td><span class="badge badge-yellow">5 / 6 Active</span></td>
+                <td><span class="badge badge-blue">4 / 6 Deployed</span></td>
+                <td><span class="badge badge-green"><i class="fa-solid fa-check"></i> Verified</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- ======================================================================= -->
+  <!-- MODALS -->
+  <!-- ======================================================================= -->
+
+  <!-- Modal 1: School Profile & Academic Diagnostic -->
+  <div class="modal-overlay" id="modalSchoolDetails">
+    <div class="modal-dialog" style="max-width:760px;">
+      <div class="modal-header">
         <div>
-          <h3 style="font-size:1.25rem; font-weight:800; color:#0f766e; display:flex; align-items:center; gap:10px;">
-            <i class="fa-solid fa-clipboard-user"></i> Coordinator Practical Advice &amp; Teaching Interventions
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy);" id="modalSchoolName">School Name</h3>
+          <p style="font-size:0.8rem; color:var(--text-muted);" id="modalSchoolUdise">UDISE: 24060101101 &bull; Kudasan Cluster</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modalSchoolDetails')">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <!-- Quick Meta Grid -->
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap:12px; background:var(--surface-muted); padding:14px; border-radius:var(--radius-md); margin-bottom:18px;">
+          <div>
+            <span style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Principal / HM</span>
+            <div style="font-weight:700; color:var(--primary-navy); font-size:0.9rem;" id="modalSchoolPrincipal">-</div>
+          </div>
+          <div>
+            <span style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Contact Phone</span>
+            <div style="font-weight:700; color:var(--primary-navy); font-size:0.9rem;" id="modalSchoolPhone">-</div>
+          </div>
+          <div>
+            <span style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Staff / Students</span>
+            <div style="font-weight:700; color:var(--primary-navy); font-size:0.9rem;" id="modalSchoolRoster">-</div>
+          </div>
+          <div>
+            <span style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase; font-weight:700;">Academic Status</span>
+            <div id="modalSchoolStatusBadge">-</div>
+          </div>
+        </div>
+
+        <!-- Subject Scores Bars -->
+        <h4 style="font-size:0.95rem; font-weight:700; color:var(--primary-navy); margin-bottom:10px;">
+          <i class="fa-solid fa-chart-simple text-success"></i> Subject Mastery Breakdown
+        </h4>
+        <div id="modalSubjectScoresList" style="display:grid; gap:8px; margin-bottom:20px;">
+          <!-- Rendered by JS -->
+        </div>
+
+        <!-- Recent Inspection & Directives for this School -->
+        <div style="background:#fefce8; border:1px solid #fef08a; border-radius:var(--radius-md); padding:14px; margin-bottom:14px;">
+          <h4 style="font-size:0.9rem; font-weight:700; color:#854d0e; margin-bottom:4px;">
+            <i class="fa-solid fa-clipboard-check"></i> Latest Supervisory Audit Notes:
+          </h4>
+          <p style="font-size:0.84rem; color:#713f12; line-height:1.5;" id="modalSchoolAuditNotes">No notes logged yet.</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modalSchoolDetails')">Close</button>
+        <button type="button" class="btn btn-primary" id="btnModalInspectSchool">
+          <i class="fa-solid fa-clipboard-check"></i> Log Supervisory Visit
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Log Supervisory Inspection -->
+  <div class="modal-overlay" id="modalLogInspection">
+    <div class="modal-dialog" style="max-width:680px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy);">
+            <i class="fa-solid fa-clipboard-check" style="color:#0d9488;"></i> Log School Supervisory Visit
           </h3>
-          <p style="font-size:0.84rem; color:#0d9488; margin-top:2px;">
-            Direct actionable guidance issued to the class teacher and school leadership:
-          </p>
+          <p style="font-size:0.8rem; color:var(--text-muted);">Record on-site academic audit, classroom pedagogy, and MDM compliance</p>
         </div>
-        <span class="badge badge-blue">Official BRC Directive</span>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modalLogInspection')">&times;</button>
       </div>
 
-      <!-- Advice Quick Action Shortcuts -->
-      <div style="display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;">
-        <button type="button" class="btn btn-sm btn-secondary" onclick="insertAdviceTemplate('Conduct additional 15-min practice sessions for weak foundational numeracy topics.')">
-          + Additional Practice
-        </button>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="insertAdviceTemplate('Use visual learning aids (abacus beads, base-10 blocks) to explain difficult concepts.')">
-          + Visual Learning Aids
-        </button>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="insertAdviceTemplate('Arrange peer-assisted remedial classes for students scoring below 40%.')">
-          + Remedial Sessions
-        </button>
-        <button type="button" class="btn btn-sm btn-secondary" onclick="insertAdviceTemplate('Provide individual attention and reduce timed quiz anxiety for persistent gap cases.')">
-          + Individual Attention
-        </button>
-      </div>
+      <form id="logInspectionForm" onsubmit="handleInspectionSubmit(event)">
+        <div class="modal-body">
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspSchoolSelect">Select School:</label>
+              <select id="inspSchoolSelect" class="form-control" required>
+                <!-- Populated by JS -->
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspDate">Inspection Date:</label>
+              <input type="date" id="inspDate" class="form-control" required>
+            </div>
+          </div>
 
-      <!-- Advice Entry Form -->
-      <form id="coordinatorAdviceForm">
-        <div class="form-group">
-          <label for="coordinatorAdviceText" style="color:#0f766e;">Write Directive / Pedagogical Advice for <span id="adviceClassLabel">Class 4</span>:</label>
-          <textarea id="coordinatorAdviceText" class="form-control" rows="3" placeholder="Enter practical advice, teaching strategies, or remedial schedules for teachers..." required></textarea>
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspOfficer">Inspector Name &amp; Designation:</label>
+              <input type="text" id="inspOfficer" class="form-control" value="Shri R.K. Mehta (BRC Coordinator)" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspOverallRating">Overall Audit Score (1.0 - 5.0):</label>
+              <input type="number" id="inspOverallRating" class="form-control" min="1.0" max="5.0" step="0.1" value="4.0" required>
+            </div>
+          </div>
+
+          <!-- Dimension Ratings Grid -->
+          <div style="background:var(--surface-muted); padding:12px 14px; border-radius:var(--radius-md); margin-bottom:14px;">
+            <span style="font-size:0.82rem; font-weight:700; color:var(--primary-navy); display:block; margin-bottom:8px;">
+              Compliance Criteria Evaluation:
+            </span>
+            <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap:10px;">
+              <div>
+                <label style="font-size:0.76rem; color:var(--text-muted); margin-bottom:2px;">Pedagogy (1-5):</label>
+                <select id="inspPedagogyRating" class="form-control" style="padding:4px 8px; font-size:0.82rem;">
+                  <option value="5">5 - Excellent</option>
+                  <option value="4" selected>4 - Very Good</option>
+                  <option value="3">3 - Satisfactory</option>
+                  <option value="2">2 - Weak Gaps</option>
+                  <option value="1">1 - Critical</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.76rem; color:var(--text-muted); margin-bottom:2px;">Teacher Attend %:</label>
+                <input type="number" id="inspTeacherAttend" class="form-control" value="95" min="40" max="100" style="padding:4px 8px; font-size:0.82rem;">
+              </div>
+              <div>
+                <label style="font-size:0.76rem; color:var(--text-muted); margin-bottom:2px;">Student Attend %:</label>
+                <input type="number" id="inspStudentAttend" class="form-control" value="88" min="30" max="100" style="padding:4px 8px; font-size:0.82rem;">
+              </div>
+              <div>
+                <label style="font-size:0.76rem; color:var(--text-muted); margin-bottom:2px;">MDM Hygiene:</label>
+                <select id="inspMdmQuality" class="form-control" style="padding:4px 8px; font-size:0.82rem;">
+                  <option value="Excellent" selected>Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Satisfactory">Satisfactory</option>
+                  <option value="Needs Improvement">Needs Improvement</option>
+                </select>
+              </div>
+              <div>
+                <label style="font-size:0.76rem; color:var(--text-muted); margin-bottom:2px;">TLM Utilization:</label>
+                <select id="inspTlmUsage" class="form-control" style="padding:4px 8px; font-size:0.82rem;">
+                  <option value="Excellent" selected>Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Satisfactory">Satisfactory</option>
+                  <option value="Poor">Poor (Locked)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="inspFindings">Observations &amp; Pedagogical Deficiencies Noted:</label>
+            <textarea id="inspFindings" class="form-control" rows="2" placeholder="e.g. Grade 4 math tables deficit; TLM kits actively used in Class 3; reading fluency in Gujarati..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="inspDirective">Direct Action Directive Issued to Headmaster:</label>
+            <textarea id="inspDirective" class="form-control" rows="2" placeholder="e.g. Conduct daily 30-min abacus drills; submit weekly remedial records to BRC office..." required></textarea>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspFollowUp">Target Follow-Up Audit Date:</label>
+              <input type="date" id="inspFollowUp" class="form-control" value="2026-11-25">
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="inspStatus">Initial Status:</label>
+              <select id="inspStatus" class="form-control">
+                <option value="Under Implementation" selected>Under Implementation</option>
+                <option value="Action Pending">Action Pending</option>
+                <option value="Complied">Complied</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-        <div style="display:flex; justify-content:flex-end;">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalLogInspection')">Cancel</button>
           <button type="submit" class="btn btn-primary">
-            <i class="fa-solid fa-floppy-disk"></i> Save &amp; Issue Directive
+            <i class="fa-solid fa-floppy-disk"></i> Save Inspection Record
           </button>
         </div>
       </form>
-
-      <!-- Previously Saved Recommendations List -->
-      <hr style="margin:24px 0; border:0; border-top:1px solid #99f6e4;">
-
-      <h4 style="font-size:1rem; font-weight:700; color:#0f766e; margin-bottom:12px;">
-        <i class="fa-solid fa-clock-rotate-left"></i> Previously Saved Recommendations &amp; Directives Log:
-      </h4>
-
-      <div id="coordinatorAdviceHistoryList">
-        <!-- Dynamically rendered -->
-      </div>
     </div>
+  </div>
 
-  </main>
+  <!-- Modal 3: Schedule Teacher Training Workshop -->
+  <div class="modal-overlay" id="modalNewTraining">
+    <div class="modal-dialog" style="max-width:620px;">
+      <div class="modal-header">
+        <div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy);">
+            <i class="fa-solid fa-chalkboard-user" style="color:#2563eb;"></i> Schedule Teacher Training Workshop
+          </h3>
+          <p style="font-size:0.8rem; color:var(--text-muted);">Announce block capacity building session for teachers</p>
+        </div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeModal('modalNewTraining')">&times;</button>
+      </div>
+
+      <form id="newTrainingForm" onsubmit="handleTrainingSubmit(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="trainingTitle">Workshop Title:</label>
+            <input type="text" id="trainingTitle" class="form-control" placeholder="e.g. Foundational Numeracy & Activity Kits in Primary Classes" required>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingSubject">Subject / Domain:</label>
+              <input type="text" id="trainingSubject" class="form-control" placeholder="e.g. Mathematics & FLN" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingTarget">Target Cohort:</label>
+              <input type="text" id="trainingTarget" class="form-control" placeholder="e.g. Grade 1-5 Primary Teachers" required>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingTrainer">Resource Person / Trainer:</label>
+              <input type="text" id="trainingTrainer" class="form-control" placeholder="e.g. Prof. Jayesh Bhatt (GCERT)" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingVenue">Venue:</label>
+              <input type="text" id="trainingVenue" class="form-control" value="BRC Central Hall, Gandhinagar" required>
+            </div>
+          </div>
+
+          <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-bottom:14px;">
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingDates">Training Dates / Schedule:</label>
+              <input type="text" id="trainingDates" class="form-control" placeholder="e.g. 05-Nov-2026 to 07-Nov-2026" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label for="trainingEnrolled">Target Enrolled Teachers:</label>
+              <input type="number" id="trainingEnrolled" class="form-control" value="40" min="10" max="150" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="trainingModules">Key Curriculum Modules (Comma Separated):</label>
+            <input type="text" id="trainingModules" class="form-control" placeholder="e.g. CPA Math Approach, Abacus Drills, Formative Assessment, Peer Learning" value="Concrete-Pictorial-Abstract (CPA) Approach, Abacus Kit Drills, Remedial Worksheets">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modalNewTraining')">Cancel</button>
+          <button type="submit" class="btn btn-primary">
+            <i class="fa-solid fa-calendar-check"></i> Announce &amp; Schedule
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- Site Footer -->
   <footer class="site-footer">
     <div style="max-width:1320px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
       <div>
-        <strong>EduTrack</strong> &mdash; Block Resource Coordinator Portal
+        <strong>EduTrack</strong> &mdash; Block Resource Coordinator (BRC) Portal
       </div>
       <div>
-        BRC Cluster Oversight &bull; District Gandhinagar, Gujarat
+        Samagra Shiksha &bull; Gandhinagar Block-02 &bull; Gujarat Education Dept
       </div>
     </div>
   </footer>
@@ -281,103 +931,251 @@
   <script src="config.js"></script>
   <script src="script.js"></script>
   <script>
-    let chartCoordSubjects = null;
-    let chartCoordTrend = null;
+    // Global references for charts
+    let chartBlockSchools = null;
+    let chartBlockSubjects = null;
+    let activeTab = 'schools';
 
     document.addEventListener('DOMContentLoaded', () => {
-      const select = document.getElementById('coordinatorClassSelect');
-      select.addEventListener('change', (e) => {
-        updateCoordinatorView(e.target.value);
-      });
+      // Set default inspection date to today
+      const today = new Date().toISOString().split('T')[0];
+      const inspDateInput = document.getElementById('inspDate');
+      if (inspDateInput) inspDateInput.value = today;
 
-      // Advice form submission
-      document.getElementById('coordinatorAdviceForm').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const text = document.getElementById('coordinatorAdviceText').value.trim();
-        const cClass = select.value;
-        if (!text) return;
+      // Populate inspection school dropdown
+      populateSchoolSelectDropdown();
 
-        window.EduTrack.addCoordinatorAdvice(cClass, text);
-        document.getElementById('coordinatorAdviceText').value = '';
-        renderAdviceHistory(cClass);
-        showToast(`Directive successfully issued for ${cClass}!`, 'success');
-      });
-
-      updateCoordinatorView('Class 4');
+      // Render all views
+      renderAllBrcViews();
     });
 
-    function insertAdviceTemplate(text) {
-      const area = document.getElementById('coordinatorAdviceText');
-      area.value = (area.value ? area.value + " " : "") + text;
-      area.focus();
+    // Callback when remote data is synced
+    window.onBrcDataLoaded = function() {
+      populateSchoolSelectDropdown();
+      renderAllBrcViews();
+    };
+
+    function renderAllBrcViews() {
+      updateBrcMetrics();
+      renderSchoolsTable();
+      renderBlockCharts();
+      renderInspections();
+      renderTrainings();
+      renderDirectives();
     }
 
-    function updateCoordinatorView(className) {
-      document.getElementById('coordClassBreadcrumb').textContent = `Assigned Class: ${className}`;
-      document.getElementById('coordSubtitle').textContent = `Academic audit, foundational topic weaknesses, and cluster intervention logs for ${className}`;
-      document.getElementById('adviceClassLabel').textContent = className;
-
-      const students = window.EduTrack.getStudentsByClass(className);
-      let total = 0, helpCount = 0;
-
-      students.forEach(s => {
-        const scores = Object.values(s.subjects).map(sub => sub.marks);
-        const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
-        total += avg;
-        if (avg < window.EduTrack.thresholds.average) helpCount++;
+    // =========================================================================
+    // Tab Switching Logic
+    // =========================================================================
+    function switchBrcTab(tabName) {
+      activeTab = tabName;
+      document.querySelectorAll('.brc-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
+      });
+      document.querySelectorAll('.brc-tab-content').forEach(content => {
+        content.style.display = content.id === `tabView-${tabName}` ? 'block' : 'none';
       });
 
-      const classAvg = students.length > 0 ? Math.round(total / students.length) : 68;
-      const perf = window.EduTrack.classifyPerformance(classAvg);
-
-      document.getElementById('statCoordStudents').textContent = `${students.length} Students`;
-      document.getElementById('statCoordClassAvg').textContent = `${classAvg}%`;
-      document.getElementById('statCoordBadge').innerHTML = `<span class="badge ${perf.badgeClass}">${perf.category} Band</span>`;
-      document.getElementById('statCoordHelpCount').textContent = helpCount;
-
-      renderAdviceHistory(className);
-      renderCoordinatorCharts(className);
+      if (tabName === 'schools') {
+        setTimeout(renderBlockCharts, 50);
+      }
     }
 
-    function renderAdviceHistory(className) {
-      const container = document.getElementById('coordinatorAdviceHistoryList');
-      const allAdvice = window.EduTrack.advice;
-      const filtered = allAdvice.filter(a => a.class === className || !a.class);
+    // =========================================================================
+    // Core KPIs Calculation
+    // =========================================================================
+    function updateBrcMetrics() {
+      const schools = window.EduTrack.schools || [];
+      const inspections = window.EduTrack.inspections || [];
+      const trainings = window.EduTrack.trainings || [];
+      const directives = window.EduTrack.directives || [];
 
-      document.getElementById('statCoordAdviceCount').textContent = filtered.length;
+      // Schools count
+      document.getElementById('statTotalSchools').textContent = `${schools.length} Schools`;
+      document.getElementById('tabCountSchools').textContent = schools.length;
+
+      // Average score
+      const totalScore = schools.reduce((acc, s) => acc + (s.avgScore || 0), 0);
+      const avg = schools.length > 0 ? (totalScore / schools.length).toFixed(1) : '71.4';
+      document.getElementById('statBlockAvg').textContent = `${avg}%`;
+
+      // Priority schools
+      const priorityCount = schools.filter(s => s.status === 'Priority Support' || s.avgScore < 40).length;
+      document.getElementById('statPrioritySchools').textContent = `${priorityCount} Schools`;
+
+      // Inspections & trainings
+      document.getElementById('statInspectionsCount').textContent = `${inspections.length} Visited`;
+      document.getElementById('tabCountInspections').textContent = inspections.length;
+      document.getElementById('tabCountTrainings').textContent = trainings.length;
+      document.getElementById('tabCountDirectives').textContent = directives.length;
+    }
+
+    // =========================================================================
+    // Schools Table & Filtering
+    // =========================================================================
+    function filterSchools() {
+      renderSchoolsTable();
+      renderBlockCharts();
+    }
+
+    function filterPrioritySchoolsOnly() {
+      switchBrcTab('schools');
+      document.getElementById('statusSelectFilter').value = 'Priority Support';
+      filterSchools();
+    }
+
+    function resetSchoolFilters() {
+      document.getElementById('schoolSearchInput').value = '';
+      document.getElementById('clusterSelectFilter').value = 'All';
+      document.getElementById('statusSelectFilter').value = 'All';
+      filterSchools();
+    }
+
+    function renderSchoolsTable() {
+      const tbody = document.getElementById('schoolsTableBody');
+      const cluster = document.getElementById('clusterSelectFilter').value;
+      const status = document.getElementById('statusSelectFilter').value;
+      const search = document.getElementById('schoolSearchInput').value;
+
+      const filtered = window.EduTrack.getSchools(cluster, status, search);
 
       if (filtered.length === 0) {
-        container.innerHTML = `<p style="font-size:0.84rem; color:var(--text-muted);">No directives recorded yet for ${className}.</p>`;
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:30px; color:var(--text-muted);">No schools match the selected filters.</td></tr>`;
         return;
       }
 
-      container.innerHTML = filtered.map(a => `
-        <div class="saved-advice-item">
-          <div class="advice-meta">
-            <span><strong>Target: ${a.class || className}</strong> &bull; ${a.coordinatorName}</span>
-            <span class="badge badge-blue"><i class="fa-solid fa-calendar"></i> ${a.date}</span>
-          </div>
-          <p style="font-size:0.88rem; color:#1e293b; line-height:1.5;">${a.advice}</p>
-        </div>
-      `).join('');
+      tbody.innerHTML = filtered.map(s => {
+        let statusBadge = 'badge-yellow';
+        let statusText = 'Developing';
+        if (s.avgScore >= 75) {
+          statusBadge = 'badge-green';
+          statusText = 'Excellence';
+        } else if (s.avgScore < 40) {
+          statusBadge = 'badge-red';
+          statusText = 'Priority Support';
+        }
+
+        const ptr = Math.round(s.students / s.teachers);
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:700; color:var(--primary-navy); font-size:0.9rem;">${s.name}</div>
+              <div style="font-size:0.75rem; color:var(--text-light);"><i class="fa-solid fa-fingerprint"></i> UDISE: ${s.udise}</div>
+            </td>
+            <td><span class="badge badge-gray">${s.cluster}</span></td>
+            <td><span style="font-size:0.78rem; font-weight:600; color:#475569;">${s.category}</span></td>
+            <td>
+              <div style="font-weight:600; font-size:0.86rem; color:#1e293b;">${s.principal}</div>
+              <div style="font-size:0.74rem; color:var(--text-light);"><i class="fa-solid fa-phone"></i> ${s.phone}</div>
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.88rem;">${s.students} <span style="font-weight:400; color:var(--text-muted);">students</span></div>
+              <div style="font-size:0.75rem; color:var(--text-muted);">${s.teachers} teachers &bull; PTR 1:${ptr}</div>
+            </td>
+            <td>
+              <div style="font-size:1rem; font-weight:800; color:${s.avgScore >= 75 ? 'var(--perf-green)' : (s.avgScore < 40 ? 'var(--perf-red)' : 'var(--perf-yellow)')};">
+                ${s.avgScore}%
+              </div>
+              <span class="badge ${statusBadge}" style="font-size:0.7rem;">${statusText}</span>
+            </td>
+            <td>
+              <div style="font-weight:700; font-size:0.88rem; color:#0f766e;">${s.flnReadiness}%</div>
+              <div class="resource-progress-bar" style="width:70px; height:6px;">
+                <div class="resource-progress-fill" style="width:${s.flnReadiness}%;"></div>
+              </div>
+            </td>
+            <td>
+              <div style="font-size:0.82rem; font-weight:600;">${s.lastInspection}</div>
+              <div style="font-size:0.74rem; color:var(--text-muted);"><i class="fa-solid fa-star text-warning"></i> ${s.inspectionRating || 4.0}/5.0</div>
+            </td>
+            <td style="text-align:right;">
+              <div style="display:inline-flex; gap:6px;">
+                <button class="btn btn-sm btn-outline" style="padding:4px 8px;" title="View Diagnostic Card" onclick="openSchoolModal('${s.id}')">
+                  <i class="fa-solid fa-eye"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" style="padding:4px 8px;" title="Log Inspection" onclick="openLogInspectionForSchool('${s.id}')">
+                  <i class="fa-solid fa-clipboard-check"></i>
+                </button>
+                <button class="btn btn-sm btn-primary" style="padding:4px 8px;" title="Issue Directive" onclick="openIssueDirectiveForSchool('${s.id}')">
+                  <i class="fa-solid fa-bullhorn"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
-    function renderCoordinatorCharts(className) {
-      // 1. Subject Bar Chart
-      if (chartCoordSubjects) chartCoordSubjects.destroy();
-      const ctxSubj = document.getElementById('chartCoordSubjects').getContext('2d');
+    // =========================================================================
+    // Analytical Charts (Chart.js)
+    // =========================================================================
+    function renderBlockCharts() {
+      const cluster = document.getElementById('clusterSelectFilter') ? document.getElementById('clusterSelectFilter').value : 'All';
+      const status = document.getElementById('statusSelectFilter') ? document.getElementById('statusSelectFilter').value : 'All';
+      const search = document.getElementById('schoolSearchInput') ? document.getElementById('schoolSearchInput').value : '';
 
-      const subjects = ["Mathematics", "English", "Gujarati", "Hindi", "EVS"];
-      const scores = className === "Class 4" ? [62, 74, 66, 64, 82] : [72, 78, 75, 70, 84];
+      const schools = window.EduTrack.getSchools(cluster, status, search);
+      document.getElementById('chartClusterPill').textContent = cluster;
 
-      chartCoordSubjects = new Chart(ctxSubj, {
+      // 1. School Average Bar Chart
+      if (chartBlockSchools) chartBlockSchools.destroy();
+      const ctxSchools = document.getElementById('chartBlockSchools').getContext('2d');
+
+      const labels = schools.map(s => s.name.split(' (')[0].replace('Upper Primary', 'UP').replace('Primary', 'Pri.'));
+      const dataScores = schools.map(s => s.avgScore);
+      const bgColors = dataScores.map(score => score >= 75 ? '#6AA84F' : (score < 40 ? '#E06666' : '#F6B26B'));
+
+      chartBlockSchools = new Chart(ctxSchools, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'School Academic Avg %',
+            data: dataScores,
+            backgroundColor: bgColors,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false }
+          },
+          scales: {
+            y: { min: 20, max: 100, ticks: { callback: v => v + '%' } },
+            x: {
+              ticks: { maxRotation: 45, minRotation: 30, font: { size: 10 } }
+            }
+          }
+        }
+      });
+
+      // 2. Block Subject Competency Radar/Bar Chart
+      if (chartBlockSubjects) chartBlockSubjects.destroy();
+      const ctxSubjects = document.getElementById('chartBlockSubjects').getContext('2d');
+
+      const subjects = ["Mathematics", "Gujarati", "English", "Hindi", "EVS"];
+      const subjAverages = subjects.map(sub => {
+        let total = 0, count = 0;
+        schools.forEach(s => {
+          if (s.subjects && s.subjects[sub]) {
+            total += s.subjects[sub];
+            count++;
+          }
+        });
+        return count > 0 ? Math.round(total / count) : 70;
+      });
+
+      chartBlockSubjects = new Chart(ctxSubjects, {
         type: 'bar',
         data: {
           labels: subjects,
           datasets: [{
-            label: `${className} Subject Average %`,
-            data: scores,
-            backgroundColor: scores.map(s => s >= 75 ? '#6AA84F' : (s >= 40 ? '#F6B26B' : '#E06666')),
+            label: 'Block Subject Mastery %',
+            data: subjAverages,
+            backgroundColor: ['#0284c7', '#0d9488', '#8b5cf6', '#f59e0b', '#10b981'],
             borderRadius: 6
           }]
         },
@@ -386,40 +1184,439 @@
           maintainAspectRatio: false,
           plugins: { legend: { display: false } },
           scales: {
-            y: { min: 20, max: 100, ticks: { callback: v => v + '%' } },
-            x: { grid: { display: false } }
+            y: { min: 30, max: 100, ticks: { callback: v => v + '%' } }
           }
         }
       });
+    }
 
-      // 2. Trend Line Chart
-      if (chartCoordTrend) chartCoordTrend.destroy();
-      const ctxTrend = document.getElementById('chartCoordTrend').getContext('2d');
+    // =========================================================================
+    // Inspections Rendering & Submission
+    // =========================================================================
+    function renderInspections() {
+      const container = document.getElementById('inspectionsListContainer');
+      const clusterFilter = document.getElementById('inspectionClusterFilter') ? document.getElementById('inspectionClusterFilter').value : 'All';
+      let inspections = window.EduTrack.inspections || [];
 
-      chartCoordTrend = new Chart(ctxTrend, {
-        type: 'line',
-        data: {
-          labels: ["Baseline (Jul)", "Unit Test 1 (Aug)", "Unit Test 2 (Sep)", "Midterm (Oct)"],
-          datasets: [{
-            label: `${className} Class Average Progress`,
-            data: [58, 62, 64, 68],
-            borderColor: '#0284c7',
-            backgroundColor: 'rgba(2, 132, 199, 0.1)',
-            fill: true,
-            tension: 0.3,
-            borderWidth: 3,
-            pointRadius: 5,
-            pointBackgroundColor: '#0284c7'
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: {
-            y: { min: 40, max: 100, ticks: { callback: v => v + '%' } }
-          }
-        }
-      });
+      if (clusterFilter !== 'All') {
+        inspections = inspections.filter(i => i.cluster === clusterFilter);
+      }
+
+      document.getElementById('inspectionsCountLabel').textContent = inspections.length;
+
+      if (inspections.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center; padding:32px; color:var(--text-muted);">No inspections found for the selected cluster.</div>`;
+        return;
+      }
+
+      container.innerHTML = inspections.map(i => {
+        let statusBadge = 'badge-green';
+        if (i.status === 'Under Implementation') statusBadge = 'badge-yellow';
+        else if (i.status === 'Action Pending') statusBadge = 'badge-red';
+
+        return `
+          <div class="inspection-card">
+            <div class="inspection-header">
+              <div>
+                <strong style="font-size:1.05rem; color:var(--primary-navy);">${i.schoolName}</strong>
+                <span class="badge badge-gray" style="margin-left:8px;">${i.cluster}</span>
+                <span style="font-size:0.8rem; color:var(--text-muted); margin-left:10px;">
+                  <i class="fa-solid fa-calendar"></i> ${i.date} &bull; Inspector: <strong>${i.inspector}</strong>
+                </span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${statusBadge}">${i.status}</span>
+                <span style="font-size:0.9rem; font-weight:800; color:#0f766e; background:#f0fdfa; padding:4px 10px; border-radius:var(--radius-sm); border:1px solid #99f6e4;">
+                  Score: ${i.overallRating} / 5.0
+                </span>
+              </div>
+            </div>
+
+            <div class="inspection-audit-grid">
+              <div class="audit-item">
+                <span>Pedagogy / FLN</span>
+                <strong>${i.pedagogyRating}/5 &bull; Level ${i.pedagogyRating >= 4 ? 'A' : (i.pedagogyRating >= 3 ? 'B' : 'C')}</strong>
+              </div>
+              <div class="audit-item">
+                <span>Teacher Attend</span>
+                <strong>${i.teacherAttendance}% Present</strong>
+              </div>
+              <div class="audit-item">
+                <span>Student Attend</span>
+                <strong>${i.studentAttendance}% Present</strong>
+              </div>
+              <div class="audit-item">
+                <span>MDM Hygiene</span>
+                <strong>${i.mdmQuality}</strong>
+              </div>
+              <div class="audit-item">
+                <span>TLM Kit Usage</span>
+                <strong>${i.tlmUsage}</strong>
+              </div>
+            </div>
+
+            <div class="findings-box">
+              <strong><i class="fa-solid fa-magnifying-glass"></i> Key Findings / Gaps Noted:</strong>
+              <p style="margin-top:2px;">${i.findings}</p>
+            </div>
+
+            <div class="directive-box">
+              <strong><i class="fa-solid fa-bullhorn"></i> Action Directive Issued to Headmaster:</strong>
+              <p style="margin-top:2px;">${i.directive}</p>
+              <div style="margin-top:6px; font-size:0.75rem; color:#a16207; display:flex; justify-content:space-between;">
+                <span>Follow-up Scheduled: <strong>${i.followUpDate || '15-Nov-2026'}</strong></span>
+                ${i.status !== 'Complied' ? `
+                  <button type="button" class="btn btn-sm btn-secondary" style="padding:2px 8px; font-size:0.75rem;" onclick="markInspectionComplied('${i.id}')">
+                    <i class="fa-solid fa-check"></i> Mark Complied
+                  </button>
+                ` : '<span class="text-success"><i class="fa-solid fa-circle-check"></i> Directive Fully Implemented</span>'}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function markInspectionComplied(id) {
+      const insp = window.EduTrack.inspections.find(i => i.id === id);
+      if (insp) {
+        insp.status = 'Complied';
+        window.EduTrack.save(STORAGE_KEYS.INSPECTIONS, window.EduTrack.inspections);
+        renderInspections();
+        showToast(`Inspection directive for ${insp.schoolName} marked as Complied!`, 'success');
+      }
+    }
+
+    function handleInspectionSubmit(e) {
+      e.preventDefault();
+      const schoolId = document.getElementById('inspSchoolSelect').value;
+      const school = window.EduTrack.getSchoolById(schoolId);
+      if (!school) return;
+
+      const newInsp = {
+        id: "INSP-" + Date.now().toString().slice(-4),
+        schoolId: school.id,
+        schoolName: school.name,
+        cluster: school.cluster,
+        date: document.getElementById('inspDate').value,
+        inspector: document.getElementById('inspOfficer').value,
+        overallRating: parseFloat(document.getElementById('inspOverallRating').value) || 4.0,
+        pedagogyRating: parseInt(document.getElementById('inspPedagogyRating').value) || 4,
+        teacherAttendance: parseInt(document.getElementById('inspTeacherAttend').value) || 95,
+        studentAttendance: parseInt(document.getElementById('inspStudentAttend').value) || 88,
+        mdmQuality: document.getElementById('inspMdmQuality').value,
+        tlmUsage: document.getElementById('inspTlmUsage').value,
+        findings: document.getElementById('inspFindings').value,
+        directive: document.getElementById('inspDirective').value,
+        followUpDate: document.getElementById('inspFollowUp').value,
+        status: document.getElementById('inspStatus').value
+      };
+
+      window.EduTrack.addInspection(newInsp);
+      closeModal('modalLogInspection');
+      renderAllBrcViews();
+      showToast(`Supervisory visit logged successfully for ${school.name}!`, 'success');
+    }
+
+    // =========================================================================
+    // Teacher Training Workshops
+    // =========================================================================
+    function renderTrainings() {
+      const container = document.getElementById('trainingsGridContainer');
+      const trainings = window.EduTrack.trainings || [];
+
+      if (trainings.length === 0) {
+        container.innerHTML = `<div class="card" style="grid-column:1/-1; text-align:center; padding:32px;">No workshops currently scheduled.</div>`;
+        return;
+      }
+
+      container.innerHTML = trainings.map(t => {
+        let statusBadge = 'badge-green';
+        if (t.status === 'In Progress') statusBadge = 'badge-blue';
+        else if (t.status === 'Scheduled') statusBadge = 'badge-yellow';
+
+        const modulesList = (t.modules || []).map(m => `<li><i class="fa-solid fa-circle-check"></i> ${m}</li>`).join('');
+
+        return `
+          <div class="training-card">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px; gap:8px;">
+                <span class="badge badge-gray"><i class="fa-solid fa-book"></i> ${t.subject}</span>
+                <span class="badge ${statusBadge}">${t.status}</span>
+              </div>
+              <h4 style="font-size:1.05rem; font-weight:800; color:var(--primary-navy); margin-bottom:6px; line-height:1.35;">
+                ${t.title}
+              </h4>
+              <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:10px;">
+                <i class="fa-solid fa-users"></i> ${t.targetAudience}
+              </p>
+
+              <div style="background:var(--surface-muted); padding:10px 14px; border-radius:var(--radius-sm); font-size:0.82rem; color:#334155; margin-bottom:12px;">
+                <div><i class="fa-solid fa-calendar"></i> <strong>Schedule:</strong> ${t.dates} (${t.duration || '3 Days'})</div>
+                <div style="margin-top:3px;"><i class="fa-solid fa-location-dot"></i> <strong>Venue:</strong> ${t.venue}</div>
+                <div style="margin-top:3px;"><i class="fa-solid fa-user-tie"></i> <strong>Trainer:</strong> ${t.trainer}</div>
+              </div>
+
+              <div style="margin-bottom:12px;">
+                <span style="font-size:0.75rem; text-transform:uppercase; font-weight:700; color:var(--text-muted);">Key Training Curriculum:</span>
+                <ul class="training-modules-list">
+                  ${modulesList}
+                </ul>
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex; justify-content:space-between; font-size:0.8rem; font-weight:700; color:var(--text-main); margin-bottom:4px;">
+                <span>Enrolled Teachers: ${t.enrolledTeachers}</span>
+                <span>Attendance: ${t.attendanceRate || 0}%</span>
+              </div>
+              <div class="resource-progress-bar">
+                <div class="resource-progress-fill" style="width: ${t.attendanceRate || (t.status === 'Completed' ? 100 : 50)}%;"></div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function handleTrainingSubmit(e) {
+      e.preventDefault();
+      const modulesStr = document.getElementById('trainingModules').value;
+      const modulesArr = modulesStr.split(',').map(m => m.trim()).filter(Boolean);
+
+      const newTrg = {
+        id: "TRG-" + Date.now().toString().slice(-4),
+        title: document.getElementById('trainingTitle').value,
+        subject: document.getElementById('trainingSubject').value,
+        targetAudience: document.getElementById('trainingTarget').value,
+        trainer: document.getElementById('trainingTrainer').value,
+        venue: document.getElementById('trainingVenue').value,
+        dates: document.getElementById('trainingDates').value,
+        enrolledTeachers: parseInt(document.getElementById('trainingEnrolled').value) || 30,
+        completedTeachers: 0,
+        attendanceRate: 0,
+        status: "Scheduled",
+        modules: modulesArr
+      };
+
+      window.EduTrack.addTraining(newTrg);
+      closeModal('modalNewTraining');
+      renderTrainings();
+      updateBrcMetrics();
+      showToast(`Training workshop "${newTrg.title}" scheduled successfully!`, 'success');
+    }
+
+    // =========================================================================
+    // Directives & Advisories
+    // =========================================================================
+    function insertDirectiveTemplate(text) {
+      const area = document.getElementById('directiveText');
+      area.value = (area.value ? area.value + "\n" : "") + text;
+      area.focus();
+    }
+
+    function updateDirectiveTargetDropdown() {
+      const scope = document.getElementById('directiveScope').value;
+      const input = document.getElementById('directiveTargetName');
+      if (scope === 'Block-Wide') input.value = "All 24 Schools (Gandhinagar Block-02)";
+      else if (scope === 'Cluster Focus') input.value = "Kudasan Cluster (6 Schools)";
+      else if (scope === 'Priority Cluster') input.value = "4 Priority Schools (Valad, Khoraj, Dholakuva, Madhavgadh)";
+      else input.value = "Kudasan Primary School";
+    }
+
+    function renderDirectives() {
+      const container = document.getElementById('directivesListContainer');
+      const filter = document.getElementById('directiveStatusFilter') ? document.getElementById('directiveStatusFilter').value : 'All';
+      let directives = window.EduTrack.directives || [];
+
+      if (filter !== 'All') {
+        directives = directives.filter(d => d.status === filter);
+      }
+
+      if (directives.length === 0) {
+        container.innerHTML = `<p style="padding:24px; text-align:center; color:var(--text-muted);">No directives match this filter.</p>`;
+        return;
+      }
+
+      container.innerHTML = directives.map(d => {
+        let badgeClass = 'badge-green';
+        if (d.status === 'In Progress') badgeClass = 'badge-yellow';
+        else if (d.status === 'Active') badgeClass = 'badge-blue';
+
+        let priBadge = 'badge-blue';
+        if (d.priority === 'Critical') priBadge = 'badge-red';
+        else if (d.priority === 'High') priBadge = 'badge-yellow';
+
+        return `
+          <div class="directive-item-card">
+            <div class="directive-item-header">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="badge ${priBadge}"><i class="fa-solid fa-flag"></i> ${d.priority || 'High'}</span>
+                <span class="badge badge-gray"><i class="fa-solid fa-bullseye"></i> ${d.targetScope}: ${d.targetName}</span>
+                <span class="badge badge-blue">${d.category}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${badgeClass}">${d.status}</span>
+                <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-calendar"></i> Issued: ${d.issuedDate}</span>
+              </div>
+            </div>
+
+            <h4 style="font-size:1rem; font-weight:800; color:var(--primary-navy); margin-bottom:6px;">
+              ${d.title}
+            </h4>
+            <p style="font-size:0.86rem; color:#334155; line-height:1.5; margin-bottom:10px;">
+              ${d.directive}
+            </p>
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:8px;">
+              <span>Issued By: <strong>${d.issuedBy || 'Shri R.K. Mehta (BRC)'}</strong> &bull; Deadline: <strong>${d.deadline}</strong></span>
+              ${d.status !== 'Complied' ? `
+                <button type="button" class="btn btn-sm btn-secondary" onclick="markDirectiveComplied('${d.id}')">
+                  <i class="fa-solid fa-check"></i> Mark Complied
+                </button>
+              ` : '<span class="text-success"><i class="fa-solid fa-circle-check"></i> Resolved</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function markDirectiveComplied(id) {
+      window.EduTrack.updateDirectiveStatus(id, 'Complied');
+      renderDirectives();
+      showToast(`Directive marked as Complied!`, 'success');
+    }
+
+    function handleDirectiveSubmit(e) {
+      e.preventDefault();
+      const newDir = {
+        id: "DIR-" + Date.now().toString().slice(-4),
+        targetScope: document.getElementById('directiveScope').value,
+        targetName: document.getElementById('directiveTargetName').value,
+        category: document.getElementById('directiveCategory').value,
+        title: document.getElementById('directiveTitle').value,
+        directive: document.getElementById('directiveText').value,
+        issuedBy: "Shri R.K. Mehta (BRC Coordinator)",
+        issuedDate: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+        deadline: document.getElementById('directiveDeadline').value,
+        priority: "High",
+        status: "Active"
+      };
+
+      window.EduTrack.addDirective(newDir);
+      document.getElementById('directiveForm').reset();
+      updateDirectiveTargetDropdown();
+      renderDirectives();
+      updateBrcMetrics();
+      showToast(`Directive issued successfully to ${newDir.targetName}!`, 'success');
+    }
+
+    // =========================================================================
+    // School Details Diagnostic Modal
+    // =========================================================================
+    function openSchoolModal(schoolId) {
+      const s = window.EduTrack.getSchoolById(schoolId);
+      if (!s) return;
+
+      document.getElementById('modalSchoolName').textContent = s.name;
+      document.getElementById('modalSchoolUdise').textContent = `UDISE+: ${s.udise} • ${s.cluster} • ${s.category}`;
+      document.getElementById('modalSchoolPrincipal').textContent = s.principal;
+      document.getElementById('modalSchoolPhone').textContent = s.phone;
+      document.getElementById('modalSchoolRoster').textContent = `${s.teachers} Staff • ${s.students} Enrolled (PTR 1:${Math.round(s.students / s.teachers)})`;
+
+      let badgeClass = 'badge-yellow';
+      if (s.avgScore >= 75) badgeClass = 'badge-green';
+      else if (s.avgScore < 40) badgeClass = 'badge-red';
+
+      document.getElementById('modalSchoolStatusBadge').innerHTML = `
+        <span class="badge ${badgeClass}">${s.status} (${s.avgScore}%)</span>
+      `;
+
+      // Render subjects
+      const subjList = document.getElementById('modalSubjectScoresList');
+      const subjects = s.subjects || { "Mathematics": 70, "Gujarati": 75, "English": 70, "Hindi": 72, "EVS": 78 };
+
+      subjList.innerHTML = Object.entries(subjects).map(([name, score]) => {
+        let color = '#F6B26B';
+        if (score >= 75) color = '#6AA84F';
+        else if (score < 40) color = '#E06666';
+
+        return `
+          <div>
+            <div style="display:flex; justify-content:space-between; font-size:0.82rem; font-weight:600; margin-bottom:2px;">
+              <span>${name}</span>
+              <span style="font-weight:800; color:${color};">${score}%</span>
+            </div>
+            <div class="resource-progress-bar" style="height:6px;">
+              <div class="resource-progress-fill" style="width:${score}%; background:${color};"></div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Find latest inspection
+      const insp = (window.EduTrack.inspections || []).find(i => i.schoolId === s.id);
+      if (insp) {
+        document.getElementById('modalSchoolAuditNotes').innerHTML = `
+          <strong>Date:</strong> ${insp.date} (Rating: ${insp.overallRating}/5.0)<br>
+          <strong>Findings:</strong> ${insp.findings}<br>
+          <strong>Action Directive:</strong> ${insp.directive}
+        `;
+      } else {
+        document.getElementById('modalSchoolAuditNotes').textContent = `Last Routine Audit on ${s.lastInspection} (Rating: ${s.inspectionRating}/5.0). Compliance satisfactory.`;
+      }
+
+      document.getElementById('btnModalInspectSchool').onclick = () => {
+        closeModal('modalSchoolDetails');
+        openLogInspectionForSchool(s.id);
+      };
+
+      openModal('modalSchoolDetails');
+    }
+
+    function openLogInspectionForSchool(schoolId) {
+      document.getElementById('inspSchoolSelect').value = schoolId;
+      openModal('modalLogInspection');
+    }
+
+    function openIssueDirectiveForSchool(schoolId) {
+      const s = window.EduTrack.getSchoolById(schoolId);
+      switchBrcTab('directives');
+      document.getElementById('directiveScope').value = 'Specific School';
+      document.getElementById('directiveTargetName').value = s ? s.name : 'Target School';
+      document.getElementById('directiveTitle').focus();
+    }
+
+    function populateSchoolSelectDropdown() {
+      const select = document.getElementById('inspSchoolSelect');
+      if (!select) return;
+      const schools = window.EduTrack.schools || [];
+      select.innerHTML = schools.map(s => `
+        <option value="${s.id}">${s.name} (${s.cluster})</option>
+      `).join('');
+    }
+
+    function openLogInspectionModal() {
+      openModal('modalLogInspection');
+    }
+
+    function openNewTrainingModal() {
+      openModal('modalNewTraining');
+    }
+
+    function openIssueDirectiveModal() {
+      switchBrcTab('directives');
+      document.getElementById('directiveTitle').focus();
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.classList.remove('active');
     }
   </script>
 

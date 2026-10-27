@@ -1,0 +1,86 @@
+[
+  {
+    "id": "TRG-201",
+    "title": "FLN Foundational Numeracy & Activity-Based Math (Grade 1-5)",
+    "subject": "Mathematics & FLN (NIPUN Bharat)",
+    "targetAudience": "All Primary Teachers (Grades 1-5 across 24 Schools)",
+    "clusterScope": "All Clusters (Block-Wide)",
+    "enrolledTeachers": 72,
+    "completedTeachers": 68,
+    "attendanceRate": 94,
+    "venue": "BRC Central Training Hall, Sector 17, Gandhinagar",
+    "dates": "10-Oct-2026 to 13-Oct-2026",
+    "duration": "4 Days (24 Hours)",
+    "trainer": "Prof. Jayesh Bhatt (State Resource Group, GCERT)",
+    "status": "Completed",
+    "modules": [
+      "Concrete-Pictorial-Abstract (CPA) Approach in Numeracy",
+      "Using Abacus Beads & Dot Matrix for Tables 6-9",
+      "Mental Math Strategies & Remedial Worksheets",
+      "Continuous Formative Assessment Tracking"
+    ]
+  },
+  {
+    "id": "TRG-202",
+    "title": "Experiential STEM Pedagogy & Science Lab Kit Hands-On Practical",
+    "subject": "Science & Environmental Studies (EVS)",
+    "targetAudience": "Upper Primary Teachers (Grades 6-8)",
+    "clusterScope": "All Clusters",
+    "enrolledTeachers": 48,
+    "completedTeachers": 45,
+    "attendanceRate": 93,
+    "venue": "Pethapur Model School & DIET Laboratory",
+    "dates": "24-Oct-2026 to 26-Oct-2026",
+    "duration": "3 Days (18 Hours)",
+    "trainer": "Dr. M.P. Vaghela (Senior Science Educator, DIET)",
+    "status": "In Progress",
+    "modules": [
+      "Low-cost DIY Science Experiment Kits",
+      "Demonstrating Plant Biology & Photosynthesis in Class",
+      "Simple Electrical Circuits & Magnetic Induction",
+      "Integrating Environmental Field Studies with Class Curricula"
+    ]
+  },
+  {
+    "id": "TRG-203",
+    "title": "Remedial Reading Strategies (Vachan Abhiyan) in Gujarati & Hindi",
+    "subject": "Language, Phonics & Reading Fluency",
+    "targetAudience": "Language Teachers of Priority & Developing Schools",
+    "clusterScope": "Randheja & Pethapur Clusters (Target Focus)",
+    "enrolledTeachers": 36,
+    "completedTeachers": 0,
+    "attendanceRate": 0,
+    "venue": "BRC Seminar Room, Gandhinagar",
+    "dates": "05-Nov-2026 to 07-Nov-2026",
+    "duration": "3 Days (18 Hours)",
+    "trainer": "Smt. Rekhaben Pandya (Language Pedagogy Expert)",
+    "status": "Scheduled",
+    "modules": [
+      "Barakhadi Rhyme Phonics & Sandpaper Letter Tracing",
+      "Overcoming Hrasva vs Deergha Matra Confusion (િ vs ી)",
+      "Leveled Storybooks & Guided Paired Reading",
+      "Daily 15-Minute Reading Corners (Pustak Parab)"
+    ]
+  },
+  {
+    "id": "TRG-204",
+    "title": "NEP 2020 Holistic Progress Card (HPC) & Competency-Based Assessment",
+    "subject": "Continuous & Comprehensive Evaluation (CCE)",
+    "targetAudience": "Headmasters & Evaluation In-charges from all 24 Schools",
+    "clusterScope": "All Clusters (Block-Wide)",
+    "enrolledTeachers": 24,
+    "completedTeachers": 0,
+    "attendanceRate": 0,
+    "venue": "District Education Office Conference Hall",
+    "dates": "18-Nov-2026 to 19-Nov-2026",
+    "duration": "2 Days (12 Hours)",
+    "trainer": "Shri R.K. Mehta (BRC Coordinator) & GCERT Evaluator",
+    "status": "Scheduled",
+    "modules": [
+      "Understanding 360-Degree Multidimensional Progress Cards",
+      "Self & Peer Assessment Rubrics for Primary Students",
+      "Digital Mark Recording & EduTrack System Data Integration",
+      "Parent-Teacher Collaborative Progress Conferences"
+    ]
+  }
+]

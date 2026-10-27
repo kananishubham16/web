@@ -17,7 +17,11 @@ const STORAGE_KEYS = {
   ADVICE: 'edutrack_coordinator_advice_v1',
   DOUBTS: 'edutrack_parent_doubts_v1',
   THRESHOLDS: 'edutrack_thresholds_v1',
-  LANG: 'edutrack_lang'
+  LANG: 'edutrack_lang',
+  BLOCK_SCHOOLS: 'edutrack_block_schools_v1',
+  INSPECTIONS: 'edutrack_inspections_v1',
+  TRAININGS: 'edutrack_trainings_v1',
+  DIRECTIVES: 'edutrack_directives_v1'
 };
 
 // ==========================================================================
@@ -77,11 +81,11 @@ const I18N_DICTIONARY = {
     rolePrincipalFeat2: "Drill-down by Class 1 to 8",
     rolePrincipalFeat3: "FLN & Excellence distributions",
     
-    roleCoordTitle: "Block Coordinators",
-    roleCoordDesc: "Cluster review for assigned classrooms, identifying recurring learning gaps, and issuing saved pedagogical advice.",
-    roleCoordFeat1: "Secure access to assigned classes only",
-    roleCoordFeat2: "Learning gap clustering analysis",
-    roleCoordFeat3: "Editable advice & intervention log",
+    roleCoordTitle: "Block Resource Coordinators (BRC)",
+    roleCoordDesc: "Block-wide multi-school supervision, academic audit monitoring, teacher training workshops, and pedagogical support across all schools.",
+    roleCoordFeat1: "Block-wide multi-school supervision & cluster oversight",
+    roleCoordFeat2: "Academic inspections, MDM & FLN audit tracking",
+    roleCoordFeat3: "Teacher training workshops & pedagogical directives",
     
     roleParentTitle: "Parents",
     roleParentDesc: "Welcoming progress cards for your child, data-backed home practice recommendations, and direct teacher queries.",
@@ -303,11 +307,11 @@ const I18N_DICTIONARY = {
     rolePrincipalFeat2: "ધોરણ ૧ થી ૮ સુધીનું વિશ્લેષણ",
     rolePrincipalFeat3: "FLN અને ગુણવત્તા વિતરણ",
     
-    roleCoordTitle: "બ્લોક સંયોજક (Coordinators)",
-    roleCoordDesc: "સોંપાયેલા વર્ગોની ક્લસ્ટર સમીક્ષા, સતત અધ્યયન ખામીઓની ઓળખ અને વ્યવહારુ શિક્ષણ સલાહ.",
-    roleCoordFeat1: "માત્ર સોંપાયેલા વર્ગોનું અધિકૃત એક્સેસ",
-    roleCoordFeat2: "અધ્યયન ખામી ક્લસ્ટરિંગ વિશ્લેષણ",
-    roleCoordFeat3: "સંપાદનક્ષમ સલાહ અને નિર્દેશ લોગ",
+    roleCoordTitle: "બ્લોક રિસોર્સ કોઓર્ડિનેટર (BRC)",
+    roleCoordDesc: "સમગ્ર બ્લોકની શાળાઓનું સુપરવિઝન, મોનિટરિંગ, એકેડેમિક ઓડિટ અને શિક્ષકોને પ્રશિક્ષણ તથા માર્ગદર્શન પૂરું પાડવું.",
+    roleCoordFeat1: "સમગ્ર બ્લોકની શાળાઓ અને ક્લસ્ટરનું નિરીક્ષણ",
+    roleCoordFeat2: "શૈક્ષણિક તપાસણી, MDM અને FLN ઓડિટ ટ્રેકિંગ",
+    roleCoordFeat3: "શિક્ષક તાલીમ કાર્યશાળાઓ અને શિક્ષણ નિર્દેશો",
     
     roleParentTitle: "વાલીઓ (Parents)",
     roleParentDesc: "બાળકનું પ્રોત્સાહક પ્રગતિ પત્રક, ડેટા આધારિત ઘરેલુ પ્રવૃત્તિઓ અને શિક્ષક સાથે સીધો પ્રશ્નોત્તરી સંવાદ.",
@@ -529,11 +533,11 @@ const I18N_DICTIONARY = {
     rolePrincipalFeat2: "कक्षा 1 से 8 तक विस्तृत विश्लेषण",
     rolePrincipalFeat3: "FLN और उत्कृष्टता वितरण",
     
-    roleCoordTitle: "ब्लॉक समन्वयक (Coordinators)",
-    roleCoordDesc: "आवंटित कक्षाओं की क्लस्टर समीक्षा, सामान्य शिक्षण अंतरालों की पहचान और व्यावहारिक शैक्षणिक सलाह।",
-    roleCoordFeat1: "केवल आवंटित कक्षाओं के लिए सुरक्षित पहुंच",
-    roleCoordFeat2: "अध्ययन अंतराल क्लस्टरिंग विश्लेषण",
-    roleCoordFeat3: "संपादन योग्य सलाह एवं निर्देश लॉग",
+    roleCoordTitle: "ब्लॉक रिसोर्स कोऑर्डिनेटर (BRC)",
+    roleCoordDesc: "संपूर्ण ब्लॉक के विद्यालयों का पर्यवेक्षण, निगरानी, शैक्षणिक ऑडिट एवं सभी विद्यालयों को अकादमिक सहयोग व शिक्षक प्रशिक्षण प्रदान करना।",
+    roleCoordFeat1: "पूरे ब्लॉक के विद्यालयों एवं क्लस्टरों का पर्यवेक्षण",
+    roleCoordFeat2: "विद्यालय निरीक्षण, MDM एवं FLN ऑडिट ट्रैकिंग",
+    roleCoordFeat3: "शिक्षक प्रशिक्षण कार्यशालाएं एवं शैक्षणिक निर्देश",
     
     roleParentTitle: "अभिभावक (Parents)",
     roleParentDesc: "अपने बच्चे का उत्साहवर्धक प्रगति पत्रक, डेटा-आधारित घरेलू अभ्यास सुझाव और शिक्षक से सीधा संवाद।",
@@ -1338,6 +1342,58 @@ const INITIAL_PARENT_DOUBTS = [
   }
 ];
 
+// Initial Block Resource Coordinator Data (Gandhinagar Block-02)
+const INITIAL_BLOCK_SCHOOLS = [
+  { id: "SCH-01", name: "Kudasan Primary School (કૂડાસણ પ્રાથમિક શાળા)", udise: "24060101101", cluster: "Kudasan Cluster", category: "Primary (1-5)", principal: "Smt. Bhavna Patel", phone: "+91 98251 40101", teachers: 7, students: 210, avgScore: 78.4, flnReadiness: 82, status: "Excellent", lastInspection: "18-Oct-2026", inspectionRating: 4.5, mdmRating: "Excellent", tlmUtilization: 90, subjects: { "Mathematics": 74, "Gujarati": 82, "English": 76, "Hindi": 78, "EVS": 82 } },
+  { id: "SCH-02", name: "Kudasan Kanya Shala (Girls Upper Primary)", udise: "24060101102", cluster: "Kudasan Cluster", category: "Upper Primary (1-8)", principal: "Shri Dipakkumar Dave", phone: "+91 98251 40102", teachers: 11, students: 340, avgScore: 81.2, flnReadiness: 85, status: "Excellent", lastInspection: "12-Oct-2026", inspectionRating: 4.8, mdmRating: "Excellent", tlmUtilization: 95, subjects: { "Mathematics": 79, "Gujarati": 85, "English": 80, "Hindi": 81, "EVS": 81 } },
+  { id: "SCH-03", name: "Por Primary School", udise: "24060101103", cluster: "Kudasan Cluster", category: "Primary (1-5)", principal: "Shri Arvind Prajapati", phone: "+91 98251 40103", teachers: 5, students: 145, avgScore: 64.0, flnReadiness: 68, status: "Average", lastInspection: "05-Oct-2026", inspectionRating: 3.8, mdmRating: "Satisfactory", tlmUtilization: 75, subjects: { "Mathematics": 60, "Gujarati": 66, "English": 62, "Hindi": 64, "EVS": 68 } },
+  { id: "SCH-04", name: "Bhat Primary School", udise: "24060101104", cluster: "Kudasan Cluster", category: "Primary (1-5)", principal: "Smt. Meena Varma", phone: "+91 98251 40104", teachers: 6, students: 160, avgScore: 69.5, flnReadiness: 72, status: "Average", lastInspection: "28-Sep-2026", inspectionRating: 4.0, mdmRating: "Good", tlmUtilization: 80, subjects: { "Mathematics": 66, "Gujarati": 72, "English": 68, "Hindi": 70, "EVS": 71.5 } },
+  { id: "SCH-05", name: "Koba Upper Primary School", udise: "24060101105", cluster: "Kudasan Cluster", category: "Upper Primary (1-8)", principal: "Shri Rajesh Chauhan", phone: "+91 98251 40105", teachers: 12, students: 380, avgScore: 74.0, flnReadiness: 76, status: "Average", lastInspection: "15-Oct-2026", inspectionRating: 4.1, mdmRating: "Good", tlmUtilization: 85, subjects: { "Mathematics": 71, "Gujarati": 76, "English": 73, "Hindi": 74, "EVS": 76 } },
+  { id: "SCH-06", name: "Randesan Primary School", udise: "24060101106", cluster: "Kudasan Cluster", category: "Primary (1-5)", principal: "Smt. Geetaben Rawal", phone: "+91 98251 40106", teachers: 6, students: 175, avgScore: 66.8, flnReadiness: 70, status: "Average", lastInspection: "22-Sep-2026", inspectionRating: 3.7, mdmRating: "Satisfactory", tlmUtilization: 70, subjects: { "Mathematics": 62, "Gujarati": 70, "English": 64, "Hindi": 68, "EVS": 69 } },
+  { id: "SCH-07", name: "Randheja Central Primary School", udise: "24060102101", cluster: "Randheja Cluster", category: "Primary (1-5)", principal: "Shri Hitesh Trivedi", phone: "+91 98251 40201", teachers: 9, students: 265, avgScore: 72.5, flnReadiness: 74, status: "Average", lastInspection: "19-Oct-2026", inspectionRating: 4.2, mdmRating: "Good", tlmUtilization: 85, subjects: { "Mathematics": 69, "Gujarati": 75, "English": 70, "Hindi": 73, "EVS": 75.5 } },
+  { id: "SCH-08", name: "KGBV Randheja Residential Girls School", udise: "24060102102", cluster: "Randheja Cluster", category: "KGBV Girls (6-8)", principal: "Smt. Jyotsnaben Solanki", phone: "+91 98251 40202", teachers: 8, students: 150, avgScore: 83.5, flnReadiness: 88, status: "Excellent", lastInspection: "16-Oct-2026", inspectionRating: 4.9, mdmRating: "Excellent", tlmUtilization: 95, subjects: { "Mathematics": 81, "Gujarati": 87, "English": 82, "Hindi": 84, "EVS": 83.5 } },
+  { id: "SCH-09", name: "Dholakuva Primary School", udise: "24060102103", cluster: "Randheja Cluster", category: "Primary (1-5)", principal: "Shri Kanti Vaghela", phone: "+91 98251 40203", teachers: 4, students: 98, avgScore: 38.5, flnReadiness: 34, status: "Priority Support", lastInspection: "24-Oct-2026", inspectionRating: 2.8, mdmRating: "Needs Improvement", tlmUtilization: 45, subjects: { "Mathematics": 32, "Gujarati": 42, "English": 35, "Hindi": 40, "EVS": 43.5 } },
+  { id: "SCH-10", name: "Alampur Upper Primary School", udise: "24060102104", cluster: "Randheja Cluster", category: "Upper Primary (1-8)", principal: "Shri Manubhai Chaudhari", phone: "+91 98251 40204", teachers: 10, students: 290, avgScore: 68.2, flnReadiness: 71, status: "Average", lastInspection: "08-Oct-2026", inspectionRating: 3.9, mdmRating: "Good", tlmUtilization: 78, subjects: { "Mathematics": 64, "Gujarati": 71, "English": 67, "Hindi": 69, "EVS": 70 } },
+  { id: "SCH-11", name: "Rupal Prathmik Shala", udise: "24060102105", cluster: "Randheja Cluster", category: "Primary (1-5)", principal: "Smt. Neeta Pandya", phone: "+91 98251 40205", teachers: 7, students: 190, avgScore: 61.4, flnReadiness: 63, status: "Average", lastInspection: "02-Oct-2026", inspectionRating: 3.5, mdmRating: "Satisfactory", tlmUtilization: 65, subjects: { "Mathematics": 57, "Gujarati": 64, "English": 59, "Hindi": 62, "EVS": 65 } },
+  { id: "SCH-12", name: "Sonarda Primary School", udise: "24060102106", cluster: "Randheja Cluster", category: "Primary (1-5)", principal: "Shri Maheshbhai Barot", phone: "+91 98251 40206", teachers: 5, students: 120, avgScore: 56.0, flnReadiness: 52, status: "Average", lastInspection: "25-Sep-2026", inspectionRating: 3.2, mdmRating: "Satisfactory", tlmUtilization: 60, subjects: { "Mathematics": 50, "Gujarati": 59, "English": 54, "Hindi": 57, "EVS": 60 } },
+  { id: "SCH-13", name: "Pethapur Model Upper Primary School", udise: "24060103101", cluster: "Pethapur Cluster", category: "Model School (1-8)", principal: "Dr. Sanat Mehta", phone: "+91 98251 40301", teachers: 14, students: 460, avgScore: 86.4, flnReadiness: 90, status: "Excellent", lastInspection: "20-Oct-2026", inspectionRating: 4.9, mdmRating: "Excellent", tlmUtilization: 98, subjects: { "Mathematics": 85, "Gujarati": 89, "English": 86, "Hindi": 84, "EVS": 88 } },
+  { id: "SCH-14", name: "Pethapur Kanya Primary School", udise: "24060103102", cluster: "Pethapur Cluster", category: "Primary (1-5)", principal: "Smt. Ushaben Joshi", phone: "+91 98251 40302", teachers: 8, students: 230, avgScore: 76.0, flnReadiness: 79, status: "Excellent", lastInspection: "14-Oct-2026", inspectionRating: 4.3, mdmRating: "Good", tlmUtilization: 88, subjects: { "Mathematics": 72, "Gujarati": 79, "English": 75, "Hindi": 76, "EVS": 78 } },
+  { id: "SCH-15", name: "Valad Primary School", udise: "24060103103", cluster: "Pethapur Cluster", category: "Primary (1-5)", principal: "Shri Ramesh Nayak", phone: "+91 98251 40303", teachers: 5, students: 115, avgScore: 37.2, flnReadiness: 32, status: "Priority Support", lastInspection: "21-Oct-2026", inspectionRating: 2.6, mdmRating: "Needs Improvement", tlmUtilization: 40, subjects: { "Mathematics": 30, "Gujarati": 41, "English": 34, "Hindi": 38, "EVS": 43 } },
+  { id: "SCH-16", name: "Sadra Upper Primary School", udise: "24060103104", cluster: "Pethapur Cluster", category: "Upper Primary (1-8)", principal: "Shri Bharat Patel", phone: "+91 98251 40304", teachers: 11, students: 325, avgScore: 73.8, flnReadiness: 77, status: "Average", lastInspection: "10-Oct-2026", inspectionRating: 4.2, mdmRating: "Good", tlmUtilization: 82, subjects: { "Mathematics": 70, "Gujarati": 76, "English": 72, "Hindi": 75, "EVS": 76 } },
+  { id: "SCH-17", name: "Madhavgadh Primary School", udise: "24060103105", cluster: "Pethapur Cluster", category: "Primary (1-5)", principal: "Smt. Kokilaben Parmar", phone: "+91 98251 40305", teachers: 4, students: 88, avgScore: 39.0, flnReadiness: 36, status: "Priority Support", lastInspection: "23-Oct-2026", inspectionRating: 2.9, mdmRating: "Satisfactory", tlmUtilization: 42, subjects: { "Mathematics": 34, "Gujarati": 42, "English": 36, "Hindi": 40, "EVS": 43 } },
+  { id: "SCH-18", name: "Chiloda Upper Primary School", udise: "24060103106", cluster: "Pethapur Cluster", category: "Upper Primary (1-8)", principal: "Shri Jayantilal Shah", phone: "+91 98251 40306", teachers: 13, students: 410, avgScore: 77.5, flnReadiness: 81, status: "Excellent", lastInspection: "17-Oct-2026", inspectionRating: 4.4, mdmRating: "Good", tlmUtilization: 90, subjects: { "Mathematics": 75, "Gujarati": 80, "English": 77, "Hindi": 76, "EVS": 79.5 } },
+  { id: "SCH-19", name: "Sargasan Prathmik Shala", udise: "24060104101", cluster: "Sargasan Cluster", category: "Primary (1-5)", principal: "Smt. Rekhaben Desai", phone: "+91 98251 40401", teachers: 8, students: 245, avgScore: 79.2, flnReadiness: 83, status: "Excellent", lastInspection: "19-Oct-2026", inspectionRating: 4.6, mdmRating: "Excellent", tlmUtilization: 92, subjects: { "Mathematics": 77, "Gujarati": 82, "English": 78, "Hindi": 78, "EVS": 81 } },
+  { id: "SCH-20", name: "Vavol Central Upper Primary", udise: "24060104102", cluster: "Sargasan Cluster", category: "Upper Primary (1-8)", principal: "Shri Kamlesh Soni", phone: "+91 98251 40402", teachers: 15, students: 490, avgScore: 82.0, flnReadiness: 86, status: "Excellent", lastInspection: "11-Oct-2026", inspectionRating: 4.7, mdmRating: "Excellent", tlmUtilization: 94, subjects: { "Mathematics": 80, "Gujarati": 84, "English": 81, "Hindi": 81, "EVS": 84 } },
+  { id: "SCH-21", name: "Tarapur Primary School", udise: "24060104103", cluster: "Sargasan Cluster", category: "Primary (1-5)", principal: "Shri Gordhanbhai Prajapati", phone: "+91 98251 40403", teachers: 6, students: 155, avgScore: 67.4, flnReadiness: 70, status: "Average", lastInspection: "04-Oct-2026", inspectionRating: 3.8, mdmRating: "Good", tlmUtilization: 76, subjects: { "Mathematics": 63, "Gujarati": 71, "English": 66, "Hindi": 68, "EVS": 69 } },
+  { id: "SCH-22", name: "Uvarsad Upper Primary School", udise: "24060104104", cluster: "Sargasan Cluster", category: "Upper Primary (1-8)", principal: "Smt. Alka Bhatt", phone: "+91 98251 40404", teachers: 12, students: 375, avgScore: 75.0, flnReadiness: 78, status: "Excellent", lastInspection: "13-Oct-2026", inspectionRating: 4.3, mdmRating: "Good", tlmUtilization: 86, subjects: { "Mathematics": 73, "Gujarati": 77, "English": 74, "Hindi": 75, "EVS": 76 } },
+  { id: "SCH-23", name: "Khoraj Primary School", udise: "24060104105", cluster: "Sargasan Cluster", category: "Primary (1-5)", principal: "Shri Natubhai Rathod", phone: "+91 98251 40405", teachers: 5, students: 130, avgScore: 36.8, flnReadiness: 31, status: "Priority Support", lastInspection: "22-Oct-2026", inspectionRating: 2.7, mdmRating: "Needs Improvement", tlmUtilization: 38, subjects: { "Mathematics": 29, "Gujarati": 39, "English": 33, "Hindi": 41, "EVS": 42.2 } },
+  { id: "SCH-24", name: "Zundal Upper Primary School", udise: "24060104106", cluster: "Sargasan Cluster", category: "Upper Primary (1-8)", principal: "Shri Pankaj Patel", phone: "+91 98251 40406", teachers: 13, students: 410, avgScore: 80.5, flnReadiness: 84, status: "Excellent", lastInspection: "15-Oct-2026", inspectionRating: 4.5, mdmRating: "Good", tlmUtilization: 90, subjects: { "Mathematics": 78, "Gujarati": 83, "English": 79, "Hindi": 80, "EVS": 82.5 } }
+];
+
+const INITIAL_INSPECTIONS = [
+  { id: "INSP-101", schoolId: "SCH-01", schoolName: "Kudasan Primary School", cluster: "Kudasan Cluster", date: "18-Oct-2026", inspector: "Shri R.K. Mehta (BRC Coordinator)", overallRating: 4.5, pedagogyRating: 4, teacherAttendance: 98, studentAttendance: 92, mdmQuality: "Excellent", tlmUsage: "Excellent", infrastructure: "Well Maintained", findings: "Active classroom engagement in Grade 3 and 4. Abacus beads and Base-10 blocks actively utilized for math numeracy.", directive: "Introduce mental math competition for Grades 4 & 5.", status: "Complied", followUpDate: "18-Dec-2026" },
+  { id: "INSP-102", schoolId: "SCH-15", schoolName: "Valad Primary School", cluster: "Pethapur Cluster", date: "21-Oct-2026", inspector: "Shri R.K. Mehta (BRC) & Smt. Anila Rathod (BRP)", overallRating: 2.6, pedagogyRating: 2, teacherAttendance: 80, studentAttendance: 74, mdmQuality: "Needs Improvement", tlmUsage: "Poor", infrastructure: "Needs Repairs", findings: "Critical foundational learning gaps in Grade 3 and 4 numeracy. Over 55% of students struggle with basic subtraction.", directive: "Immediate 40-day intensive remedial camp for numeracy. Daily 30-min morning math drills using abacus kits.", status: "Under Implementation", followUpDate: "15-Nov-2026" },
+  { id: "INSP-103", schoolId: "SCH-23", schoolName: "Khoraj Primary School", cluster: "Sargasan Cluster", date: "22-Oct-2026", inspector: "Shri R.K. Mehta (BRC Coordinator)", overallRating: 2.7, pedagogyRating: 2, teacherAttendance: 84, studentAttendance: 71, mdmQuality: "Needs Improvement", tlmUsage: "Needs Improvement", infrastructure: "Fair", findings: "High student absenteeism on Mondays and Fridays. Teachers lack structured remediation modules for struggling students.", directive: "Headmaster directed to hold urgent SMC meeting with parents regarding attendance. Initiate Barakhadi rhyme phonics program.", status: "Under Implementation", followUpDate: "20-Nov-2026" },
+  { id: "INSP-104", schoolId: "SCH-13", schoolName: "Pethapur Model Upper Primary School", cluster: "Pethapur Cluster", date: "20-Oct-2026", inspector: "Shri R.K. Mehta (BRC Coordinator)", overallRating: 4.9, pedagogyRating: 5, teacherAttendance: 100, studentAttendance: 96, mdmQuality: "Excellent", tlmUsage: "Excellent", infrastructure: "Exemplary", findings: "Exemplary pedagogy with interactive digital boards and student-led science exhibits. Clean, hygienic mid-day meal shed.", directive: "Designated as Block Demonstration Hub for cluster teacher peer-visits starting next week.", status: "Complied", followUpDate: "20-Jan-2027" },
+  { id: "INSP-105", schoolId: "SCH-09", schoolName: "Dholakuva Primary School", cluster: "Randheja Cluster", date: "24-Oct-2026", inspector: "Shri R.K. Mehta (BRC Coordinator)", overallRating: 2.8, pedagogyRating: 2, teacherAttendance: 82, studentAttendance: 72, mdmQuality: "Needs Improvement", tlmUsage: "Needs Improvement", infrastructure: "Needs Repairs", findings: "Class 3-5 reading comprehension is severely impaired. Only 34% students read grade-appropriate paragraphs.", directive: "Deploy BRC Vachan Abhiyan reading kits immediately. Shift lunch shed to north gallery pending drainage fix.", status: "Action Pending", followUpDate: "12-Nov-2026" },
+  { id: "INSP-106", schoolId: "SCH-08", schoolName: "KGBV Randheja Residential Girls School", cluster: "Randheja Cluster", date: "16-Oct-2026", inspector: "Shri R.K. Mehta (BRC Coordinator)", overallRating: 4.9, pedagogyRating: 5, teacherAttendance: 100, studentAttendance: 98, mdmQuality: "Excellent", tlmUsage: "Excellent", infrastructure: "Exemplary", findings: "High academic discipline and commendable life-skill integration. Remedial coaching for newly enrolled girls has yielded 22% improvement.", directive: "Continue evening peer-mentoring circles. BRC to supply additional English library storybooks.", status: "Complied", followUpDate: "16-Jan-2027" }
+];
+
+const INITIAL_TRAININGS = [
+  { id: "TRG-201", title: "FLN Foundational Numeracy & Activity-Based Math (Grade 1-5)", subject: "Mathematics & FLN (NIPUN Bharat)", targetAudience: "All Primary Teachers (Grades 1-5 across 24 Schools)", clusterScope: "All Clusters (Block-Wide)", enrolledTeachers: 72, completedTeachers: 68, attendanceRate: 94, venue: "BRC Central Training Hall, Sector 17, Gandhinagar", dates: "10-Oct-2026 to 13-Oct-2026", duration: "4 Days (24 Hours)", trainer: "Prof. Jayesh Bhatt (State Resource Group, GCERT)", status: "Completed", modules: ["Concrete-Pictorial-Abstract (CPA) Approach in Numeracy", "Using Abacus Beads & Dot Matrix for Tables 6-9", "Mental Math Strategies & Remedial Worksheets", "Continuous Formative Assessment Tracking"] },
+  { id: "TRG-202", title: "Experiential STEM Pedagogy & Science Lab Kit Hands-On Practical", subject: "Science & Environmental Studies (EVS)", targetAudience: "Upper Primary Teachers (Grades 6-8)", clusterScope: "All Clusters", enrolledTeachers: 48, completedTeachers: 45, attendanceRate: 93, venue: "Pethapur Model School & DIET Laboratory", dates: "24-Oct-2026 to 26-Oct-2026", duration: "3 Days (18 Hours)", trainer: "Dr. M.P. Vaghela (Senior Science Educator, DIET)", status: "In Progress", modules: ["Low-cost DIY Science Experiment Kits", "Demonstrating Plant Biology & Photosynthesis in Class", "Simple Electrical Circuits & Magnetic Induction", "Integrating Environmental Field Studies with Class Curricula"] },
+  { id: "TRG-203", title: "Remedial Reading Strategies (Vachan Abhiyan) in Gujarati & Hindi", subject: "Language, Phonics & Reading Fluency", targetAudience: "Language Teachers of Priority & Developing Schools", clusterScope: "Randheja & Pethapur Clusters (Target Focus)", enrolledTeachers: 36, completedTeachers: 0, attendanceRate: 0, venue: "BRC Seminar Room, Gandhinagar", dates: "05-Nov-2026 to 07-Nov-2026", duration: "3 Days (18 Hours)", trainer: "Smt. Rekhaben Pandya (Language Pedagogy Expert)", status: "Scheduled", modules: ["Barakhadi Rhyme Phonics & Sandpaper Letter Tracing", "Overcoming Hrasva vs Deergha Matra Confusion (િ vs ી)", "Leveled Storybooks & Guided Paired Reading", "Daily 15-Minute Reading Corners (Pustak Parab)"] },
+  { id: "TRG-204", title: "NEP 2020 Holistic Progress Card (HPC) & Competency-Based Assessment", subject: "Continuous & Comprehensive Evaluation (CCE)", targetAudience: "Headmasters & Evaluation In-charges from all 24 Schools", clusterScope: "All Clusters (Block-Wide)", enrolledTeachers: 24, completedTeachers: 0, attendanceRate: 0, venue: "District Education Office Conference Hall", dates: "18-Nov-2026 to 19-Nov-2026", duration: "2 Days (12 Hours)", trainer: "Shri R.K. Mehta (BRC Coordinator) & GCERT Evaluator", status: "Scheduled", modules: ["Understanding 360-Degree Multidimensional Progress Cards", "Self & Peer Assessment Rubrics for Primary Students", "Digital Mark Recording & EduTrack System Data Integration", "Parent-Teacher Collaborative Progress Conferences"] }
+];
+
+const INITIAL_DIRECTIVES = [
+  { id: "DIR-301", targetScope: "Block-Wide", targetName: "All 24 Schools (Gandhinagar Block-02)", category: "Foundational Literacy & Numeracy (FLN)", title: "Mandatory Daily 30-Minute FLN Matrix Drills in Morning Assembly", directive: "All Primary sections (Grades 1 to 5) must dedicate the first 30 minutes of every school day to foundational numeracy and reading drills. Teachers must actively utilize abacus beads, base-10 blocks, and Barakhadi charts provided in BRC TLM kits.", issuedBy: "Shri R.K. Mehta (BRC Coordinator)", issuedDate: "15-Oct-2026", deadline: "31-Oct-2026", status: "Active", priority: "High" },
+  { id: "DIR-302", targetScope: "Priority Cluster", targetName: "4 Priority Schools (Valad, Khoraj, Dholakuva, Madhavgadh)", category: "Remedial Coaching Camp", title: "Intensive 40-Day Remedial Teaching Camp for Students Scoring <40%", directive: "Designate mandatory afternoon remedial sessions (45 minutes post-lunch) for students with critical deficits in mathematics and language. Conduct weekly progress milestone tests and submit student rosters to BRC every Saturday.", issuedBy: "Shri R.K. Mehta (BRC Coordinator)", issuedDate: "22-Oct-2026", deadline: "15-Dec-2026", status: "In Progress", priority: "Critical" },
+  { id: "DIR-303", targetScope: "Specific School", targetName: "Kudasan Primary School", category: "Pedagogical Strategy", title: "Class 4 Mathematics Multiplication Table Intervention", directive: "Implement dot array visual matrix cards and abacus kit drills for Grade 4 students struggling with 6-9 tables. Pair developing learners with peer-buddies.", issuedBy: "Shri R.K. Mehta (BRC Coordinator)", issuedDate: "18-Oct-2026", deadline: "10-Nov-2026", status: "In Progress", priority: "Medium" },
+  { id: "DIR-304", targetScope: "Cluster Focus", targetName: "Pethapur Cluster (6 Schools)", category: "Teacher Peer Mentoring", title: "Bi-Weekly Pair-Teaching Exchange with Pethapur Model School", directive: "Science and mathematics teachers from Valad and Madhavgadh primary schools are paired with master teachers from Pethapur Model School for bi-weekly experiential lesson co-planning.", issuedBy: "Shri R.K. Mehta (BRC Coordinator)", issuedDate: "21-Oct-2026", deadline: "25-Nov-2026", status: "Active", priority: "High" },
+  { id: "DIR-305", targetScope: "Specific School", targetName: "Dholakuva Primary School", category: "Infrastructure & MDM Hygiene", title: "Urgent Drainage Repair in Midday Meal Dining Area", directive: "Headmaster and School Management Committee (SMC) must execute repair of kitchen runoff drainage within 7 days. Relocate student lunch seating to clean veranda immediately.", issuedBy: "Shri R.K. Mehta (BRC Coordinator)", issuedDate: "24-Oct-2026", deadline: "01-Nov-2026", status: "Under Implementation", priority: "High" }
+];
+
 /**
  * Main EduTrack Data Controller
  */
@@ -1347,6 +1403,10 @@ class EduTrackDataStore {
     this.advice = this.load(STORAGE_KEYS.ADVICE, INITIAL_COORDINATOR_ADVICE);
     this.doubts = this.load(STORAGE_KEYS.DOUBTS, INITIAL_PARENT_DOUBTS);
     this.thresholds = this.load(STORAGE_KEYS.THRESHOLDS, DEFAULT_THRESHOLDS);
+    this.schools = this.load(STORAGE_KEYS.BLOCK_SCHOOLS, INITIAL_BLOCK_SCHOOLS);
+    this.inspections = this.load(STORAGE_KEYS.INSPECTIONS, INITIAL_INSPECTIONS);
+    this.trainings = this.load(STORAGE_KEYS.TRAININGS, INITIAL_TRAININGS);
+    this.directives = this.load(STORAGE_KEYS.DIRECTIVES, INITIAL_DIRECTIVES);
     this.apiBase = window.EDUTRACK_API_URL || 
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : 
       (window.location.protocol.startsWith('http') ? '' : 'http://localhost:5000'));
@@ -1382,40 +1442,20 @@ class EduTrackDataStore {
   async syncRemoteData() {
     try {
       const headers = this.getAuthHeaders();
-      // 1. Sync students
-      const resStudents = await fetch(`${this.apiBase}/api/v1/students`, { headers, cache: 'no-store' });
-      if (resStudents.ok) {
-        const json = await resStudents.json();
-        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-          this.students = json.data;
-          this.save(STORAGE_KEYS.DATA, this.students);
-        }
-      }
-      // 2. Sync advice
       const resAdvice = await fetch(`${this.apiBase}/api/v1/advice`, { headers, cache: 'no-store' });
       if (resAdvice.ok) {
         const json = await resAdvice.json();
-        if (json.data && Array.isArray(json.data)) {
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
           this.advice = json.data;
           this.save(STORAGE_KEYS.ADVICE, this.advice);
         }
       }
-      // 3. Sync doubts
       const resDoubts = await fetch(`${this.apiBase}/api/v1/doubts`, { headers, cache: 'no-store' });
       if (resDoubts.ok) {
         const json = await resDoubts.json();
-        if (json.data && Array.isArray(json.data)) {
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
           this.doubts = json.data;
           this.save(STORAGE_KEYS.DOUBTS, this.doubts);
-        }
-      }
-      // 4. Sync thresholds
-      const resThresh = await fetch(`${this.apiBase}/api/v1/settings/thresholds`, { cache: 'no-store' });
-      if (resThresh.ok) {
-        const json = await resThresh.json();
-        if (json.data) {
-          this.thresholds = json.data;
-          this.save(STORAGE_KEYS.THRESHOLDS, this.thresholds);
         }
       }
     } catch (err) {
@@ -1609,7 +1649,169 @@ class EduTrackDataStore {
     return true;
   }
 
-  async addCoordinatorAdvice(className, adviceText) {
+  async fetchBrcData() {
+    const isUp = await this.checkBackend();
+    if (isUp) {
+      try {
+        const [resSchools, resInspections, resTrainings, resDirectives] = await Promise.all([
+          fetch(`${this.apiBase}/api/brc/schools`, { cache: 'no-store' }),
+          fetch(`${this.apiBase}/api/brc/inspections`, { cache: 'no-store' }),
+          fetch(`${this.apiBase}/api/brc/trainings`, { cache: 'no-store' }),
+          fetch(`${this.apiBase}/api/brc/directives`, { cache: 'no-store' })
+        ]);
+        if (resSchools.ok) {
+          const remoteSchools = await resSchools.json();
+          if (Array.isArray(remoteSchools) && remoteSchools.length > 0) {
+            this.schools = remoteSchools;
+            this.save(STORAGE_KEYS.BLOCK_SCHOOLS, this.schools);
+          }
+        }
+        if (resInspections.ok) {
+          const remoteInspections = await resInspections.json();
+          if (Array.isArray(remoteInspections) && remoteInspections.length > 0) {
+            this.inspections = remoteInspections;
+            this.save(STORAGE_KEYS.INSPECTIONS, this.inspections);
+          }
+        }
+        if (resTrainings.ok) {
+          const remoteTrainings = await resTrainings.json();
+          if (Array.isArray(remoteTrainings) && remoteTrainings.length > 0) {
+            this.trainings = remoteTrainings;
+            this.save(STORAGE_KEYS.TRAININGS, this.trainings);
+          }
+        }
+        if (resDirectives.ok) {
+          const remoteDirectives = await resDirectives.json();
+          if (Array.isArray(remoteDirectives) && remoteDirectives.length > 0) {
+            this.directives = remoteDirectives;
+            this.save(STORAGE_KEYS.DIRECTIVES, this.directives);
+          }
+        }
+      } catch (e) {
+        console.warn("Failed fetching remote BRC data, using local storage:", e);
+      }
+    }
+    return {
+      schools: this.schools,
+      inspections: this.inspections,
+      trainings: this.trainings,
+      directives: this.directives
+    };
+  }
+
+  getSchools(clusterFilter = 'All', statusFilter = 'All', searchQuery = '') {
+    return this.schools.filter(s => {
+      const matchCluster = clusterFilter === 'All' || s.cluster === clusterFilter;
+      const matchStatus = statusFilter === 'All' || s.status === statusFilter;
+      const q = searchQuery.toLowerCase().trim();
+      const matchSearch = !q || s.name.toLowerCase().includes(q) || s.udise.includes(q) || s.principal.toLowerCase().includes(q);
+      return matchCluster && matchStatus && matchSearch;
+    });
+  }
+
+  getSchoolById(id) {
+    return this.schools.find(s => s.id === id) || null;
+  }
+
+  async addInspection(inspectionData) {
+    if (!inspectionData.id) {
+      inspectionData.id = "INSP-" + (this.inspections.length + 101);
+    }
+    if (!inspectionData.date) {
+      inspectionData.date = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+    this.inspections.unshift(inspectionData);
+    this.save(STORAGE_KEYS.INSPECTIONS, this.inspections);
+
+    const school = this.getSchoolById(inspectionData.schoolId);
+    if (school) {
+      school.lastInspection = inspectionData.date;
+      school.inspectionRating = Number(inspectionData.overallRating);
+      this.save(STORAGE_KEYS.BLOCK_SCHOOLS, this.schools);
+    }
+
+    if (this.isBackendOnline) {
+      try {
+        await fetch(`${this.apiBase}/api/brc/inspections`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify(inspectionData)
+        });
+      } catch (e) {
+        console.warn("Backend addInspection failed:", e);
+      }
+    }
+    return inspectionData;
+  }
+
+  async addTraining(trainingData) {
+    if (!trainingData.id) {
+      trainingData.id = "TRG-" + (this.trainings.length + 201);
+    }
+    this.trainings.unshift(trainingData);
+    this.save(STORAGE_KEYS.TRAININGS, this.trainings);
+
+    if (this.isBackendOnline) {
+      try {
+        await fetch(`${this.apiBase}/api/brc/trainings`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify(trainingData)
+        });
+      } catch (e) {
+        console.warn("Backend addTraining failed:", e);
+      }
+    }
+    return trainingData;
+  }
+
+  async addDirective(directiveData) {
+    if (!directiveData.id) {
+      directiveData.id = "DIR-" + (this.directives.length + 301);
+    }
+    if (!directiveData.issuedDate) {
+      directiveData.issuedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+    }
+    this.directives.unshift(directiveData);
+    this.save(STORAGE_KEYS.DIRECTIVES, this.directives);
+
+    if (this.isBackendOnline) {
+      try {
+        await fetch(`${this.apiBase}/api/brc/directives`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify(directiveData)
+        });
+      } catch (e) {
+        console.warn("Backend addDirective failed:", e);
+      }
+    }
+    return directiveData;
+  }
+
+  async updateDirectiveStatus(directiveId, newStatus) {
+    const dir = this.directives.find(d => d.id === directiveId);
+    if (dir) {
+      dir.status = newStatus;
+      this.save(STORAGE_KEYS.DIRECTIVES, this.directives);
+
+      if (this.isBackendOnline) {
+        try {
+          await fetch(`${this.apiBase}/api/brc/directives/${encodeURIComponent(directiveId)}`, {
+            method: 'PUT',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify({ status: newStatus })
+          });
+        } catch (e) {
+          console.warn("Backend updateDirectiveStatus failed:", e);
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  addCoordinatorAdvice(className, adviceText) {
     const newAdvice = {
       id: "ADV-" + Date.now().toString().slice(-4),
       class: className,
@@ -1618,36 +1820,34 @@ class EduTrackDataStore {
       advice: adviceText,
       status: "Submitted"
     };
-
-    if (this.isBackendOnline) {
-      try {
-        const res = await fetch(`${this.apiBase}/api/v1/advice`, {
-          method: 'POST',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({ className, advice: adviceText })
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.data) Object.assign(newAdvice, json.data);
-        }
-      } catch (e) {
-        console.warn("Could not post advice to backend:", e);
-      }
-    }
-
     this.advice.unshift(newAdvice);
     this.save(STORAGE_KEYS.ADVICE, this.advice);
+
+    if (this.isBackendOnline) {
+      fetch(this.apiBase + '/api/v1/advice', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({
+          class: className,
+          targetClass: className,
+          title: 'BRC Advisory for Class ' + className,
+          advice: adviceText,
+          content: adviceText,
+          priority: 'Medium'
+        })
+      }).catch(e => console.warn('Backend advice sync skipped:', e));
+    }
+
     return newAdvice;
   }
 
-  async addParentDoubt(studentId, subject, category, questionText) {
+  addParentDoubt(studentId, subject, category, questionText) {
     const student = this.getStudentById(studentId) || this.students[0];
     const newDoubt = {
       id: "DOUBT-" + Date.now().toString().slice(-4),
       studentId: student.id,
       studentName: student.name,
       parentName: student.parentName,
-      parentEmail: student.parentEmail,
       subject: subject,
       category: category,
       question: questionText,
@@ -1655,32 +1855,22 @@ class EduTrackDataStore {
       reply: null,
       date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
-
-    if (this.isBackendOnline) {
-      try {
-        const res = await fetch(`${this.apiBase}/api/v1/doubts`, {
-          method: 'POST',
-          headers: this.getAuthHeaders(),
-          body: JSON.stringify({
-            studentId: student.id,
-            subject,
-            category,
-            question: questionText,
-            parentName: student.parentName,
-            parentEmail: student.parentEmail
-          })
-        });
-        if (res.ok) {
-          const json = await res.json();
-          if (json.data) Object.assign(newDoubt, json.data);
-        }
-      } catch (e) {
-        console.warn("Could not post doubt to backend:", e);
-      }
-    }
-
     this.doubts.unshift(newDoubt);
     this.save(STORAGE_KEYS.DOUBTS, this.doubts);
+
+    if (this.isBackendOnline) {
+      fetch(this.apiBase + '/api/v1/doubts', {
+        method: 'POST',
+        headers: this.getAuthHeaders(),
+        body: JSON.stringify({
+          studentId: student.id,
+          subject: subject,
+          topic: category,
+          question: questionText
+        })
+      }).catch(e => console.warn('Backend doubt sync skipped:', e));
+    }
+
     return newDoubt;
   }
 
@@ -2034,6 +2224,15 @@ document.addEventListener('DOMContentLoaded', () => {
     window.EduTrack.fetchStudents().then(() => {
       if (typeof window.onDataLoaded === 'function') {
         window.onDataLoaded();
+      }
+    });
+  }
+
+  // Fetch BRC Data
+  if (window.EduTrack && typeof window.EduTrack.fetchBrcData === 'function') {
+    window.EduTrack.fetchBrcData().then(() => {
+      if (typeof window.onBrcDataLoaded === 'function') {
+        window.onBrcDataLoaded();
       }
     });
   }

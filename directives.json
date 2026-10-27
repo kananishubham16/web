@@ -1,0 +1,67 @@
+[
+  {
+    "id": "DIR-301",
+    "targetScope": "Block-Wide",
+    "targetName": "All 24 Schools (Gandhinagar Block-02)",
+    "category": "Foundational Literacy & Numeracy (FLN)",
+    "title": "Mandatory Daily 30-Minute FLN Matrix Drills in Morning Assembly",
+    "directive": "All Primary sections (Grades 1 to 5) must dedicate the first 30 minutes of every school day to foundational numeracy and reading drills. Teachers must actively utilize abacus beads, base-10 blocks, and Barakhadi charts provided in BRC TLM kits.",
+    "issuedBy": "Shri R.K. Mehta (BRC Coordinator)",
+    "issuedDate": "15-Oct-2026",
+    "deadline": "31-Oct-2026",
+    "status": "Active",
+    "priority": "High"
+  },
+  {
+    "id": "DIR-302",
+    "targetScope": "Priority Cluster",
+    "targetName": "4 Priority Schools (Valad, Khoraj, Dholakuva, Madhavgadh)",
+    "category": "Remedial Coaching Camp",
+    "title": "Intensive 40-Day Remedial Teaching Camp for Students Scoring <40%",
+    "directive": "Designate mandatory afternoon remedial sessions (45 minutes post-lunch) for students with critical deficits in mathematics and language. Conduct weekly progress milestone tests and submit student rosters to BRC every Saturday.",
+    "issuedBy": "Shri R.K. Mehta (BRC Coordinator)",
+    "issuedDate": "22-Oct-2026",
+    "deadline": "15-Dec-2026",
+    "status": "In Progress",
+    "priority": "Critical"
+  },
+  {
+    "id": "DIR-303",
+    "targetScope": "Specific School",
+    "targetName": "Kudasan Primary School",
+    "category": "Pedagogical Strategy",
+    "title": "Class 4 Mathematics Multiplication Table Intervention",
+    "directive": "Implement dot array visual matrix cards and abacus kit drills for Grade 4 students struggling with 6-9 tables. Pair developing learners with peer-buddies.",
+    "issuedBy": "Shri R.K. Mehta (BRC Coordinator)",
+    "issuedDate": "18-Oct-2026",
+    "deadline": "10-Nov-2026",
+    "status": "In Progress",
+    "priority": "Medium"
+  },
+  {
+    "id": "DIR-304",
+    "targetScope": "Cluster Focus",
+    "targetName": "Pethapur Cluster (6 Schools)",
+    "category": "Teacher Peer Mentoring",
+    "title": "Bi-Weekly Pair-Teaching Exchange with Pethapur Model School",
+    "directive": "Science and mathematics teachers from Valad and Madhavgadh primary schools are paired with master teachers from Pethapur Model School for bi-weekly experiential lesson co-planning.",
+    "issuedBy": "Shri R.K. Mehta (BRC Coordinator)",
+    "issuedDate": "21-Oct-2026",
+    "deadline": "25-Nov-2026",
+    "status": "Active",
+    "priority": "High"
+  },
+  {
+    "id": "DIR-305",
+    "targetScope": "Specific School",
+    "targetName": "Dholakuva Primary School",
+    "category": "Infrastructure & MDM Hygiene",
+    "title": "Urgent Drainage Repair in Midday Meal Dining Area",
+    "directive": "Headmaster and School Management Committee (SMC) must execute repair of kitchen runoff drainage within 7 days. Relocate student lunch seating to clean veranda immediately.",
+    "issuedBy": "Shri R.K. Mehta (BRC Coordinator)",
+    "issuedDate": "24-Oct-2026",
+    "deadline": "01-Nov-2026",
+    "status": "Under Implementation",
+    "priority": "High"
+  }
+]
