@@ -469,7 +469,8 @@
 
             <div class="form-group" style="margin-bottom:0;" id="directiveTargetContainer">
               <label for="directiveTargetName">Target Recipient:</label>
-              <input type="text" id="directiveTargetName" class="form-control" value="All 24 Schools (Gandhinagar Block-02)" required>
+              <input type="text" id="directiveTargetName" list="directiveSchoolsDatalist" class="form-control" value="All 24 Schools (Gandhinagar Block-02)" placeholder="Type or select target school..." required>
+              <datalist id="directiveSchoolsDatalist"></datalist>
             </div>
 
             <div class="form-group" style="margin-bottom:0;">
@@ -1468,13 +1469,20 @@
               ${d.directive}
             </p>
 
+            ${d.complianceRemarks ? `
+              <div style="margin:8px 0; padding:10px 14px; background:#ecfdf5; border-left:4px solid #10b981; border-radius:var(--radius-sm); font-size:0.83rem; color:#065f46;">
+                <strong><i class="fa-solid fa-school-flag"></i> School Implementation & Compliance Record (${d.compliedBy || 'Principal'} &bull; ${d.compliedDate || 'Verified'}):</strong>
+                <p style="margin:4px 0 0 0; color:#047857;">${d.complianceRemarks}</p>
+              </div>
+            ` : ''}
+
             <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:8px;">
               <span>Issued By: <strong>${d.issuedBy || 'Shri R.K. Mehta (BRC)'}</strong> &bull; Deadline: <strong>${d.deadline}</strong></span>
               ${d.status !== 'Complied' ? `
                 <button type="button" class="btn btn-sm btn-secondary" onclick="markDirectiveComplied('${d.id}')">
                   <i class="fa-solid fa-check"></i> Mark Complied
                 </button>
-              ` : '<span class="text-success"><i class="fa-solid fa-circle-check"></i> Resolved</span>'}
+              ` : '<span class="badge badge-green" style="font-size:0.76rem;"><i class="fa-solid fa-circle-check"></i> Complied by School</span>'}
             </div>
           </div>
         `;
@@ -1589,12 +1597,24 @@
 
     function populateSchoolSelectDropdown() {
       const select = document.getElementById('inspSchoolSelect');
-      if (!select) return;
+      const datalist = document.getElementById('directiveSchoolsDatalist');
       const schools = window.EduTrack.schools || [];
-      select.innerHTML = schools.map(s => `
-        <option value="${s.id}">${s.name} (${s.cluster})</option>
-      `).join('');
+      if (select) {
+        select.innerHTML = schools.map(s => `
+          <option value="${s.id}">${s.name} (${s.cluster})</option>
+        `).join('');
+      }
+      if (datalist) {
+        datalist.innerHTML = schools.map(s => `
+          <option value="${s.name}">${s.name} (${s.cluster})</option>
+        `).join('');
+      }
     }
+
+    // Real-time synchronization when directives/inspections are complied by schools
+    window.addEventListener('edutrack:data_updated', (e) => {
+      renderAllBrcViews();
+    });
 
     function openLogInspectionModal() {
       openModal('modalLogInspection');

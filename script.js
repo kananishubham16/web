@@ -1789,24 +1789,151 @@ class EduTrackDataStore {
     return directiveData;
   }
 
-  async updateDirectiveStatus(directiveId, newStatus) {
+  reloadFromStorage() {
+    this.students = this.load(STORAGE_KEYS.DATA, INITIAL_STUDENTS);
+    this.advice = this.load(STORAGE_KEYS.ADVICE, INITIAL_COORDINATOR_ADVICE);
+    this.doubts = this.load(STORAGE_KEYS.DOUBTS, INITIAL_PARENT_DOUBTS);
+    this.thresholds = this.load(STORAGE_KEYS.THRESHOLDS, DEFAULT_THRESHOLDS);
+    this.schools = this.load(STORAGE_KEYS.BLOCK_SCHOOLS, INITIAL_BLOCK_SCHOOLS);
+    this.inspections = this.load(STORAGE_KEYS.INSPECTIONS, INITIAL_INSPECTIONS);
+    this.trainings = this.load(STORAGE_KEYS.TRAININGS, INITIAL_TRAININGS);
+    this.directives = this.load(STORAGE_KEYS.DIRECTIVES, INITIAL_DIRECTIVES);
+  }
+
+  broadcastUpdate(entity = 'all') {
+    try {
+      window.dispatchEvent(new CustomEvent('edutrack:data_updated', { detail: { entity } }));
+    } catch (_) {}
+  }
+
+  getDirectivesForSchool(schoolName = '') {
+    if (!schoolName || schoolName === 'All') return this.directives;
+    const sLower = schoolName.toLowerCase();
+    return this.directives.filter(d => {
+      if (d.targetScope === 'Block-Wide') return true;
+      if (d.targetName && d.targetName.toLowerCase().includes(sLower)) return true;
+      if (d.targetScope === 'Priority Cluster' && (sLower.includes('valad') || sLower.includes('khoraj') || sLower.includes('dholakuva') || sLower.includes('madhavgadh'))) return true;
+      if (d.targetScope === 'Cluster Focus') {
+        const sch = this.schools.find(s => s.name.toLowerCase().includes(sLower));
+        if (sch && d.targetName.toLowerCase().includes(sch.cluster.toLowerCase())) return true;
+      }
+      return false;
+    });
+  }
+
+  getDirectivesForClass(className = 'Class 4') {
+    return this.directives.filter(d => {
+      if (d.targetScope === 'Block-Wide') return true;
+      if (d.title && d.title.toLowerCase().includes(className.toLowerCase())) return true;
+      if (d.directive && d.directive.toLowerCase().includes(className.toLowerCase())) return true;
+      if (d.targetName && d.targetName.toLowerCase().includes('kudasan')) return true;
+      return false;
+    });
+  }
+
+  getInspectionsForSchool(schoolId = 'SCH-01') {
+    return this.inspections.filter(i => i.schoolId === schoolId);
+  }
+
+  getAdviceForClass(className = 'Class 4') {
+    return this.advice.filter(a => a.class === className || a.class === 'All' || !a.class);
+  }
+
+  getDoubtsForClassOrSubject(className = 'Class 4', subject = 'All') {
+    const classStudentIds = this.getStudentsByClass(className).map(s => s.id);
+    return this.doubts.filter(d => {
+      const matchClass = classStudentIds.includes(d.studentId);
+      const matchSubject = (subject === 'All' || d.subject.toLowerCase() === subject.toLowerCase());
+      return matchClass && matchSubject;
+    });
+  }
+
+  async updateDirectiveStatus(directiveId, newStatus, complianceRemarks = '', compliedBy = 'School Principal') {
     const dir = this.directives.find(d => d.id === directiveId);
     if (dir) {
       dir.status = newStatus;
+      if (complianceRemarks) dir.complianceRemarks = complianceRemarks;
+      if (compliedBy) dir.compliedBy = compliedBy;
+      if (newStatus === 'Complied' && !dir.compliedDate) {
+        dir.compliedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+      }
       this.save(STORAGE_KEYS.DIRECTIVES, this.directives);
+      this.broadcastUpdate('directives');
 
       if (this.isBackendOnline) {
         try {
           await fetch(`${this.apiBase}/api/brc/directives/${encodeURIComponent(directiveId)}`, {
             method: 'PUT',
             headers: this.getAuthHeaders(),
-            body: JSON.stringify({ status: newStatus })
+            body: JSON.stringify({
+              status: newStatus,
+              complianceRemarks: dir.complianceRemarks,
+              compliedBy: dir.compliedBy,
+              compliedDate: dir.compliedDate
+            })
           });
         } catch (e) {
           console.warn("Backend updateDirectiveStatus failed:", e);
         }
       }
       return true;
+    }
+    return false;
+  }
+
+  async replyParentDoubt(doubtId, replyText, repliedBy = 'Class Teacher') {
+    const d = this.doubts.find(item => item.id === doubtId || item.doubtId === doubtId);
+    if (d) {
+      d.reply = replyText;
+      d.status = 'Replied';
+      d.repliedBy = repliedBy;
+      d.repliedDate = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) + ' ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      this.save(STORAGE_KEYS.DOUBTS, this.doubts);
+      this.broadcastUpdate('doubts');
+
+      if (this.isBackendOnline) {
+        try {
+          await fetch(`${this.apiBase}/api/v1/doubts/${encodeURIComponent(doubtId)}/reply`, {
+            method: 'PUT',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify({ reply: replyText, repliedByName: repliedBy })
+          });
+        } catch (e) {
+          console.warn('Backend replyParentDoubt failed:', e);
+        }
+      }
+      return true;
+    }
+    return false;
+  }
+
+  async registerForTraining(trainingId, teacherName = 'Smt. Anjali Sharma', schoolName = 'Kudasan Primary School') {
+    const trg = this.trainings.find(t => t.id === trainingId);
+    if (trg) {
+      if (!trg.registeredTeachers) trg.registeredTeachers = [];
+      const entry = `${teacherName} (${schoolName})`;
+      if (!trg.registeredTeachers.includes(entry)) {
+        trg.registeredTeachers.push(entry);
+        trg.registeredCount = (trg.registeredCount || 0) + 1;
+        this.save(STORAGE_KEYS.TRAININGS, this.trainings);
+        this.broadcastUpdate('trainings');
+
+        if (this.isBackendOnline) {
+          try {
+            await fetch(`${this.apiBase}/api/brc/trainings/${encodeURIComponent(trainingId)}`, {
+              method: 'PUT',
+              headers: this.getAuthHeaders(),
+              body: JSON.stringify({
+                registeredTeachers: trg.registeredTeachers,
+                registeredCount: trg.registeredCount
+              })
+            });
+          } catch (e) {
+            console.warn('Backend registerForTraining failed:', e);
+          }
+        }
+        return true;
+      }
     }
     return false;
   }
@@ -2250,4 +2377,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Mount global persistent doubt chat drawer
   mountGlobalParentDoubtSystem();
+
+  // Multi-tab real-time storage listener
+  window.addEventListener('storage', (e) => {
+    if (Object.values(STORAGE_KEYS).includes(e.key)) {
+      if (window.EduTrack) {
+        window.EduTrack.reloadFromStorage();
+        window.EduTrack.broadcastUpdate(e.key);
+      }
+    }
+  });
 });

@@ -310,10 +310,10 @@
             <thead>
               <tr>
                 <th>Directive ID</th>
-                <th>Class</th>
-                <th>Issued By</th>
-                <th>Directive Details</th>
-                <th>Status</th>
+                <th>Target Scope &amp; Recipient</th>
+                <th>Category</th>
+                <th>Directive Title &amp; Details</th>
+                <th>Compliance &amp; Status</th>
                 <th>Actions</th>
               </tr>
             </thead>
@@ -619,28 +619,65 @@
 
     async function loadAdminDirectives() {
       try {
-        const res = await fetch(`${API_BASE}/api/v1/advice`, { headers: getAuthHeaders() });
-        if (res.ok) {
-          const { data } = await res.json();
-          const tbody = document.getElementById('adminDirectivesTableBody');
-          tbody.innerHTML = data.map(a => `
+        let directives = [];
+        try {
+          const res = await fetch(`${API_BASE}/api/brc/directives`);
+          if (res.ok) {
+            directives = await res.json();
+          }
+        } catch (_) {}
+
+        if (!directives || directives.length === 0) {
+          directives = (window.EduTrack && window.EduTrack.directives) ? window.EduTrack.directives : [];
+        }
+
+        const tbody = document.getElementById('adminDirectivesTableBody');
+        if (!tbody) return;
+
+        if (directives.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding:20px;">No directives currently registered.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = directives.map(d => {
+          let badgeClass = 'badge-blue';
+          if (d.status === 'Complied') badgeClass = 'badge-green';
+          else if (d.status === 'In Progress') badgeClass = 'badge-yellow';
+
+          return `
             <tr>
-              <td><strong>${a.adviceId}</strong><br><small>${a.date}</small></td>
-              <td><span class="badge badge-blue">${a.class}</span></td>
-              <td>${a.coordinatorName}</td>
-              <td style="max-width:320px; font-size:0.82rem;">${a.advice}</td>
-              <td><span class="badge badge-green">${a.status}</span></td>
               <td>
-                <select class="form-control" style="width:auto; padding:4px 8px; font-size:0.78rem;" onchange="updateDirectiveStatus('${a.adviceId}', this.value)">
-                  <option value="Submitted" ${a.status === 'Submitted' ? 'selected' : ''}>Submitted</option>
-                  <option value="In Progress" ${a.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                  <option value="Implemented" ${a.status === 'Implemented' ? 'selected' : ''}>Implemented</option>
-                  <option value="Reviewed" ${a.status === 'Reviewed' ? 'selected' : ''}>Reviewed</option>
+                <strong>${d.id}</strong><br>
+                <small style="color:var(--text-muted);"><i class="fa-solid fa-calendar"></i> ${d.issuedDate}</small>
+              </td>
+              <td>
+                <span class="badge badge-gray" style="font-size:0.75rem;">${d.targetScope}</span><br>
+                <small style="font-weight:600; color:var(--primary-navy);">${d.targetName}</small>
+              </td>
+              <td><span class="badge badge-blue" style="font-size:0.75rem;">${d.category}</span></td>
+              <td style="max-width:320px;">
+                <strong style="color:var(--primary-navy); font-size:0.86rem; display:block;">${d.title}</strong>
+                <p style="font-size:0.80rem; color:#475569; margin:2px 0 0 0; line-height:1.4;">${d.directive}</p>
+                ${d.complianceRemarks ? `
+                  <div style="margin-top:6px; padding:6px 10px; background:#ecfdf5; border-radius:var(--radius-sm); border-left:3px solid #10b981; font-size:0.76rem; color:#065f46;">
+                    <strong>School Action:</strong> ${d.complianceRemarks} (${d.compliedBy || 'Principal'} - ${d.compliedDate || ''})
+                  </div>
+                ` : ''}
+              </td>
+              <td>
+                <span class="badge ${badgeClass}">${d.status}</span><br>
+                <small style="color:var(--text-muted);">Deadline: ${d.deadline}</small>
+              </td>
+              <td>
+                <select class="form-control" style="width:auto; padding:4px 8px; font-size:0.78rem; font-weight:600;" onchange="updateDirectiveStatus('${d.id}', this.value)">
+                  <option value="Active" ${d.status === 'Active' ? 'selected' : ''}>Active</option>
+                  <option value="In Progress" ${d.status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                  <option value="Complied" ${d.status === 'Complied' ? 'selected' : ''}>Complied</option>
                 </select>
               </td>
             </tr>
-          `).join('');
-        }
+          `;
+        }).join('');
       } catch (e) {
         console.warn(e);
       }
@@ -793,15 +830,18 @@
       }
     });
 
-    async function updateDirectiveStatus(adviceId, status) {
-      const res = await fetch(`${API_BASE}/api/v1/advice/${adviceId}/status`, {
-        method: 'PUT',
-        headers: getAuthHeaders(),
-        body: JSON.stringify({ status })
-      });
-      if (res.ok) {
-        showToast('Directive status updated.', 'info');
+    async function updateDirectiveStatus(directiveId, status) {
+      if (window.EduTrack && typeof window.EduTrack.updateDirectiveStatus === 'function') {
+        await window.EduTrack.updateDirectiveStatus(directiveId, status, 'Admin override', 'Central Administrator');
+      } else {
+        await fetch(`${API_BASE}/api/brc/directives/${directiveId}`, {
+          method: 'PUT',
+          headers: getAuthHeaders(),
+          body: JSON.stringify({ status, complianceRemarks: 'Admin override', compliedBy: 'Central Administrator' })
+        });
       }
+      showToast(`Directive ${directiveId} status updated to '${status}'.`, 'success');
+      loadAdminDirectives();
     }
 
     async function triggerDbSeed() {

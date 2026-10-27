@@ -77,6 +77,15 @@
         <p data-i18n="principalHeaderSub">Comprehensive institutional metrics, class comparisons, and targeted quality improvement interventions</p>
       </div>
       <div class="header-actions">
+        <!-- School Selection Dropdown -->
+        <div style="display:flex; align-items:center; gap:8px; background:white; padding:6px 12px; border-radius:var(--radius-md); border:1px solid var(--border-color); box-shadow:var(--shadow-sm);">
+          <i class="fa-solid fa-school" style="color:var(--navy-blue);"></i>
+          <label for="principalSchoolSelect" style="font-size:0.84rem; font-weight:700; color:var(--primary-navy); margin-bottom:0;">School:</label>
+          <select id="principalSchoolSelect" class="form-control" style="width:auto; padding:6px 12px; font-weight:600;" onchange="onSchoolChanged(this.value)">
+            <!-- Populated via script -->
+          </select>
+        </div>
+
         <!-- Class Selection Dropdown -->
         <div style="display:flex; align-items:center; gap:8px; background:white; padding:6px 12px; border-radius:var(--radius-md); border:1px solid var(--border-color); box-shadow:var(--shadow-sm);">
           <i class="fa-solid fa-filter" style="color:var(--teal-primary);"></i>
@@ -132,6 +141,65 @@
           <div class="stat-sub"><i class="fa-solid fa-triangle-exclamation text-danger"></i> <span data-i18n="learningGapTag">&lt;40% Learning Gap</span></div>
         </div>
         <div class="stat-icon-box red"><i class="fa-solid fa-user-xmark"></i></div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         BRC ACADEMIC DIRECTIVES & SCHOOL COMPLIANCE ACTION DESK
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid #0d9488; margin-bottom:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="badge badge-blue"><i class="fa-solid fa-bullhorn"></i> Official BRC Communication</span>
+            <span class="badge badge-green" id="principalActiveDirectivesCount">3 Active Mandates</span>
+          </div>
+          <h3 style="font-size:1.3rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-clipboard-check" style="color:#0f766e;"></i> BRC Academic Directives &amp; School Compliance Action Desk
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Official instructional mandates, remedial guidelines, and FLN targets issued to <strong id="principalCurrentSchoolLabel">Kudasan Primary School</strong> by BRC
+          </p>
+        </div>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <select id="principalDirectiveFilter" class="form-control" style="width:auto; padding:6px 14px; font-size:0.84rem; font-weight:600;" onchange="renderPrincipalDirectives()">
+            <option value="All">All Directives</option>
+            <option value="Active">Active Directives</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Complied">Complied</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="principalDirectivesContainer" style="display:flex; flex-direction:column; gap:14px; padding:6px 0;">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         BRC SCHOOL INSPECTION & INSTITUTIONAL QUALITY AUDIT CARD
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid var(--navy-blue); margin-bottom:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="badge badge-purple"><i class="fa-solid fa-magnifying-glass"></i> Institutional Audit</span>
+            <span id="principalInspectionDateBadge" class="badge badge-gray">Last Inspection: 18-Oct-2026</span>
+          </div>
+          <h3 style="font-size:1.3rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-award" style="color:var(--navy-blue);"></i> Latest BRC Inspection &amp; Quality Audit Report
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Supervisory evaluation, FLN compliance rating, and action directives submitted by BRC Coordinator
+          </p>
+        </div>
+        <div id="principalInspectionRatingPill">
+          <!-- Rating badge generated via JS -->
+        </div>
+      </div>
+
+      <div id="principalInspectionContainer">
+        <!-- Rendered dynamically via JS -->
       </div>
     </div>
 
@@ -250,6 +318,55 @@
     </div>
   </footer>
 
+  <!-- ======================================================================
+       MODAL: Record School Compliance for BRC Directive
+       ====================================================================== -->
+  <div class="modal-overlay" id="modalComplyDirective">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 style="margin:0;"><i class="fa-solid fa-file-signature" style="color:var(--teal-primary);"></i> Record School Directive Compliance</h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeComplyModal()" style="border:none; font-size:1.4rem; padding:2px 8px; cursor:pointer;" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="complyDirectiveId">
+        <div style="background:#f8fafc; padding:12px 16px; border-radius:var(--radius-md); margin-bottom:16px; border:1px solid var(--border-color);">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px;">
+            <span class="badge badge-blue" id="complyDirectiveCategory">FLN</span>
+            <span class="badge badge-gray" id="complyDirectiveScope">Block-Wide</span>
+          </div>
+          <strong id="complyDirectiveTitle" style="color:var(--primary-navy); font-size:0.96rem; display:block; margin-bottom:4px;">Directive Title</strong>
+          <p id="complyDirectiveText" style="font-size:0.82rem; color:#475569; margin:0; line-height:1.4;">Directive details...</p>
+        </div>
+
+        <form id="formComplyDirective" onsubmit="handleComplySubmit(event)">
+          <div class="form-group">
+            <label for="complyStatusSelect"><strong>Update Implementation Status:</strong></label>
+            <select id="complyStatusSelect" class="form-control" required>
+              <option value="In Progress">In Progress (Action Underway)</option>
+              <option value="Complied" selected>Complied (Mandate Fully Implemented)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="complyRemarksInput"><strong>School Action &amp; Compliance Notes:</strong></label>
+            <textarea id="complyRemarksInput" class="form-control" rows="3" placeholder="Describe the concrete pedagogical actions taken in classrooms, kits utilized, and monitoring by teachers..." required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="complyOfficerInput"><strong>Reporting Officer / Principal:</strong></label>
+            <input type="text" id="complyOfficerInput" class="form-control" value="Dr. Vikram Joshi (Principal)" required>
+          </div>
+
+          <div class="modal-footer" style="padding:0; margin-top:20px; border-top:none; display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="closeComplyModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-check"></i> Submit Compliance to BRC</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Scripts -->
   <script src="config.js"></script>
   <script src="script.js"></script>
@@ -264,7 +381,238 @@
       });
 
       updatePrincipalDashboard('All');
+      initPrincipalSchoolSelect();
+      renderPrincipalDirectives();
+      renderPrincipalInspection();
+
+      // Listen for cross-tab or background BRC updates
+      window.addEventListener('edutrack:data_updated', (e) => {
+        renderPrincipalDirectives();
+        renderPrincipalInspection();
+      });
     });
+    // =========================================================================
+    // School Selection & BRC Directives / Inspection Management
+    // =========================================================================
+    let currentSchoolName = "Kudasan Primary School (કૂડાસણ પ્રાથમિક શાળા)";
+    let currentSchoolId = "SCH-01";
+
+    function initPrincipalSchoolSelect() {
+      const select = document.getElementById('principalSchoolSelect');
+      if (!select) return;
+      const schools = window.EduTrack.schools || [];
+      select.innerHTML = schools.map(s => `
+        <option value="${s.name}" data-id="${s.id}" ${s.id === 'SCH-01' ? 'selected' : ''}>${s.name}</option>
+      `).join('');
+    }
+
+    function onSchoolChanged(schoolName) {
+      currentSchoolName = schoolName;
+      const select = document.getElementById('principalSchoolSelect');
+      const opt = select ? select.options[select.selectedIndex] : null;
+      if (opt) currentSchoolId = opt.getAttribute('data-id') || 'SCH-01';
+
+      const label = document.getElementById('principalCurrentSchoolLabel');
+      if (label) label.textContent = schoolName.split('(')[0].trim();
+
+      renderPrincipalDirectives();
+      renderPrincipalInspection();
+    }
+
+    function renderPrincipalDirectives() {
+      const container = document.getElementById('principalDirectivesContainer');
+      const filter = document.getElementById('principalDirectiveFilter') ? document.getElementById('principalDirectiveFilter').value : 'All';
+      if (!container) return;
+
+      const allSchoolDirectives = window.EduTrack.getDirectivesForSchool(currentSchoolName);
+      let directives = allSchoolDirectives;
+      if (filter !== 'All') {
+        directives = directives.filter(d => d.status === filter);
+      }
+
+      const activeCount = allSchoolDirectives.filter(d => d.status === 'Active' || d.status === 'In Progress').length;
+      const countBadge = document.getElementById('principalActiveDirectivesCount');
+      if (countBadge) countBadge.textContent = `${activeCount} Active Mandates`;
+
+      if (directives.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:28px 16px; background:#f8fafc; border-radius:var(--radius-md); border:1px dashed var(--border-color); color:var(--text-muted);">
+            <i class="fa-solid fa-clipboard-check" style="font-size:2rem; color:#cbd5e1; margin-bottom:8px; display:block;"></i>
+            <strong>No directives match the '${filter}' filter for this school.</strong>
+            <p style="font-size:0.82rem; margin:4px 0 0 0;">All pedagogical directives from BRC have been addressed.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = directives.map(d => {
+        let badgeClass = 'badge-blue';
+        if (d.status === 'Complied') badgeClass = 'badge-green';
+        else if (d.status === 'In Progress') badgeClass = 'badge-yellow';
+
+        let priBadge = 'badge-blue';
+        if (d.priority === 'Critical') priBadge = 'badge-red';
+        else if (d.priority === 'High') priBadge = 'badge-yellow';
+
+        return `
+          <div class="directive-item-card" style="border-left:4px solid ${d.status === 'Complied' ? '#10b981' : (d.status === 'In Progress' ? '#f59e0b' : '#0284c7')};">
+            <div class="directive-item-header">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="badge ${priBadge}"><i class="fa-solid fa-flag"></i> ${d.priority || 'High'}</span>
+                <span class="badge badge-gray"><i class="fa-solid fa-bullseye"></i> ${d.targetScope}: ${d.targetName}</span>
+                <span class="badge badge-blue">${d.category}</span>
+                <span style="font-size:0.8rem; font-weight:700; color:var(--primary-navy);">${d.id}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${badgeClass}">${d.status}</span>
+                <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-calendar"></i> Deadline: <strong>${d.deadline}</strong></span>
+              </div>
+            </div>
+
+            <h4 style="font-size:1.02rem; font-weight:800; color:var(--primary-navy); margin:6px 0 4px;">
+              ${d.title}
+            </h4>
+            <p style="font-size:0.86rem; color:#334155; line-height:1.5; margin-bottom:10px;">
+              ${d.directive}
+            </p>
+
+            ${d.complianceRemarks ? `
+              <div style="margin:8px 0; padding:10px 14px; background:#ecfdf5; border-left:4px solid #10b981; border-radius:var(--radius-sm); font-size:0.83rem; color:#065f46;">
+                <strong><i class="fa-solid fa-school-flag"></i> School Action Taken (${d.compliedBy || 'Principal'} &bull; ${d.compliedDate || 'Verified'}):</strong>
+                <p style="margin:4px 0 0 0; color:#047857;">${d.complianceRemarks}</p>
+              </div>
+            ` : ''}
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:10px; margin-top:8px; flex-wrap:wrap; gap:8px;">
+              <span>Issued By: <strong>${d.issuedBy || 'Shri R.K. Mehta (BRC Coordinator)'}</strong> on ${d.issuedDate}</span>
+              ${d.status !== 'Complied' ? `
+                <button type="button" class="btn btn-sm btn-primary" onclick="openComplyDirectiveModal('${d.id}')">
+                  <i class="fa-solid fa-file-signature"></i> Take Action / Record Compliance
+                </button>
+              ` : `
+                <button type="button" class="btn btn-sm btn-secondary" onclick="openComplyDirectiveModal('${d.id}')">
+                  <i class="fa-solid fa-pen"></i> Update Implementation Notes
+                </button>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderPrincipalInspection() {
+      const container = document.getElementById('principalInspectionContainer');
+      const ratingPill = document.getElementById('principalInspectionRatingPill');
+      const dateBadge = document.getElementById('principalInspectionDateBadge');
+      if (!container) return;
+
+      const inspections = window.EduTrack.getInspectionsForSchool(currentSchoolId);
+      const sch = window.EduTrack.getSchoolById(currentSchoolId) || {
+        name: currentSchoolName,
+        inspectionRating: 4.5,
+        lastInspection: "18-Oct-2026",
+        mdmRating: "Excellent",
+        tlmUtilization: 90,
+        flnReadiness: 82
+      };
+
+      const latest = inspections.length > 0 ? inspections[0] : {
+        date: sch.lastInspection || "18-Oct-2026",
+        officer: "Shri R.K. Mehta (BRC Coordinator)",
+        overallRating: sch.inspectionRating || 4.5,
+        flnCompliance: sch.flnReadiness || 82,
+        academicScore: 82,
+        infrastructure: 85,
+        mdmStatus: sch.mdmRating || "Excellent",
+        findings: "Classroom observation of Grade 4-A: Active student participation noted in barakhadi drills. Teacher utilized abacus kits effectively. Math tables 6-9 require visual multiplication matrix cards. MDM hot cooked meal served under strict hygiene standards with verified pulse-vegetable ratio.",
+        directive: "Introduce mandatory daily 30-min morning numeracy drills using abacus kits. Submit Class 4 remediation progress report at month-end."
+      };
+
+      if (ratingPill) {
+        ratingPill.innerHTML = `
+          <div style="background:#fef3c7; border:1px solid #fcd34d; padding:6px 14px; border-radius:var(--radius-full); display:inline-flex; align-items:center; gap:8px;">
+            <span style="color:#d97706; font-size:1.05rem;">★★★★☆</span>
+            <strong style="color:#92400e; font-size:0.92rem;">${latest.overallRating} / 5.0 Audit Score</strong>
+          </div>
+        `;
+      }
+
+      if (dateBadge) {
+        dateBadge.textContent = `Audit Date: ${latest.date}`;
+      }
+
+      container.innerHTML = `
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap:12px; background:#f8fafc; padding:14px; border-radius:var(--radius-md); margin-bottom:16px;">
+          <div class="audit-item">
+            <span>Inspector</span>
+            <strong>${latest.officer || 'Shri R.K. Mehta (BRC)'}</strong>
+          </div>
+          <div class="audit-item">
+            <span>Academic Performance</span>
+            <strong style="color:var(--perf-green);">${latest.academicScore || 82}%</strong>
+          </div>
+          <div class="audit-item">
+            <span>FLN Readiness</span>
+            <strong style="color:var(--teal-primary);">${latest.flnCompliance || 82}%</strong>
+          </div>
+          <div class="audit-item">
+            <span>MDM Hygiene</span>
+            <strong style="color:#059669;">${latest.mdmStatus || 'Excellent'}</strong>
+          </div>
+          <div class="audit-item">
+            <span>TLM Kit Utilization</span>
+            <strong style="color:#0284c7;">${sch.tlmUtilization || 90}%</strong>
+          </div>
+        </div>
+
+        <div style="background:#f0fdfa; border-left:4px solid var(--teal-primary); padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0; margin-bottom:14px;">
+          <h4 style="font-size:0.88rem; font-weight:700; color:#0f766e; margin:0 0 4px 0;">
+            <i class="fa-solid fa-clipboard-list"></i> BRC Inspector's Pedagogical Findings:
+          </h4>
+          <p style="font-size:0.84rem; color:#134e4a; margin:0; line-height:1.5;">${latest.findings}</p>
+        </div>
+
+        <div style="background:#fefce8; border-left:4px solid #ca8a04; padding:12px 16px; border-radius:0 var(--radius-sm) var(--radius-sm) 0;">
+          <h4 style="font-size:0.88rem; font-weight:700; color:#854d0e; margin:0 0 4px 0;">
+            <i class="fa-solid fa-triangle-exclamation"></i> Mandatory Action Directive from Inspector:
+          </h4>
+          <p style="font-size:0.84rem; color:#713f12; margin:0; line-height:1.5;">${latest.directive}</p>
+        </div>
+      `;
+    }
+
+    function openComplyDirectiveModal(directiveId) {
+      const d = window.EduTrack.directives.find(item => item.id === directiveId);
+      if (!d) return;
+
+      document.getElementById('complyDirectiveId').value = d.id;
+      document.getElementById('complyDirectiveTitle').textContent = `[${d.id}] ${d.title}`;
+      document.getElementById('complyDirectiveText').textContent = d.directive;
+      document.getElementById('complyDirectiveCategory').textContent = d.category;
+      document.getElementById('complyDirectiveScope').textContent = `${d.targetScope}: ${d.targetName}`;
+      document.getElementById('complyStatusSelect').value = d.status === 'Complied' ? 'Complied' : 'Complied';
+      document.getElementById('complyRemarksInput').value = d.complianceRemarks || '';
+      document.getElementById('modalComplyDirective').classList.add('active');
+    }
+
+    function closeComplyModal() {
+      const modal = document.getElementById('modalComplyDirective');
+      if (modal) modal.classList.remove('active');
+    }
+
+    async function handleComplySubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('complyDirectiveId').value;
+      const status = document.getElementById('complyStatusSelect').value;
+      const remarks = document.getElementById('complyRemarksInput').value.trim();
+      const officer = document.getElementById('complyOfficerInput').value.trim();
+
+      await window.EduTrack.updateDirectiveStatus(id, status, remarks, officer);
+      closeComplyModal();
+      renderPrincipalDirectives();
+      showToast(`Directive ${id} updated to '${status}' and compliance reported to BRC!`, 'success');
+    }
+
 
     // Hook language change event
     window.onLanguageChanged = function(lang) {

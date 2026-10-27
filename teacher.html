@@ -261,6 +261,85 @@
       </div>
     </div>
 
+    <!-- ======================================================================
+         PARENT INQUIRIES & STUDENT DOUBTS RESOLUTION DESK
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid #f59e0b; margin-top:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="badge badge-yellow"><i class="fa-solid fa-comments"></i> Parent-Teacher Communication</span>
+            <span class="badge badge-gray" id="teacherPendingDoubtsCount">1 Pending Inquiry</span>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-comment-dots" style="color:#d97706;"></i> Parent Inquiries &amp; Student Doubts Resolution Desk
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Questions and academic clarifications submitted by parents of students in Class 4-A
+          </p>
+        </div>
+        <div>
+          <select id="teacherDoubtsFilter" class="form-control" style="width:auto; padding:6px 14px; font-size:0.84rem; font-weight:600;" onchange="renderTeacherDoubts()">
+            <option value="All">All Inquiries</option>
+            <option value="Pending">Pending Inquiries</option>
+            <option value="Replied">Replied Inquiries</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="teacherDoubtsContainer" style="display:flex; flex-direction:column; gap:12px; padding:6px 0;">
+        <!-- Populated via script -->
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         BRC ACADEMIC DIRECTIVES & CLASSROOM INSTRUCTION MANDATES
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid #0d9488; margin-top:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="badge badge-blue"><i class="fa-solid fa-bullhorn"></i> Official BRC Guidelines</span>
+            <span class="badge badge-green" id="teacherDirectivesCountBadge">Active Mandates</span>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-clipboard-list" style="color:#0f766e;"></i> BRC Academic Directives &amp; Pedagogical Instructions
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Official instructional guidelines, morning assembly drills, and remedial mandates issued by Block Resource Coordinator
+          </p>
+        </div>
+      </div>
+
+      <div id="teacherDirectivesContainer" style="display:flex; flex-direction:column; gap:12px; padding:6px 0;">
+        <!-- Populated via script -->
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         UPCOMING BRC TEACHER TRAINING WORKSHOPS
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid var(--navy-blue); margin-top:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom:6px;">
+            <span class="badge badge-purple"><i class="fa-solid fa-chalkboard-user"></i> Professional Development</span>
+            <span class="badge badge-gray">Gandhinagar Block-02 BRC</span>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-graduation-cap" style="color:var(--navy-blue);"></i> Upcoming BRC Teacher Training Workshops
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Capacity building programs, FLN pedagogical workshops, and experiential learning sessions scheduled by BRC
+          </p>
+        </div>
+      </div>
+
+      <div id="teacherTrainingsContainer" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap:16px; padding:6px 0;">
+        <!-- Populated via script -->
+      </div>
+    </div>
+
   </main>
 
   <!-- ======================================================================
@@ -524,6 +603,61 @@
     </div>
   </footer>
 
+  <!-- ======================================================================
+       MODAL: Teacher Reply to Parent Inquiry / Doubt
+       ====================================================================== -->
+  <div class="modal-overlay" id="modalTeacherReplyDoubt">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h3 style="margin:0;"><i class="fa-solid fa-reply" style="color:var(--teal-primary);"></i> Reply to Parent Inquiry</h3>
+        <button type="button" class="btn btn-sm btn-secondary" onclick="closeTeacherReplyModal()" style="border:none; font-size:1.4rem; padding:2px 8px; cursor:pointer;" aria-label="Close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="teacherReplyDoubtId">
+        <div style="background:#f8fafc; padding:12px 16px; border-radius:var(--radius-md); margin-bottom:16px; border:1px solid var(--border-color);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <strong id="teacherReplyStudentName" style="color:var(--primary-navy); font-size:0.96rem;">Aarav Patel (Roll #01)</strong>
+            <span class="badge badge-blue" id="teacherReplySubjectBadge">Mathematics</span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:8px;">
+            Parent: <strong id="teacherReplyParentName">Smt. Meenaben Patel</strong> &bull; Category: <span id="teacherReplyCategory">Academic Doubt</span>
+          </div>
+          <div style="background:white; padding:10px 12px; border-radius:var(--radius-sm); border-left:3px solid var(--teal-primary); font-size:0.86rem; color:#334155; font-style:italic;">
+            "<span id="teacherReplyQuestionText">Question text...</span>"
+          </div>
+        </div>
+
+        <div style="margin-bottom:12px;">
+          <span style="font-size:0.8rem; font-weight:700; color:var(--text-muted); display:block; margin-bottom:6px;">Quick 1-Click Pedagogical Responses:</span>
+          <div style="display:flex; flex-wrap:wrap; gap:6px;">
+            <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.76rem;" onclick="setTeacherReplyTemplate('Daily 10-minute skip counting exercises will strengthen multiplication tables. We are also providing abacus support in school.')">
+              + Math Tables Support
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.76rem;" onclick="setTeacherReplyTemplate('Reviewed the latest classroom worksheet. Child is showing steady improvement in reading and participation.')">
+              + Progress Confirmation
+            </button>
+            <button type="button" class="btn btn-sm btn-secondary" style="font-size:0.76rem;" onclick="setTeacherReplyTemplate('Please focus on the remedial practice worksheets sent home. Happy to discuss further during Friday parent hour.')">
+              + Remedial Worksheets
+            </button>
+          </div>
+        </div>
+
+        <form id="formTeacherReplyDoubt" onsubmit="handleTeacherReplySubmit(event)">
+          <div class="form-group">
+            <label for="teacherReplyMessageInput"><strong>Official Teacher Response to Parent:</strong></label>
+            <textarea id="teacherReplyMessageInput" class="form-control" rows="4" placeholder="Type your reassuring, pedagogical guidance for the parent..." required></textarea>
+          </div>
+
+          <div class="modal-footer" style="padding:0; margin-top:20px; border-top:none; display:flex; justify-content:flex-end; gap:10px;">
+            <button type="button" class="btn btn-secondary" onclick="closeTeacherReplyModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-paper-plane"></i> Send Response to Parent</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Scripts -->
   <script src="config.js"></script>
   <script src="script.js"></script>
@@ -537,6 +671,16 @@
       initSearch();
       updateDynamicLanguageTexts();
       renderTeacherDashboard();
+      renderTeacherDirectives();
+      renderTeacherDoubts();
+      renderTeacherTrainings();
+
+      // Real-time synchronization with BRC directives, parent inquiries, and workshops
+      window.addEventListener('edutrack:data_updated', (e) => {
+        renderTeacherDirectives();
+        renderTeacherDoubts();
+        renderTeacherTrainings();
+      });
 
       // Configure Thresholds trigger
       document.getElementById('btnConfigureThresholds').addEventListener('click', () => {
@@ -1218,7 +1362,238 @@
     function closeEditModal() {
       document.getElementById('modalEditMarks').classList.remove('active');
     }
+
+    // =========================================================================
+    // Teacher Directives, Doubts, and Training Management
+    // =========================================================================
+    function renderTeacherDirectives() {
+      const container = document.getElementById('teacherDirectivesContainer');
+      const badge = document.getElementById('teacherDirectivesCountBadge');
+      if (!container) return;
+
+      const directives = window.EduTrack.getDirectivesForClass("Class 4");
+      if (badge) badge.textContent = `${directives.length} Mandates for Class 4`;
+
+      if (directives.length === 0) {
+        container.innerHTML = `<p style="padding:16px; text-align:center; color:var(--text-muted); font-size:0.86rem;">No active BRC directives for this class.</p>`;
+        return;
+      }
+
+      container.innerHTML = directives.map(d => {
+        let priBadge = 'badge-blue';
+        if (d.priority === 'Critical') priBadge = 'badge-red';
+        else if (d.priority === 'High') priBadge = 'badge-yellow';
+
+        let badgeClass = d.status === 'Complied' ? 'badge-green' : (d.status === 'In Progress' ? 'badge-yellow' : 'badge-blue');
+
+        return `
+          <div class="directive-item-card" style="border-left:4px solid ${d.status === 'Complied' ? '#10b981' : '#0d9488'}; padding:16px 20px;">
+            <div class="directive-item-header">
+              <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                <span class="badge ${priBadge}"><i class="fa-solid fa-flag"></i> ${d.priority}</span>
+                <span class="badge badge-gray">${d.targetScope}: ${d.targetName}</span>
+                <span class="badge badge-blue">${d.category}</span>
+                <span style="font-weight:700; font-size:0.8rem; color:var(--primary-navy);">${d.id}</span>
+              </div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${badgeClass}">${d.status}</span>
+                <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-clock"></i> Deadline: <strong>${d.deadline}</strong></span>
+              </div>
+            </div>
+
+            <h4 style="font-size:1rem; font-weight:800; color:var(--primary-navy); margin:6px 0 4px;">
+              ${d.title}
+            </h4>
+            <p style="font-size:0.85rem; color:#334155; line-height:1.5; margin-bottom:8px;">
+              ${d.directive}
+            </p>
+
+            ${d.complianceRemarks ? `
+              <div style="margin:8px 0; padding:8px 12px; background:#ecfdf5; border-left:3px solid #10b981; border-radius:var(--radius-sm); font-size:0.82rem; color:#065f46;">
+                <strong><i class="fa-solid fa-circle-check"></i> Implementation Action Logged:</strong> ${d.complianceRemarks}
+              </div>
+            ` : ''}
+
+            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:var(--text-muted); border-top:1px solid #f1f5f9; padding-top:8px; margin-top:6px; flex-wrap:wrap; gap:8px;">
+              <span>Issued by BRC Coordinator (${d.issuedDate})</span>
+              ${d.status !== 'Complied' ? `
+                <button type="button" class="btn btn-sm btn-secondary" onclick="logTeacherDirectiveAction('${d.id}')">
+                  <i class="fa-solid fa-check"></i> Log Classroom Action Taken
+                </button>
+              ` : '<span class="text-success"><i class="fa-solid fa-circle-check"></i> Action Completed in Class</span>'}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function logTeacherDirectiveAction(id) {
+      const remarks = prompt("Enter brief classroom implementation notes for this BRC directive (e.g. Conducted 30-min numeracy drill with Class 4-A):", "Conducted daily 30-min assembly numeracy drill using abacus kits with all Class 4 students.");
+      if (remarks) {
+        await window.EduTrack.updateDirectiveStatus(id, 'Complied', remarks, 'Smt. Anjali Sharma (Class Teacher)');
+        renderTeacherDirectives();
+        showToast("Classroom directive action recorded and synced with Principal & BRC!", "success");
+      }
+    }
+
+    function renderTeacherDoubts() {
+      const container = document.getElementById('teacherDoubtsContainer');
+      const filter = document.getElementById('teacherDoubtsFilter') ? document.getElementById('teacherDoubtsFilter').value : 'All';
+      const badge = document.getElementById('teacherPendingDoubtsCount');
+      if (!container) return;
+
+      const doubts = window.EduTrack.getDoubtsForClassOrSubject("Class 4");
+      const pendingCount = doubts.filter(d => d.status === 'Pending').length;
+      if (badge) badge.textContent = `${pendingCount} Pending Inquiries`;
+
+      let filtered = doubts;
+      if (filter !== 'All') {
+        filtered = doubts.filter(d => d.status === filter);
+      }
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:24px 16px; background:#f8fafc; border-radius:var(--radius-md); border:1px dashed var(--border-color); color:var(--text-muted);">
+            <i class="fa-solid fa-comments" style="font-size:1.8rem; color:#cbd5e1; margin-bottom:6px; display:block;"></i>
+            <strong>No parent inquiries match '${filter}'.</strong>
+            <p style="font-size:0.82rem; margin:2px 0 0 0;">All questions for Class 4-A have been answered.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(d => {
+        let isReplied = d.status === 'Replied' || d.status === 'Resolved';
+        return `
+          <div class="directive-item-card" style="border-left:4px solid ${isReplied ? '#10b981' : '#f59e0b'}; padding:16px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${isReplied ? 'badge-green' : 'badge-yellow'}">${d.status}</span>
+                <strong style="color:var(--primary-navy); font-size:0.92rem;">${d.studentName}</strong>
+                <span style="font-size:0.8rem; color:var(--text-muted);">(${d.parentName})</span>
+              </div>
+              <div style="font-size:0.78rem; color:var(--text-muted);">
+                <span class="badge badge-blue">${d.subject}</span>
+                <span style="margin-left:6px;"><i class="fa-solid fa-clock"></i> ${d.date}</span>
+              </div>
+            </div>
+
+            <p style="font-size:0.88rem; color:#1e293b; background:#f8fafc; padding:10px 14px; border-radius:var(--radius-sm); border:1px solid #f1f5f9; margin-bottom:8px;">
+              <strong style="color:var(--teal-primary);"><i class="fa-solid fa-circle-question"></i> Question:</strong> "${d.question}"
+            </p>
+
+            ${d.reply ? `
+              <div style="margin-top:8px; padding:10px 14px; background:#ecfdf5; border-radius:var(--radius-sm); border-left:3px solid #10b981; font-size:0.84rem; color:#065f46;">
+                <strong><i class="fa-solid fa-reply"></i> Your Response (${d.repliedBy || 'Teacher'} &bull; ${d.repliedDate || ''}):</strong>
+                <p style="margin:4px 0 0 0; color:#047857;">${d.reply}</p>
+              </div>
+            ` : `
+              <div style="display:flex; justify-content:flex-end; margin-top:8px;">
+                <button type="button" class="btn btn-sm btn-primary" onclick="openTeacherReplyModal('${d.id || d.doubtId}')">
+                  <i class="fa-solid fa-reply"></i> Reply to Parent
+                </button>
+              </div>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function openTeacherReplyModal(id) {
+      const doubts = window.EduTrack.doubts;
+      const d = doubts.find(item => item.id === id || item.doubtId === id);
+      if (!d) return;
+
+      document.getElementById('teacherReplyDoubtId').value = d.id || d.doubtId;
+      document.getElementById('teacherReplyStudentName').textContent = `${d.studentName} (Class 4-A)`;
+      document.getElementById('teacherReplyParentName').textContent = d.parentName || 'Parent';
+      document.getElementById('teacherReplySubjectBadge').textContent = d.subject;
+      document.getElementById('teacherReplyCategory').textContent = d.category || 'Academic Inquiry';
+      document.getElementById('teacherReplyQuestionText').textContent = d.question;
+      document.getElementById('teacherReplyMessageInput').value = d.reply || '';
+
+      document.getElementById('modalTeacherReplyDoubt').classList.add('active');
+    }
+
+    function closeTeacherReplyModal() {
+      const modal = document.getElementById('modalTeacherReplyDoubt');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function setTeacherReplyTemplate(text) {
+      const area = document.getElementById('teacherReplyMessageInput');
+      if (area) {
+        area.value = text;
+        area.focus();
+      }
+    }
+
+    async function handleTeacherReplySubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('teacherReplyDoubtId').value;
+      const reply = document.getElementById('teacherReplyMessageInput').value.trim();
+
+      if (!reply) return;
+
+      await window.EduTrack.replyParentDoubt(id, reply, "Smt. Anjali Sharma (Class Teacher)");
+      closeTeacherReplyModal();
+      renderTeacherDoubts();
+      showToast("Response sent to parent and recorded on Parent Portal!", "success");
+    }
+
+    function renderTeacherTrainings() {
+      const container = document.getElementById('teacherTrainingsContainer');
+      if (!container) return;
+
+      const trainings = window.EduTrack.trainings || [];
+      if (trainings.length === 0) {
+        container.innerHTML = `<p style="padding:16px; text-align:center; color:var(--text-muted); font-size:0.86rem;">No upcoming training sessions scheduled.</p>`;
+        return;
+      }
+
+      container.innerHTML = trainings.map(t => {
+        const isRegistered = t.registeredTeachers && t.registeredTeachers.some(item => item.includes('Anjali Sharma'));
+
+        return `
+          <div class="training-card" style="padding:18px 20px; border-top:4px solid var(--navy-blue);">
+            <div>
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:8px;">
+                <span class="badge badge-purple">${t.category || 'Workshop'}</span>
+                <span class="badge ${isRegistered ? 'badge-green' : 'badge-yellow'}">${isRegistered ? '<i class="fa-solid fa-circle-check"></i> Registered' : t.status}</span>
+              </div>
+              <h4 style="font-size:1.02rem; font-weight:800; color:var(--primary-navy); margin:0 0 6px 0;">
+                ${t.title}
+              </h4>
+              <div style="font-size:0.8rem; color:var(--text-muted); margin-bottom:10px;">
+                <div><i class="fa-solid fa-calendar"></i> <strong>${t.date}</strong> &bull; ${t.duration || 'Full Day'}</div>
+                <div><i class="fa-solid fa-location-dot"></i> ${t.venue} &bull; Trainer: <strong>${t.trainer}</strong></div>
+              </div>
+              <p style="font-size:0.82rem; color:#475569; line-height:1.4; margin-bottom:12px;">
+                ${t.description || 'Intensive hands-on capacity building workshop focused on pedagogical enhancement.'}
+              </p>
+            </div>
+            <div style="border-top:1px solid #f1f5f9; padding-top:10px; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-users"></i> ${t.registeredCount || 0} / ${t.targetAudience || '40'} Seats</span>
+              ${!isRegistered ? `
+                <button type="button" class="btn btn-sm btn-primary" onclick="registerTeacherTraining('${t.id}')">
+                  <i class="fa-solid fa-user-plus"></i> Register Seat
+                </button>
+              ` : `
+                <span class="text-success" style="font-size:0.82rem; font-weight:700;"><i class="fa-solid fa-check"></i> Seat Confirmed</span>
+              `}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function registerTeacherTraining(id) {
+      await window.EduTrack.registerForTraining(id, "Smt. Anjali Sharma", "Kudasan Primary School");
+      renderTeacherTrainings();
+      showToast("Seat confirmed for BRC workshop! Added to your teacher schedule.", "success");
+    }
   </script>
+
 
 </body>
 </html>

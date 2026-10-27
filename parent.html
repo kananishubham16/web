@@ -187,6 +187,58 @@
       </div>
     </div>
 
+    <!-- ======================================================================
+         DIRECT TEACHER COMMUNICATIONS & INQUIRIES DESK
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid var(--teal-primary); margin-top:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span class="badge badge-blue"><i class="fa-solid fa-comments"></i> Parent-Teacher Communication</span>
+            <span class="badge badge-green" id="parentCommunicationBadge">Direct Line</span>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-message" style="color:var(--teal-primary);"></i> Teacher Communications &amp; Inquiry Responses
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Questions and personalized guidance exchanged between you and your child's teachers
+          </p>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-navy" onclick="document.getElementById('floatingAskBtn').click()">
+            <i class="fa-solid fa-comments"></i> Ask Teacher a Question
+          </button>
+        </div>
+      </div>
+
+      <div id="parentCommunicationsContainer" style="display:flex; flex-direction:column; gap:12px; padding:6px 0;">
+        <!-- Populated via script -->
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         ACTIVE SCHOOL ACADEMIC INITIATIVES & BRC DIRECTIVES
+         ====================================================================== -->
+    <div class="card" style="border-top:4px solid var(--navy-blue); margin-top:24px;">
+      <div class="card-header">
+        <div>
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span class="badge badge-purple"><i class="fa-solid fa-shield-halved"></i> Academic Support Programs</span>
+          </div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-chalkboard-user" style="color:var(--navy-blue);"></i> Active School Learning Programs for Your Child
+          </h3>
+          <p style="margin:4px 0 0 0; color:var(--text-muted); font-size:0.86rem;">
+            Educational initiatives and FLN mastery programs currently underway in your child's classroom
+          </p>
+        </div>
+      </div>
+
+      <div id="parentDirectivesContainer" style="display:flex; flex-direction:column; gap:10px; padding:6px 0;">
+        <!-- Populated via script -->
+      </div>
+    </div>
+
   </main>
 
   <!-- ======================================================================
@@ -258,6 +310,11 @@
       });
 
       renderParentDashboard();
+
+      // Listen for teacher replies or BRC updates
+      window.addEventListener('edutrack:data_updated', (e) => {
+        renderParentDashboard();
+      });
     });
 
     function renderParentDashboard() {
@@ -305,7 +362,86 @@
 
       // Render Chart
       renderParentChart(student);
+
+      // Render Communications & Directives
+      renderParentCommunications(student);
+      renderParentDirectives(student);
     }
+    function renderParentCommunications(student) {
+      const container = document.getElementById('parentCommunicationsContainer');
+      if (!container) return;
+
+      const doubts = window.EduTrack.doubts.filter(d => d.studentId === student.id);
+
+      if (doubts.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:24px 16px; background:#f8fafc; border-radius:var(--radius-md); border:1px dashed var(--border-color); color:var(--text-muted);">
+            <i class="fa-solid fa-comment-dots" style="font-size:1.8rem; color:#cbd5e1; margin-bottom:6px; display:block;"></i>
+            <strong>No active inquiries for ${student.name}.</strong>
+            <p style="font-size:0.82rem; margin:4px 0 10px 0;">Have a question about homework, math tables, or classroom progress? Ask the teacher directly.</p>
+            <button class="btn btn-sm btn-primary" onclick="document.getElementById('floatingAskBtn').click()">
+              <i class="fa-solid fa-plus"></i> Submit a Question to Teacher
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = doubts.map(d => {
+        const isReplied = d.status === 'Replied' || d.status === 'Resolved';
+        return `
+          <div class="directive-item-card" style="border-left:4px solid ${isReplied ? '#10b981' : '#f59e0b'}; padding:16px 20px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="badge ${isReplied ? 'badge-green' : 'badge-yellow'}">${isReplied ? '<i class="fa-solid fa-circle-check"></i> Teacher Replied' : '<i class="fa-solid fa-clock"></i> Awaiting Teacher Review'}</span>
+                <span class="badge badge-blue">${d.subject}</span>
+                <span style="font-size:0.8rem; color:var(--text-muted);">${d.category}</span>
+              </div>
+              <span style="font-size:0.78rem; color:var(--text-muted);"><i class="fa-solid fa-calendar"></i> ${d.date}</span>
+            </div>
+
+            <p style="font-size:0.88rem; color:#1e293b; background:#f8fafc; padding:10px 14px; border-radius:var(--radius-sm); border:1px solid #f1f5f9; margin-bottom:8px;">
+              <strong style="color:var(--primary-navy);"><i class="fa-solid fa-circle-question"></i> Your Question:</strong> "${d.question}"
+            </p>
+
+            ${d.reply ? `
+              <div style="margin-top:8px; padding:12px 16px; background:#ecfdf5; border-radius:var(--radius-sm); border-left:4px solid #10b981; font-size:0.86rem; color:#065f46;">
+                <strong><i class="fa-solid fa-chalkboard-user"></i> Response from ${d.repliedBy || 'Class Teacher'} (${d.repliedDate || ''}):</strong>
+                <p style="margin:4px 0 0 0; color:#047857; line-height:1.5;">${d.reply}</p>
+              </div>
+            ` : `
+              <div style="font-size:0.8rem; color:#92400e; background:#fffbeb; padding:8px 12px; border-radius:var(--radius-sm); border-left:3px solid #f59e0b;">
+                <i class="fa-solid fa-hourglass-half"></i> The class teacher has received your inquiry and will provide a personalized response shortly.
+              </div>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderParentDirectives(student) {
+      const container = document.getElementById('parentDirectivesContainer');
+      if (!container) return;
+
+      const directives = window.EduTrack.getDirectivesForClass(student.class);
+
+      if (directives.length === 0) {
+        container.innerHTML = `<p style="padding:16px; text-align:center; color:var(--text-muted); font-size:0.84rem;">Standard curriculum and instructional programs are underway.</p>`;
+        return;
+      }
+
+      container.innerHTML = directives.map(d => `
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-left:4px solid #0284c7; border-radius:var(--radius-sm); padding:12px 16px; margin-bottom:8px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; flex-wrap:wrap; gap:6px;">
+            <strong style="font-size:0.92rem; color:var(--primary-navy);">${d.title}</strong>
+            <span class="badge badge-blue" style="font-size:0.74rem;">${d.category}</span>
+          </div>
+          <p style="font-size:0.82rem; color:#475569; margin:0 0 6px 0; line-height:1.4;">${d.directive}</p>
+          <div style="font-size:0.75rem; color:var(--text-muted);"><i class="fa-solid fa-circle-check text-success"></i> Active in ${student.class} Assembly &amp; Classrooms &bull; Target: ${d.deadline}</div>
+        </div>
+      `).join('');
+    }
+
 
     function renderSubjectCards(student) {
       const container = document.getElementById('parentSubjectsContainer');
