@@ -102,7 +102,7 @@
           </span>
         </div>
       </div>
-      <button class="btn btn-sm btn-navy" onclick="document.getElementById('floatingAskBtn').click()">
+      <button class="btn btn-sm btn-navy" onclick="openParentDoubtDrawer()">
         <i class="fa-solid fa-comments"></i> Ask Teacher a Question
       </button>
     </div>
@@ -205,7 +205,7 @@
           </p>
         </div>
         <div>
-          <button class="btn btn-sm btn-navy" onclick="document.getElementById('floatingAskBtn').click()">
+          <button class="btn btn-sm btn-navy" onclick="openParentDoubtDrawer()">
             <i class="fa-solid fa-comments"></i> Ask Teacher a Question
           </button>
         </div>
@@ -276,7 +276,7 @@
       </div>
       <div class="modal-footer">
         <button class="btn btn-secondary" onclick="closeTopicModal()">Close</button>
-        <button class="btn btn-primary" onclick="closeTopicModal(); document.getElementById('floatingAskBtn').click();">
+        <button class="btn btn-primary" onclick="closeTopicModal(); openParentDoubtDrawer();">
           <i class="fa-solid fa-comments"></i> Ask Teacher About This
         </button>
       </div>
@@ -379,7 +379,7 @@
             <i class="fa-solid fa-comment-dots" style="font-size:1.8rem; color:#cbd5e1; margin-bottom:6px; display:block;"></i>
             <strong>No active inquiries for ${student.name}.</strong>
             <p style="font-size:0.82rem; margin:4px 0 10px 0;">Have a question about homework, math tables, or classroom progress? Ask the teacher directly.</p>
-            <button class="btn btn-sm btn-primary" onclick="document.getElementById('floatingAskBtn').click()">
+            <button class="btn btn-sm btn-primary" onclick="openParentDoubtDrawer()">
               <i class="fa-solid fa-plus"></i> Submit a Question to Teacher
             </button>
           </div>
@@ -569,6 +569,15 @@
       document.getElementById('modalTopicAdvice').textContent = suggestions[0];
 
       document.getElementById('modalTopicDetails').classList.add('active');
+    }
+
+    function openParentDoubtDrawer() {
+      if (window.EduTrack && typeof window.EduTrack.openDoubtDrawer === 'function') {
+        window.EduTrack.openDoubtDrawer();
+      } else {
+        const btn = document.getElementById('floatingAskBtn');
+        if (btn) btn.click();
+      }
     }
 
     function closeTopicModal() {

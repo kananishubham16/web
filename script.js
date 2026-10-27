@@ -1969,6 +1969,21 @@ class EduTrackDataStore {
   }
 
   addParentDoubt(studentId, subject, category, questionText) {
+    const path = window.location.pathname.toLowerCase();
+    const isParentPage = path.endsWith('/parent.html') || path.endsWith('parent.html') || window.location.href.toLowerCase().includes('parent.html');
+    const userRole = (typeof Auth !== 'undefined' && typeof Auth.getRole === 'function') 
+        ? (Auth.getRole() || '').toLowerCase() 
+        : '';
+    const isForbiddenRole = ['teacher', 'principal', 'coordinator', 'brc', 'admin', 'administrator'].includes(userRole);
+
+    if (!isParentPage || isForbiddenRole) {
+      console.warn('Unauthorized: Only parents are permitted to submit questions.');
+      if (typeof showToast === 'function') {
+        showToast('Only parents are permitted to submit questions to teachers.', 'warning');
+      }
+      return null;
+    }
+
     const student = this.getStudentById(studentId) || this.students[0];
     const newDoubt = {
       id: "DOUBT-" + Date.now().toString().slice(-4),
@@ -2130,10 +2145,31 @@ const Auth = {
 };
 
 /**
- * GLOBAL PERSISTENT PARENT DOUBT SYSTEM
- * Mounts floating button & chat drawer across every page with language support
+ * PARENT DOUBT SYSTEM (Strictly Restricted to Parents)
+ * Mounts floating button & chat drawer EXCLUSIVELY on the Parent Portal for parents.
+ * Non-parent roles (teachers, principals, coordinators, admins) and public home screen visitors
+ * are strictly restricted from seeing or accessing this.
  */
 function mountGlobalParentDoubtSystem() {
+  const path = window.location.pathname.toLowerCase();
+  const isParentPage = path.endsWith('/parent.html') || path.endsWith('parent.html') || window.location.href.toLowerCase().includes('parent.html');
+  const userRole = (typeof Auth !== 'undefined' && typeof Auth.getRole === 'function') 
+      ? (Auth.getRole() || '').toLowerCase() 
+      : '';
+  const isForbiddenRole = ['teacher', 'principal', 'coordinator', 'brc', 'admin', 'administrator'].includes(userRole);
+
+  // If not on the Parent Portal, or if logged in with any school staff role (teacher, principal, coordinator, admin),
+  // immediately clean up any existing elements and return.
+  if (!isParentPage || isForbiddenRole) {
+    const existingBtn = document.getElementById('floatingAskBtn');
+    if (existingBtn) existingBtn.remove();
+    const existingDrawer = document.getElementById('doubtDrawer');
+    if (existingDrawer) existingDrawer.remove();
+    const existingOverlay = document.getElementById('doubtDrawerOverlay');
+    if (existingOverlay) existingOverlay.remove();
+    return;
+  }
+
   if (document.getElementById('floatingAskBtn')) return;
 
   const btn = document.createElement('button');
@@ -2231,6 +2267,11 @@ function mountGlobalParentDoubtSystem() {
     overlay.classList.remove('active');
     drawer.classList.remove('open');
   };
+
+  if (window.EduTrack) {
+    window.EduTrack.openDoubtDrawer = openDrawer;
+    window.EduTrack.closeDoubtDrawer = closeDrawer;
+  }
 
   btn.addEventListener('click', openDrawer);
   overlay.addEventListener('click', closeDrawer);
