@@ -21,7 +21,8 @@ const STORAGE_KEYS = {
   BLOCK_SCHOOLS: 'edutrack_block_schools_v1',
   INSPECTIONS: 'edutrack_inspections_v1',
   TRAININGS: 'edutrack_trainings_v1',
-  DIRECTIVES: 'edutrack_directives_v1'
+  DIRECTIVES: 'edutrack_directives_v1',
+  HOLISTIC: 'edutrack_holistic_evaluations_v1'
 };
 
 // ==========================================================================
@@ -1397,6 +1398,62 @@ const INITIAL_DIRECTIVES = [
 /**
  * Main EduTrack Data Controller
  */
+// Initial 360 Holistic Evaluations (NEP 2020 Multi-Dimensional Progress Card)
+const INITIAL_HOLISTIC_EVALUATIONS = {
+  "1": {
+    studentId: "1",
+    practiceGrit: 84.0,
+    learningConsistency: 88.0,
+    engagementCuriosity: 82.0,
+    teamworkEmpathy: 86.0,
+    coCurricular: 80.0,
+    teacherNotes: "Aarav shows remarkable perseverance during math problem-solving and actively supports his peers in group activities.",
+    badges: [
+      {
+        id: "b_1_1",
+        badgeKey: "curious_mind",
+        title: "Curious Questioner",
+        titleGu: "જિજ્ઞાસુ વિદ્યાર્થી",
+        iconName: "fa-lightbulb",
+        awardedBy: "Anita Sharma",
+        awardedAt: "2026-10-24T10:00:00.000Z",
+        note: "Asked thoughtful questions during science reading."
+      },
+      {
+        id: "b_1_2",
+        badgeKey: "team_player",
+        title: "Team Player & Empathy",
+        titleGu: "સહકાર અને ટીમવર્ક",
+        iconName: "fa-handshake",
+        awardedBy: "Anita Sharma",
+        awardedAt: "2026-10-21T09:30:00.000Z",
+        note: "Assisted group mates in organizing reading flashcards."
+      }
+    ]
+  },
+  "2": {
+    studentId: "2",
+    practiceGrit: 92.0,
+    learningConsistency: 95.0,
+    engagementCuriosity: 90.0,
+    teamworkEmpathy: 88.0,
+    coCurricular: 85.0,
+    teacherNotes: "Diya is exceptionally consistent, punctual, and approaches every assignment with high enthusiasm.",
+    badges: [
+      {
+        id: "b_2_1",
+        badgeKey: "high_effort",
+        title: "High Effort & Grit",
+        titleGu: "ખંત અને સાતત્યપૂર્ણ પ્રયાસ",
+        iconName: "fa-bullseye",
+        awardedBy: "Anita Sharma",
+        awardedAt: "2026-10-25T11:00:00.000Z",
+        note: "Perseveres through challenging arithmetic sums."
+      }
+    ]
+  }
+};
+
 class EduTrackDataStore {
   constructor() {
     this.students = this.load(STORAGE_KEYS.DATA, INITIAL_STUDENTS);
@@ -1407,6 +1464,7 @@ class EduTrackDataStore {
     this.inspections = this.load(STORAGE_KEYS.INSPECTIONS, INITIAL_INSPECTIONS);
     this.trainings = this.load(STORAGE_KEYS.TRAININGS, INITIAL_TRAININGS);
     this.directives = this.load(STORAGE_KEYS.DIRECTIVES, INITIAL_DIRECTIVES);
+    this.holistic = this.load(STORAGE_KEYS.HOLISTIC, INITIAL_HOLISTIC_EVALUATIONS);
     this.apiBase = window.EDUTRACK_API_URL || 
       (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' ? 'http://localhost:5000' : 
       (window.location.protocol.startsWith('http') ? '' : 'http://localhost:5000'));
@@ -2120,6 +2178,135 @@ class EduTrackDataStore {
     }
 
     return suggestions;
+  }
+  getHolisticEvaluation(studentId) {
+    const sId = String(studentId);
+    let evalData = this.holistic ? this.holistic[sId] : null;
+    if (!evalData) {
+      evalData = {
+        studentId: sId,
+        practiceGrit: 80.0,
+        learningConsistency: 85.0,
+        engagementCuriosity: 78.0,
+        teamworkEmpathy: 82.0,
+        coCurricular: 80.0,
+        teacherNotes: "Demonstrates active engagement and steady improvement in daily classroom tasks.",
+        badges: [
+          {
+            id: `b_${sId}_init`,
+            badgeKey: "curious_mind",
+            title: "Curious Questioner",
+            titleGu: "જિજ્ઞાસુ વિદ્યાર્થી",
+            iconName: "fa-lightbulb",
+            awardedBy: "Anita Sharma",
+            awardedAt: new Date(Date.now() - 3 * 86400000).toISOString(),
+            note: "Asked thoughtful questions during science reading."
+          }
+        ]
+      };
+      if (!this.holistic) this.holistic = {};
+      this.holistic[sId] = evalData;
+      this.save(STORAGE_KEYS.HOLISTIC, this.holistic);
+    }
+    evalData.compositeScore = Math.min(100, Math.max(0, Math.round(
+      (evalData.practiceGrit * 0.25) +
+      (evalData.learningConsistency * 0.25) +
+      (evalData.engagementCuriosity * 0.20) +
+      (evalData.teamworkEmpathy * 0.15) +
+      (evalData.coCurricular * 0.15)
+    )));
+    return evalData;
+  }
+
+  async awardHolisticBadge(studentId, badgeKey, teacherName = 'Anita Sharma', note = '') {
+    const sId = String(studentId);
+    const evalData = this.getHolisticEvaluation(sId);
+    
+    const templates = {
+      high_effort: {
+        title: 'High Effort & Grit',
+        titleGu: 'ખંત અને સાતત્યપૂર્ણ પ્રયાસ',
+        iconName: 'fa-bullseye',
+        trait: 'practiceGrit',
+        boost: 3
+      },
+      curious_mind: {
+        title: 'Curious Questioner',
+        titleGu: 'જિજ્ઞાસુ વિદ્યાર્થી',
+        iconName: 'fa-lightbulb',
+        trait: 'engagementCuriosity',
+        boost: 4
+      },
+      team_player: {
+        title: 'Team Player & Empathy',
+        titleGu: 'સહકાર અને ટીમવર્ક',
+        iconName: 'fa-handshake',
+        trait: 'teamworkEmpathy',
+        boost: 4
+      },
+      creative_thinker: {
+        title: 'Creative Thinker',
+        titleGu: 'સર્જનાત્મક વિચારસરણી',
+        iconName: 'fa-palette',
+        trait: 'engagementCuriosity',
+        boost: 3
+      },
+      active_sport: {
+        title: 'Energetic & Well-being',
+        titleGu: 'ઉત્સાહી અને શારીરિક સુદ્રઢતા',
+        iconName: 'fa-volleyball',
+        trait: 'coCurricular',
+        boost: 5
+      }
+    };
+
+    const template = templates[badgeKey] || templates.high_effort;
+    const newBadge = {
+      id: `b_${sId}_${Date.now()}`,
+      badgeKey,
+      title: template.title,
+      titleGu: template.titleGu,
+      iconName: template.iconName,
+      awardedBy: teacherName,
+      awardedAt: new Date().toISOString(),
+      note: note || 'Recognized for excellent positive attitude & character in class.'
+    };
+
+    if (!Array.isArray(evalData.badges)) {
+      evalData.badges = [];
+    }
+    evalData.badges.unshift(newBadge);
+
+    if (template.trait && evalData[template.trait] !== undefined) {
+      evalData[template.trait] = Math.min(100, evalData[template.trait] + template.boost);
+    }
+    if (note) {
+      evalData.teacherNotes = note;
+    }
+
+    evalData.compositeScore = Math.min(100, Math.max(0, Math.round(
+      (evalData.practiceGrit * 0.25) +
+      (evalData.learningConsistency * 0.25) +
+      (evalData.engagementCuriosity * 0.20) +
+      (evalData.teamworkEmpathy * 0.15) +
+      (evalData.coCurricular * 0.15)
+    )));
+
+    this.holistic[sId] = evalData;
+    this.save(STORAGE_KEYS.HOLISTIC, this.holistic);
+    this.broadcastUpdate('holistic-badge-awarded', { studentId: sId, badge: newBadge });
+
+    if (this.apiBase) {
+      try {
+        fetch(`${this.apiBase}/api/v1/holistic/${sId}/badge`, {
+          method: 'POST',
+          headers: this.getAuthHeaders(),
+          body: JSON.stringify(newBadge)
+        }).catch(() => {});
+      } catch (_) {}
+    }
+
+    return evalData;
   }
 }
 

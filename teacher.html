@@ -663,7 +663,77 @@
   </div>
 
 
-  <!-- Scripts -->
+
+  <!-- MODAL: Award 1-Tap Positive Character Shout-Out Badge (NEP 2020 HPC) -->
+  <div class="modal-overlay" id="modalAwardBadge">
+    <div class="modal-dialog">
+      <div class="modal-header" style="background:#f0fdfa; border-bottom:1px solid #ccfbf1;">
+        <h3 id="modalAwardBadgeTitle" style="color:#0f766e; margin:0; font-size:1.15rem;">
+          <i class="fa-solid fa-award" style="color:#f59e0b;"></i> Award 1-Tap Character Shout-Out Badge
+        </h3>
+        <button class="btn btn-sm btn-secondary" onclick="closeAwardBadgeModal()" style="padding:2px 8px;">&times;</button>
+      </div>
+      <div class="modal-body" style="padding:20px;">
+        <div style="background:#e6fffa; border:1px solid #99f6e4; border-radius:8px; padding:10px 14px; margin-bottom:14px; font-size:0.82rem; color:#0f766e;">
+          <i class="fa-solid fa-info-circle"></i> <strong>Zero Paperwork:</strong> Award instant positive reinforcement to celebrate student grit, peer support, or curiosity. Automatically strengthens the child's 360° progress card.
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="font-weight:700; font-size:0.85rem; display:block; margin-bottom:8px;">Select Positive Character Trait:</label>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;" id="badgeOptionGrid">
+            <label style="display:flex; align-items:center; gap:8px; padding:10px; border:2px solid #ea580c; background:#fff7ed; border-radius:8px; cursor:pointer;">
+              <input type="radio" name="selectedBadgeKey" value="high_effort" checked>
+              <div>
+                <strong style="font-size:0.82rem; color:#c2410c;"><i class="fa-solid fa-bullseye"></i> High Effort &amp; Grit</strong>
+                <div style="font-size:0.72rem; color:#9a3412;">ખંત અને સાતત્યપૂર્ણ પ્રયાસ</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #e2e8f0; background:#faf5ff; border-radius:8px; cursor:pointer;">
+              <input type="radio" name="selectedBadgeKey" value="curious_mind">
+              <div>
+                <strong style="font-size:0.82rem; color:#7e22ce;"><i class="fa-solid fa-lightbulb"></i> Curious Questioner</strong>
+                <div style="font-size:0.72rem; color:#6b21a8;">જિજ્ઞાસુ વિદ્યાર્થી</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #e2e8f0; background:#f0fdfa; border-radius:8px; cursor:pointer;">
+              <input type="radio" name="selectedBadgeKey" value="team_player">
+              <div>
+                <strong style="font-size:0.82rem; color:#0f766e;"><i class="fa-solid fa-handshake"></i> Team Player &amp; Empathy</strong>
+                <div style="font-size:0.72rem; color:#115e59;">સહકાર અને ટીમવર્ક</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #e2e8f0; background:#fdf2f8; border-radius:8px; cursor:pointer;">
+              <input type="radio" name="selectedBadgeKey" value="creative_thinker">
+              <div>
+                <strong style="font-size:0.82rem; color:#be185d;"><i class="fa-solid fa-palette"></i> Creative Thinker</strong>
+                <div style="font-size:0.72rem; color:#9d174d;">સર્જનાત્મક વિચારસરણી</div>
+              </div>
+            </label>
+            <label style="display:flex; align-items:center; gap:8px; padding:10px; border:1px solid #e2e8f0; background:#eff6ff; border-radius:8px; cursor:pointer; grid-column:span 2;">
+              <input type="radio" name="selectedBadgeKey" value="active_sport">
+              <div>
+                <strong style="font-size:0.82rem; color:#1d4ed8;"><i class="fa-solid fa-volleyball"></i> Energetic &amp; Well-being</strong>
+                <div style="font-size:0.72rem; color:#1e40af;">ઉત્સાહી અને શારીરિક સુદ્રઢતા &bull; Active Sports, Physical Energy &amp; Hygiene</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div style="margin-bottom:14px;">
+          <label style="font-weight:700; font-size:0.85rem; display:block; margin-bottom:6px;">Encouragement Note (Optional):</label>
+          <input type="text" id="inputBadgeNote" class="form-control" placeholder="e.g., Showed extraordinary grit solving fraction word problems today!">
+        </div>
+      </div>
+      <div class="modal-footer" style="padding:14px 20px; background:#f8fafc; border-top:1px solid #e2e8f0; display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn btn-secondary" onclick="closeAwardBadgeModal()">Cancel</button>
+        <button type="button" class="btn btn-primary" style="background:#0d9488; border-color:#0d9488;" onclick="submitAwardBadge()">
+          <i class="fa-solid fa-star"></i> Award Shout-Out Badge
+        </button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Scripts -->
   <script src="config.js"></script>
   <script src="script.js"></script>
   <script>
@@ -912,9 +982,14 @@
               </div>
             </td>
             <td>
-              <button class="btn btn-secondary btn-sm" onclick="openEditModal('${student.id}')">
-                <i class="fa-solid fa-pen-to-square"></i> ${window.i18n ? window.i18n.t('edit') : 'Edit'}
-              </button>
+              <div style="display:flex; flex-direction:column; gap:4px;">
+                <button class="btn btn-secondary btn-sm" onclick="openEditModal('${student.id}')">
+                  <i class="fa-solid fa-pen-to-square"></i> ${window.i18n ? window.i18n.t('edit') : 'Edit'}
+                </button>
+                <button class="btn btn-sm btn-primary" style="background:#0d9488; border-color:#0d9488; font-size:0.75rem; padding:4px 8px;" onclick="openAwardBadgeModal('${student.id}')" title="Award 1-Tap Positive Character Shout-Out Badge">
+                  <i class="fa-solid fa-award"></i> Badge
+                </button>
+              </div>
             </td>
           </tr>
         `;
@@ -1313,6 +1388,49 @@
     window.onDataLoaded = function() {
       renderTeacherDashboard();
     };
+
+    
+    let currentBadgeStudentId = null;
+
+    function openAwardBadgeModal(studentId) {
+      currentBadgeStudentId = studentId;
+      const student = window.EduTrack.getStudentById ? window.EduTrack.getStudentById(studentId) : null;
+      const titleEl = document.getElementById('modalAwardBadgeTitle');
+      if (titleEl) {
+        titleEl.innerHTML = `<i class="fa-solid fa-award" style="color:#f59e0b;"></i> Award Badge: <strong>${student ? student.name : 'Student #' + studentId}</strong>`;
+      }
+      const noteInput = document.getElementById('inputBadgeNote');
+      if (noteInput) noteInput.value = '';
+      
+      const modal = document.getElementById('modalAwardBadge');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeAwardBadgeModal() {
+      const modal = document.getElementById('modalAwardBadge');
+      if (modal) modal.classList.remove('active');
+      currentBadgeStudentId = null;
+    }
+
+    async function submitAwardBadge() {
+      if (!currentBadgeStudentId) return;
+      const selectedRadio = document.querySelector('input[name="selectedBadgeKey"]:checked');
+      const badgeKey = selectedRadio ? selectedRadio.value : 'high_effort';
+      const noteInput = document.getElementById('inputBadgeNote');
+      const note = noteInput ? noteInput.value.trim() : '';
+
+      try {
+        if (window.EduTrack.awardHolisticBadge) {
+          await window.EduTrack.awardHolisticBadge(currentBadgeStudentId, badgeKey, "Anita Sharma (Teacher)", note);
+        }
+        alert("Character Shout-Out Badge successfully awarded! The student's 360° progress card has been updated.");
+        closeAwardBadgeModal();
+      } catch (err) {
+        console.error("Error awarding badge:", err);
+        alert("Badge awarded locally in offline mode.");
+        closeAwardBadgeModal();
+      }
+    }
 
     function openEditModal(studentId) {
       const student = window.EduTrack.getStudentById(studentId);

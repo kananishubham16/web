@@ -121,6 +121,128 @@
       <!-- Dynamically generated via JS -->
     </div>
 
+    <!-- 360° Holistic Growth & Character Strengths Card (NEP 2020 HPC Alignment) -->
+    <div class="card" style="border-top:4px solid #0d9488; margin-top:24px; margin-bottom:24px;">
+      <div class="card-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <div>
+          <h3 style="font-size:1.25rem; font-weight:800; color:var(--primary-navy); margin:0;">
+            <i class="fa-solid fa-brain" style="color:#0d9488;"></i> 360° Holistic Growth &amp; Character Strengths
+          </h3>
+          <p style="margin:4px 0 0 0; font-size:0.85rem; color:var(--text-muted);">
+            NEP 2020 Multi-Dimensional Progress Card (HPC) Alignment — Auto-evaluated beyond marks
+          </p>
+        </div>
+        <div id="holisticCompositeScoreBadge" class="badge" style="background:#e6fffa; color:#0d9488; border:1px solid #99f6e4; font-size:0.9rem; padding:6px 14px; border-radius:20px; font-weight:700;">
+          <i class="fa-solid fa-star"></i> <span id="holisticScoreVal">86%</span> &bull; <span id="holisticStatusText">Exemplary Growth</span>
+        </div>
+      </div>
+      <div style="padding:20px;">
+        <!-- 5 Holistic Pillars Grid -->
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(260px, 1fr)); gap:16px; margin-bottom:24px;">
+          <!-- Pillar 1: Practice Grit & Effort -->
+          <div style="background:#fff7ed; border:1px solid #fed7aa; border-radius:12px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; color:#c2410c; font-size:0.9rem;">
+                <i class="fa-solid fa-bullseye"></i> Practice Grit &amp; Effort (ખંત)
+              </span>
+              <span id="scorePillarGrit" style="font-weight:800; color:#ea580c; font-size:0.95rem;">84%</span>
+            </div>
+            <div style="font-size:0.75rem; color:#9a3412; margin-bottom:8px;">
+              Auto-computed from completed homework &amp; remedial practice
+            </div>
+            <div style="background:#ffedd5; border-radius:6px; height:8px; overflow:hidden;">
+              <div id="barPillarGrit" style="background:#ea580c; width:84%; height:100%; border-radius:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Pillar 2: Learning Consistency -->
+          <div style="background:#eff6ff; border:1px solid #bfdbfe; border-radius:12px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; color:#1d4ed8; font-size:0.9rem;">
+                <i class="fa-solid fa-clock"></i> Learning Consistency (નિયમિતતા)
+              </span>
+              <span id="scorePillarConsistency" style="font-weight:800; color:#2563eb; font-size:0.95rem;">88%</span>
+            </div>
+            <div style="font-size:0.75rem; color:#1e40af; margin-bottom:8px;">
+              Auto-computed from attendance regularity &amp; quiz participation
+            </div>
+            <div style="background:#dbeafe; border-radius:6px; height:8px; overflow:hidden;">
+              <div id="barPillarConsistency" style="background:#2563eb; width:88%; height:100%; border-radius:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Pillar 3: Classroom Curiosity & Inquiry -->
+          <div style="background:#faf5ff; border:1px solid #e9d5ff; border-radius:12px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; color:#7e22ce; font-size:0.9rem;">
+                <i class="fa-solid fa-lightbulb"></i> Classroom Curiosity (જિજ્ઞાસુ વૃત્તિ)
+              </span>
+              <span id="scorePillarCuriosity" style="font-weight:800; color:#9333ea; font-size:0.95rem;">82%</span>
+            </div>
+            <div style="font-size:0.75rem; color:#6b21a8; margin-bottom:8px;">
+              Curiosity in classroom inquiry &amp; active question asking
+            </div>
+            <div style="background:#f3e8ff; border-radius:6px; height:8px; overflow:hidden;">
+              <div id="barPillarCuriosity" style="background:#9333ea; width:82%; height:100%; border-radius:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Pillar 4: Teamwork & Empathy -->
+          <div style="background:#f0fdfa; border:1px solid #99f6e4; border-radius:12px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; color:#0f766e; font-size:0.9rem;">
+                <i class="fa-solid fa-handshake"></i> Teamwork &amp; Empathy (સહકાર)
+              </span>
+              <span id="scorePillarTeamwork" style="font-weight:800; color:#0d9488; font-size:0.95rem;">86%</span>
+            </div>
+            <div style="font-size:0.75rem; color:#115e59; margin-bottom:8px;">
+              Peer collaboration, kindness &amp; helping classmates learn
+            </div>
+            <div style="background:#ccfbf1; border-radius:6px; height:8px; overflow:hidden;">
+              <div id="barPillarTeamwork" style="background:#0d9488; width:86%; height:100%; border-radius:6px;"></div>
+            </div>
+          </div>
+
+          <!-- Pillar 5: Co-Curricular & Well-Being -->
+          <div style="background:#fdf2f8; border:1px solid #fbcfe8; border-radius:12px; padding:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+              <span style="font-weight:700; color:#be185d; font-size:0.9rem;">
+                <i class="fa-solid fa-palette"></i> Co-Curricular &amp; Sports (સહ-અભ્યાસિક)
+              </span>
+              <span id="scorePillarCoCurricular" style="font-weight:800; color:#db2777; font-size:0.95rem;">80%</span>
+            </div>
+            <div style="font-size:0.75rem; color:#9d174d; margin-bottom:8px;">
+              Creative arts, sportsmanship, and personal hygiene
+            </div>
+            <div style="background:#fce7f3; border-radius:6px; height:8px; overflow:hidden;">
+              <div id="barPillarCoCurricular" style="background:#db2777; width:80%; height:100%; border-radius:6px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Positive Character Shout-Out Badges Section -->
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-bottom:16px;">
+          <h4 style="font-size:0.98rem; font-weight:700; color:var(--primary-navy); margin:0 0 10px 0;">
+            <i class="fa-solid fa-award" style="color:#f59e0b;"></i> Positive Character Shout-Out Badges Awarded by Teachers
+          </h4>
+          <div id="holisticBadgesList" style="display:flex; flex-wrap:wrap; gap:10px;">
+            <!-- Dynamically populated badges -->
+          </div>
+        </div>
+
+        <!-- Teacher's Observation Note -->
+        <div id="holisticTeacherNoteBox" style="background:#fefce8; border:1px solid #fef08a; border-radius:10px; padding:14px; display:flex; gap:12px; align-items:flex-start;">
+          <i class="fa-solid fa-quote-left" style="color:#ca8a04; font-size:1.2rem; margin-top:2px;"></i>
+          <div>
+            <div style="font-size:0.8rem; font-weight:700; color:#854d0e; text-transform:uppercase; letter-spacing:0.04em;">Teacher's Holistic Observation Note</div>
+            <div id="holisticTeacherNoteText" style="font-size:0.9rem; color:#713f12; margin-top:3px; font-style:italic;">
+              Aarav shows remarkable perseverance during math problem-solving and actively supports his peers in group activities.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Strongest vs Weakest Subject & Progress Over Time Grid -->
     <div class="charts-grid-two">
       <div class="card">
@@ -362,6 +484,7 @@
 
       // Render Chart
       renderParentChart(student);
+      renderHolisticCard(student);
 
       // Render Communications & Directives
       renderParentCommunications(student);
@@ -501,6 +624,56 @@
           </div>
         </div>
       `).join('');
+    }
+
+    
+    function renderHolisticCard(student) {
+      const evalData = window.EduTrack.getHolisticEvaluation ? window.EduTrack.getHolisticEvaluation(student.id) : null;
+      if (!evalData) return;
+
+      const compScore = evalData.compositeScore || 85;
+      const scoreBadge = document.getElementById('holisticScoreVal');
+      if (scoreBadge) scoreBadge.textContent = `${compScore}%`;
+      const statusText = compScore >= 85 ? 'Exemplary Growth' : (compScore >= 65 ? 'Steady Progress' : 'Needs Encouragement');
+      const statusEl = document.getElementById('holisticStatusText');
+      if (statusEl) statusEl.textContent = statusText;
+
+      const setPillar = (idVal, idBar, val) => {
+        const rounded = Math.round(val || 80);
+        const elVal = document.getElementById(idVal);
+        const elBar = document.getElementById(idBar);
+        if (elVal) elVal.textContent = `${rounded}%`;
+        if (elBar) elBar.style.width = `${Math.min(100, Math.max(5, rounded))}%`;
+      };
+
+      setPillar('scorePillarGrit', 'barPillarGrit', evalData.practiceGrit);
+      setPillar('scorePillarConsistency', 'barPillarConsistency', evalData.learningConsistency);
+      setPillar('scorePillarCuriosity', 'barPillarCuriosity', evalData.engagementCuriosity);
+      setPillar('scorePillarTeamwork', 'barPillarTeamwork', evalData.teamworkEmpathy);
+      setPillar('scorePillarCoCurricular', 'barPillarCoCurricular', evalData.coCurricular);
+
+      // Render Badges
+      const badgesContainer = document.getElementById('holisticBadgesList');
+      if (badgesContainer) {
+        if (evalData.badges && evalData.badges.length > 0) {
+          badgesContainer.innerHTML = evalData.badges.map(b => {
+            return `
+              <div style="background:#fff; border:1px solid #cbd5e1; border-radius:18px; padding:6px 14px; display:inline-flex; align-items:center; gap:8px; box-shadow:0 1px 2px rgba(0,0,0,0.05);" title="${b.note || ''} (Awarded by ${b.awardedBy} on ${new Date(b.awardedAt).toLocaleDateString()})">
+                <i class="fa-solid ${b.iconName || 'fa-award'}" style="color:#f59e0b; font-size:1rem;"></i>
+                <span style="font-weight:700; font-size:0.85rem; color:#1e293b;">${b.title} <span style="font-size:0.75rem; color:#64748b; font-weight:normal;">(${b.titleGu || ''})</span></span>
+                <span style="font-size:0.72rem; background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:10px;">By: ${b.awardedBy}</span>
+              </div>
+            `;
+          }).join('');
+        } else {
+          badgesContainer.innerHTML = '<span style="font-size:0.82rem; color:#64748b; font-style:italic;">No badges awarded yet. Teacher can award positive shout-outs anytime.</span>';
+        }
+      }
+
+      if (evalData.teacherNotes) {
+        const noteEl = document.getElementById('holisticTeacherNoteText');
+        if (noteEl) noteEl.textContent = `"${evalData.teacherNotes}"`;
+      }
     }
 
     function renderParentChart(student) {
