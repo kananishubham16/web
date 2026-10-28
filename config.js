@@ -26,4 +26,8 @@
   window.EDUTRACK_API_URL = isLocal 
     ? (runtimeApi || 'http://localhost:5000') 
     : (PRODUCTION_BACKEND_URL || '');
+
+  // DeepL Translation API Integration (Free Tier)
+  window.DEEPL_API_KEY = '84c3da37-9f70-4cc9-9187-8149259640d2:fx';
+  window.DEEPL_API_URL = 'https://api-free.deepl.com/v2/translate';
 })();

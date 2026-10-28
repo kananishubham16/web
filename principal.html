@@ -706,9 +706,13 @@
         }
       };
 
-      if (window.EduTrack && window.EduTrack.students) {
-        window.EduTrack.students.unshift(newStudent);
-        window.EduTrack.save(STORAGE_KEYS.DATA, window.EduTrack.students);
+      if (window.EduTrack) {
+        if (typeof window.EduTrack.addStudent === 'function') {
+          await window.EduTrack.addStudent(newStudent);
+        } else if (window.EduTrack.students) {
+          window.EduTrack.students.unshift(newStudent);
+          window.EduTrack.save(STORAGE_KEYS.DATA, window.EduTrack.students);
+        }
       }
 
       closeAddStudentModal();

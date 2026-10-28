@@ -40,7 +40,8 @@ const I18N_DICTIONARY = {
     continueToLogin: "Continue to Login",
     secSignIn: "Secure Sign In",
     viewDetails: "View Details",
-    askTeacherBtn: "Ask a Question",
+    askTeacherBtn: "Ask a Question",
+    addStudentBtn: "+ Add Student",
     allClasses: "All Classes (School Overview)",
     home: "Home",
     homeBreadcrumb: "Home",
@@ -266,7 +267,8 @@ const I18N_DICTIONARY = {
     continueToLogin: "લોગિન કરવા આગળ વધો",
     secSignIn: "સુરક્ષિત સાઇન ઇન",
     viewDetails: "વિગતો જુઓ",
-    askTeacherBtn: "શિક્ષકને પ્રશ્ન પૂછો",
+    askTeacherBtn: "શિક્ષકને પ્રશ્ન પૂછો",
+    addStudentBtn: "+ નવો વિદ્યાર્થી ઉમેરો",
     allClasses: "તમામ વર્ગો (સમગ્ર શાળા વિહંગાવલોકન)",
     home: "મુખ્ય પૃષ્ઠ",
     homeBreadcrumb: "મુખ્ય પૃષ્ઠ",
@@ -492,7 +494,8 @@ const I18N_DICTIONARY = {
     continueToLogin: "लॉगिन के लिए आगे बढ़ें",
     secSignIn: "सुरक्षित साइन इन",
     viewDetails: "विवरण देखें",
-    askTeacherBtn: "शिक्षक से प्रश्न पूछें",
+    askTeacherBtn: "शिक्षक से प्रश्न पूछें",
+    addStudentBtn: "+ नया विद्यार्थी जोड़ें",
     allClasses: "सभी कक्षाएं (विद्यालय समग्र अवलोकन)",
     home: "होम",
     homeBreadcrumb: "होम",
@@ -794,7 +797,66 @@ class I18nManager {
   }
 }
 
-window.i18n = new I18nManager();
+window.i18n = new I18nManager();
+
+// =========================================================================
+// DeepL REST Translation API Integration
+// =========================================================================
+window.translateWithDeepL = async function(text, targetLang = 'GU', sourceLang = 'EN') {
+  const apiKey = (window.DEEPL_API_KEY || '84c3da37-9f70-4cc9-9187-8149259640d2:fx').trim();
+  const endpoint = apiKey.endsWith(':fx')
+    ? 'https://api-free.deepl.com/v2/translate'
+    : 'https://api.deepl.com/v2/translate';
+
+  if (!text || !text.trim()) {
+    return { success: true, translatedText: '' };
+  }
+
+  try {
+    const params = new URLSearchParams();
+    params.append('text', text.trim());
+    params.append('target_lang', targetLang.toUpperCase());
+    if (sourceLang) params.append('source_lang', sourceLang.toUpperCase());
+
+    const res = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Authorization': `DeepL-Auth-Key ${apiKey}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: params
+    });
+
+    if (!res.ok) {
+      const err = await res.text();
+      return { success: false, translatedText: text, error: `HTTP ${res.status}: ${err}` };
+    }
+
+    const data = await res.json();
+    if (data.translations && data.translations.length > 0) {
+      return {
+        success: true,
+        translatedText: data.translations[0].text,
+        detectedSourceLang: data.translations[0].detected_source_language
+      };
+    }
+    return { success: false, translatedText: text, error: 'No translation returned' };
+  } catch (err) {
+    return { success: false, translatedText: text, error: err.message };
+  }
+};
+
+window.checkDeeplConnection = async function() {
+  console.log('[DeepL] Verifying translation service connectivity...');
+  const res = await window.translateWithDeepL('EduTrack brings modern analytics to every primary school.', 'GU', 'EN');
+  if (res.success) {
+    console.log('%c[DeepL API Connected Successfully]', 'color:#0D9488; font-weight:bold;', res);
+  } else {
+    console.warn('[DeepL API Warning]', res);
+  }
+  return res;
+};
+
 
 // Standard Subject & Topic Map
 const SUBJECT_TOPICS = {
